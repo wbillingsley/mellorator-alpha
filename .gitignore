@@ -4,3 +4,5 @@
 .metals/
 *.js
 *.js.map
+
+.DS_Store

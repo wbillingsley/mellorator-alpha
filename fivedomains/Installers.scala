@@ -1,3 +1,5 @@
+package fivedomains
+
 import com.wbillingsley.veautiful.*
 import html.*
 import org.scalajs.dom
@@ -24,7 +26,8 @@ object Installers {
 
   def installAndRefresh(url:String):Boolean = 
     val dv = _install(url)(() => ())
-    dv.subscribe { _ => if dv.immediateValue then site.router.routeTo(site.router.route) }
+    dv.subscribe { _ => if dv.immediateValue then root makeItSo root }
+    //dv.subscribe { _ => if dv.immediateValue then site.router.routeTo(site.router.route) }
 
   lazy val marked = {
     val markedJS = installAndRefresh("https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.4/marked.min.js") 
@@ -33,5 +36,17 @@ object Installers {
       if js.typeOf(js.Dynamic.global.marked) == "undefined" then "Loading marked.js" else js.Dynamic.global.marked.parse(s).asInstanceOf[String] 
     }
   }
+
+}
+
+type StyleToken = Styling | String | Unit
+extension (a:HtmlModifiers.Attrable) {
+
+  def &=(stylings:Seq[StyleToken]) = a := 
+    stylings.map({
+      case s:Styling => s.className
+      case s:String => s
+      case _ => ""
+    }).mkString(" ")
 
 }
