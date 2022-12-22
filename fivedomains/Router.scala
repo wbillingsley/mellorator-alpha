@@ -9,6 +9,7 @@ enum AppRoute:
     case Front
     case AddAnimal
     case Animal(id:AnimalId)
+    case Assess(id:AnimalId)
 
 object Router extends HistoryRouter[AppRoute] {
 
@@ -18,6 +19,7 @@ object Router extends HistoryRouter[AppRoute] {
         case AppRoute.Front => "#/"
         case AppRoute.AddAnimal => "#/addanimal"
         case AppRoute.Animal(id) => s"#/animals/$id"
+        case AppRoute.Assess(id) => s"#/assess/$id"
 
     override def render = this.route match 
         case AppRoute.Front => 
@@ -26,9 +28,12 @@ object Router extends HistoryRouter[AppRoute] {
             <.div(^.cls &= Seq(top), addAnimalPage)
         case AppRoute.Animal(id) => 
             <.p("Write the animal page") 
+        case AppRoute.Assess(id) => 
+            <.div(^.cls &= Seq(top), assessmentPage(id))
     
     override def routeFromLocation() = PathDSL.hashPathList() match {
         case "addanimal" :: Nil => AppRoute.AddAnimal
+        case "assess" :: a :: Nil if animalMap.contains(a.toInt) => AppRoute.Assess(a.toInt)
         case _ => AppRoute.Front
     }
 

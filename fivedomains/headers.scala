@@ -9,6 +9,14 @@ val healthCol = "#FF5F58"
 val behaviourCol = "#354D51"
 val mentalCol = "#4D5D38"
 
+def domainColour = Map(
+    Domain.Nutrition -> nutritionCol,
+    Domain.Environment -> environmentCol,
+    Domain.Health -> healthCol,
+    Domain.Behaviour -> behaviourCol,
+    Domain.Mental -> mentalCol,
+)
+
 val smallFont = "15px"
 val smallLineHeight  = "18px"
 val largeFont = "21px"

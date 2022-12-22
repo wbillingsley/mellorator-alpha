@@ -64,7 +64,8 @@ case class SensitiveTopicNotice() extends DHtmlComponent {
         <.p("This app will help you to monitor your animals' welfare using the \"Five Domains\" model of nutrition, environment, health, behaviour and the mental domain."),
         <.p("At times, this may involve showing how an animal's welfare has declined as well as how it has improved. Some people may find it distressing to see an animal in decline."),
         <.div(^.style := "text-align: right;",
-            <.input(^.attr("type") := "checkbox", ^.prop("checked") := "checked"), <.label("Don't show this again "),
+            <.input(^.attr("id") := "dont-show-senstop-again", ^.attr("type") := "checkbox", ^.prop("checked") := "checked"), 
+            <.label(^.attr("for") := "dont-show-senstop-again", "Don't show this again "),
             <.button(^.cls &= Seq(button, noticeButton), "Accept", ^.onClick --> acceptedSensitiveTopics.receive(true))
         )
     )

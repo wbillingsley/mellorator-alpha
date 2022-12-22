@@ -32,7 +32,7 @@ class AnimalForm() extends DHtmlComponent {
     val animal = stateVariable(Animal(nextAnimalId, "Almeira"))
 
     def add():Unit = 
-        animals.append(animal.value)
+        addAnimal(animal.value)
         Router.routeTo(AppRoute.Front)
 
     def render = <.div(
@@ -81,12 +81,17 @@ def addAnimalPage = <.div(
 )
 
 def summaryCard(animal:Animal) = 
+    val surveys = surveysFor(animal)
+
      <.div(
             ^.cls &= Seq(card, backgrounds(animal.display)),
             <.div(
                 <.label(^.cls &= Seq(animalName), animal.name)
             ),
             <.div(
-                
-            )
+                if surveys.isEmpty then <.div("Never assessed") else <.div(s"${surveys.count} assessments recorded")
+            ),
+            <.div(^.style := "text-align: right;",
+                <.button(^.cls &= Seq(button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))
+            )            
      )
