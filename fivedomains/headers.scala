@@ -1,7 +1,7 @@
 package fivedomains
 
 import com.wbillingsley.veautiful.*
-import html.{VHtmlContent, Styling, DHtmlComponent}
+import html.{VHtmlContent, Styling, DHtmlComponent, Animator}
 
 val nutritionCol = "#e6ca84"
 val environmentCol = "#5F6B6A"
@@ -218,3 +218,18 @@ val backgrounds = Map(
     DisplayStyle.Circles -> background(circles).register(),
     DisplayStyle.Plaid -> background(plaid).register(),
 )
+
+def animateProperty(start:Double, stop:Double, steps:Int)(f:(Double) => Unit) = {
+    val step = (stop - start)/steps + 1
+    var cursor = start + step
+
+    def set():Unit = 
+        if Math.abs(cursor - start) > Math.abs(stop - start) then 
+            f(stop)
+        else 
+            f(cursor)
+            cursor = cursor + step
+            Animator.queue(_ => set())
+    
+    Animator.queue(_ => set())
+}

@@ -89,7 +89,7 @@ def summaryCard(animal:Animal) =
                 <.label(^.cls &= Seq(animalName), animal.name)
             ),
             <.div(
-                if surveys.isEmpty then <.div("Never assessed") else <.div(s"${surveys.count} assessments recorded")
+                if surveys.isEmpty then <.div("Never assessed") else <.div(s"${surveys.length} assessments recorded")
             ),
             <.div(^.style := "text-align: right;",
                 <.button(^.cls &= Seq(button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))

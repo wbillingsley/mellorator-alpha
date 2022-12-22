@@ -58,9 +58,9 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
     ),
 )
 
-case class Answer(question:Question, value:Double)
+case class Answer(q:Int, value:Double)
 
-case class Assessment(animal:AnimalId, time:Double, answers:Seq[Answer])
+case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer])
 
 val animalMap = mutable.Map.empty[AnimalId, Animal]
 
