@@ -1,9 +1,18 @@
 package fivedomains
 
+import com.wbillingsley.veautiful.PushVariable
+
 import scala.collection.mutable
 
+enum DisplayStyle:
+    case Curls
+    case Herringbone
+    case Flowers
+    case Circles
+    case Plaid
+
 type AnimalId = Int
-case class Animal(id:AnimalId, species:String, name:String)
+case class Animal(id:AnimalId, name:String, display:DisplayStyle = DisplayStyle.Curls)
 
 enum Domain:
     case Nutrition
@@ -22,4 +31,8 @@ val animals = mutable.Buffer.empty[Animal]
 def nextAnimalId = (0 :: animals.toList.map(_.id)).max + 1
 
 val assessments = mutable.Buffer.empty[Assessment]
+
+val acceptedSensitiveTopics = PushVariable(false) {_ => 
+    if animals.isEmpty then Router.routeTo(AppRoute.AddAnimal) else Router.routeTo(AppRoute.Front)
+}
 

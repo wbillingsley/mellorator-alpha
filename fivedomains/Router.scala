@@ -21,9 +21,9 @@ object Router extends HistoryRouter[AppRoute] {
 
     override def render = this.route match 
         case AppRoute.Front => 
-            frontPage
+            <.div(^.cls &= Seq(top), frontPage)
         case AppRoute.AddAnimal =>
-            AnimalForm()
+            <.div(^.cls &= Seq(top), addAnimalPage)
         case AppRoute.Animal(id) => 
             <.p("Write the animal page") 
     
