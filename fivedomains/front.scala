@@ -23,7 +23,7 @@ object AnimalList extends DHtmlComponent {
     def switcher = <.div(        
 
         ^.cls := Styling(
-            "text-align: center; margin: 3em;"
+            "text-align: center; margin: 1.5em;"
         ).modifiedBy().register().className,
 
 
@@ -46,7 +46,7 @@ object AnimalList extends DHtmlComponent {
         if animals.isEmpty then Seq(emptyCard) else Seq(
             switcher,
             <.div(
-                for a <- animals yield summaryCard(a)
+                for a <- sortedAnimals yield summaryCard(a)
             ),
         ),
         <.p(^.style := "margin-top: 1em; text-align: center;",

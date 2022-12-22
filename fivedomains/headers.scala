@@ -21,7 +21,7 @@ val noticeBg = "hsl(240, 33%, 90%)"
 val noticeFg = "hsl(240, 33%, 50%)"
 
 val top = Styling(
-    """font-family: sans-serif;"""
+    """font-family: sans-serif; max-width: 480px; margin: auto;"""
 ).modifiedBy(
     " input,button,label" -> s"font-size: $smallFont; line-height: $smallLineHeight;"
 ).register()
@@ -113,7 +113,7 @@ def frontHeader =
     import html.*
     <.div(
         ^.cls := Styling(
-            s"margin: -10px -10px 3em; position: relative; top: 0; height: $frontHeaderHeight; box-shadow: 0 3px 3px #aaa;"
+            s"margin: 0 0 1.5em; position: relative; top: 0; height: $frontHeaderHeight; box-shadow: 0 3px 3px #aaa;"
         ).modifiedBy(
             " .bgimage" -> """
                 |height: 100%;
@@ -142,7 +142,7 @@ def leftBlockHeader(backurl:String, title:String, block:VHtmlContent, decoration
     import html.{<, ^}
     <.div(
         ^.cls := Styling(
-                "margin: -10px -10px 3em; position: relative; top: 0; height: 120px; padding: 20px; box-shadow: 0 3px 3px #aaa; font-family: sans-serif;"
+                "margin: 0 0 1.5em; position: relative; top: 0; height: 120px; padding: 20px; box-shadow: 0 3px 3px #aaa; font-family: sans-serif;"
             ).modifiedBy(
                 " .bgimage" -> """
                   |opacity: 0.5;

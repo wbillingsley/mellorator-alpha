@@ -39,7 +39,7 @@ class AnimalForm() extends DHtmlComponent {
         leftBlockHeader(
             Router.path(AppRoute.Front),
             "Add an animal",
-            <.h2(animal.value.name)
+            <.label(^.cls &= Seq(animalName), animal.value.name)
         ),
 
         emptyAnimalsNotice,
