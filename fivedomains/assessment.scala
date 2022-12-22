@@ -31,7 +31,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
 
     def submit():Unit = 
         assessments.append(Assessment(animal.id, new scalajs.js.Date().valueOf, answers.value))
-        Router.routeTo(AppRoute.Front)
+        Router.routeTo(AppRoute.Animal(animal.id))
 
     def render = 
       <.div(
@@ -120,14 +120,14 @@ def fiveBox(data: Map[Domain, (String, VHtmlContent)]) =
         mask,
         g(^.attr("mask") := "url(#logo-mask)",
             sparkbox(nCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
-            foreignObject(^.attr("x") := 0, ^.attr("y") := 0, ^.attr("width") := boxW, ^.attr("height") := boxH, nCont),
+            foreignObject(^.attr("x") := 0, ^.attr("y") := 0, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, nCont),
             sparkbox(eCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
-            foreignObject(^.attr("x") := boxW + gap/2, ^.attr("y") := 0, ^.attr("width") := boxW, ^.attr("height") := boxH, eCont),
+            foreignObject(^.attr("x") := boxW + gap/2 + boxH, ^.attr("y") := 0, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, eCont),
             sparkbox(hCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
-            foreignObject(^.attr("x") := 0, ^.attr("y") := boxH + gap/2, ^.attr("width") := boxW, ^.attr("height") := boxH, hCont),
+            foreignObject(^.attr("x") := 0, ^.attr("y") := boxH + gap/2, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, hCont),
             sparkbox(bCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            foreignObject(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2, ^.attr("width") := boxW, ^.attr("height") := boxH, bCont),
+            foreignObject(^.attr("x") := boxW + gap/2 + boxH, ^.attr("y") := boxH+gap/2, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, bCont),
             circle(^.attr("fill") := mCol, ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR),
-            foreignObject(^.attr("x") := boxW - boxH/2, ^.attr("y") := boxH - boxH/2, ^.attr("width") := boxH, ^.attr("height") := boxH, mCont),
+            foreignObject(^.attr("x") := boxW - boxH, ^.attr("y") := boxH - boxH/2, ^.attr("width") := 2 * boxH, ^.attr("height") := boxH, mCont),
         )
     )

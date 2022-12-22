@@ -16,6 +16,21 @@ val good = "hsl(120, 27%, 82%)"
 val veryGood = "hsl(124, 29%, 71%)"
 
 
+/** Which colour to mark up a score in */
+def scoreColor(x:Double) =
+    if x < 20 then veryPoor
+    else if x < 40 then poor
+    else if x < 60 then neutral
+    else if x < 80 then good
+    else veryGood
+
+def scoreText(x:Double) =
+    if x < 20 then "Very Poor"
+    else if x < 40 then "Poor"
+    else if x < 60 then "Neutral"
+    else if x < 80 then "Good"
+    else "Very Good"
+
 def domainColour = Map(
     Domain.Nutrition -> nutritionCol,
     Domain.Environment -> environmentCol,
@@ -70,6 +85,12 @@ val noticeButton = Styling(
    s"color: white; background: $noticeFg;"
 ).modifiedBy(
     ":hover" -> "filter: brightness(85%);"
+).register()
+
+val fiveboxtext = Styling(
+   s"color: white; font-size: 48px; width: 75px; line-height: 100px;"
+).modifiedBy(
+    
 ).register()
 
 def fourGrid(a:VHtmlContent, b:VHtmlContent, c:VHtmlContent, d:VHtmlContent):VHtmlContent = 

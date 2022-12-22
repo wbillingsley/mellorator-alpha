@@ -104,14 +104,12 @@ def summaryCard(animal:Animal) =
                     case Some(s) =>
                         def score(d:Domain):(String, VHtmlContent) = 
                             val avg = s.average(d)
-                            val col = avg match 
-                                case x if x < 20 => veryPoor
-                                case x if x < 40 => poor
-                                case x if x < 60 => neutral
-                                case x if x < 80 => good
-                                case _ => veryGood
+                            val col = scoreColor(avg)
 
-                            (col, <.p(f"$avg%2.0f"))
+                            col -> <.div(^.style := "text-align: center", 
+                                <.label(^.cls &= Seq(fiveboxtext), scoreText(avg))
+                            )
+
 
                         fiveBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "width: 50%;")
                     case None => 
@@ -123,3 +121,50 @@ def summaryCard(animal:Animal) =
                 <.button(^.cls &= Seq(button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))
             )            
      )
+
+
+def animalDetailsPage(aId:AnimalId) = 
+    val a = animalMap(aId)
+    def recentSurvey = surveysFor(a).lastOption
+
+    <.div(
+        leftBlockHeader(
+            Router.path(AppRoute.Front),
+            "Animal details",
+            <.label(^.cls &= Seq(animalName), a.name)
+        ),
+
+        for s <- recentSurvey yield <.div(^.style := "margin: 1.5em;",
+            <.h3(s"Last assessed ${new scalajs.js.Date(s.time).toLocaleDateString}"),
+            <.div(^.style := "text-align: center;",
+                fiveBox(
+                    data=(
+                        for d <- Domain.values yield 
+                            d -> (scoreColor(s.average(d)), <.label(^.cls &= Seq(fiveboxtext), d.toString))
+                    ).toMap
+                )(^.style := "width: 50%;")
+            )
+        ),
+
+        <.div(^.style := s"padding: 5px 1em; background: ${domainColour(Domain.Mental)}",
+                        <.label(^.style := "color: white", Domain.Mental.toString),
+        ),
+
+        <.div(^.style := "margin: 1.5em;",
+            <.p("...trend of last surveys...?")
+        ),
+
+        for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health, Domain.Behaviour) yield <.div(
+            <.div(^.style := s"padding: 5px 1em; background: ${domainColour(d)}",
+                            <.label(^.style := "color: white", d.toString),
+            ),
+
+            <.div(^.style := "margin: 1.5em;",
+                <.p("...trend of last surveys...?")
+            ),
+        )
+
+
+
+
+    )

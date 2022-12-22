@@ -27,7 +27,7 @@ object Router extends HistoryRouter[AppRoute] {
         case AppRoute.AddAnimal =>
             <.div(^.cls &= Seq(top), addAnimalPage)
         case AppRoute.Animal(id) => 
-            <.p("Write the animal page") 
+            <.div(^.cls &= Seq(top), animalDetailsPage(id))
         case AppRoute.Assess(id) => 
             <.div(^.cls &= Seq(top), assessmentPage(id))
     
