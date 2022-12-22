@@ -1,7 +1,7 @@
 package fivedomains
 
 import com.wbillingsley.veautiful.*
-import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
+import html.{Styling, VHtmlContent, DHtmlComponent, EventMethods}
 
 val surveyQstyle = Styling(
     """"""
@@ -11,11 +11,7 @@ val surveyQstyle = Styling(
 ).register()
 
 case class AssessmentForm(animal:Animal) extends DHtmlComponent {
-
-    val flattenedQs = for 
-        (_, qs) <- allQuestions
-        q <- qs
-    yield q
+    import html.{<, ^}
 
     val answers = stateVariable(
         (for q <- flattenedQs yield q.num -> Answer(q.num, 50)).toMap
@@ -87,3 +83,51 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
 def assessmentPage(aId: AnimalId) = 
     val a = animalMap(aId)
     AssessmentForm(a)
+
+
+/**
+  * Draws a "five box" diagram. Takes a map from each domain to a CSS colour (for the box) and VHtmlContent to show
+  *
+  */
+def fiveBox(data: Map[Domain, (String, VHtmlContent)]) = 
+    val gap = 10
+    val boxW = 400
+    val boxH = 100
+    val circleR = 140
+
+    def emptyContent = html.<.p("")
+    def emptyCol = "gainsboro"
+
+    val (nCol, nCont) = data.getOrElse(Domain.Nutrition, (emptyCol, emptyContent))
+    val (eCol, eCont) = data.getOrElse(Domain.Environment, (emptyCol, emptyContent))
+    val (hCol, hCont) = data.getOrElse(Domain.Health, (emptyCol, emptyContent))
+    val (bCol, bCont) = data.getOrElse(Domain.Behaviour, (emptyCol, emptyContent))
+    val (mCol, mCont) = data.getOrElse(Domain.Mental, (emptyCol, emptyContent))
+
+    def mask = 
+        import svg.*
+        SVG("mask")(
+            ^.attr("id") := "logo-mask",
+            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
+            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
+            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
+            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
+            circle(^.attr("fill") := "white", ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR, ^.attr("stroke") := "black", ^.attr("stroke-width") := gap),
+        )
+
+    import svg.*
+    svg(^.attr("viewBox") := s"0 ${boxH - circleR} ${2 * boxW} ${2 * circleR}",
+        mask,
+        g(^.attr("mask") := "url(#logo-mask)",
+            sparkbox(nCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
+            foreignObject(^.attr("x") := 0, ^.attr("y") := 0, ^.attr("width") := boxW, ^.attr("height") := boxH, nCont),
+            sparkbox(eCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
+            foreignObject(^.attr("x") := boxW + gap/2, ^.attr("y") := 0, ^.attr("width") := boxW, ^.attr("height") := boxH, eCont),
+            sparkbox(hCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
+            foreignObject(^.attr("x") := 0, ^.attr("y") := boxH + gap/2, ^.attr("width") := boxW, ^.attr("height") := boxH, hCont),
+            sparkbox(bCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
+            foreignObject(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2, ^.attr("width") := boxW, ^.attr("height") := boxH, bCont),
+            circle(^.attr("fill") := mCol, ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR),
+            foreignObject(^.attr("x") := boxW - boxH/2, ^.attr("y") := boxH - boxH/2, ^.attr("width") := boxH, ^.attr("height") := boxH, mCont),
+        )
+    )

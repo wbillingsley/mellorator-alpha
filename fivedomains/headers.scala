@@ -9,6 +9,13 @@ val healthCol = "#FF5F58"
 val behaviourCol = "#354D51"
 val mentalCol = "#4D5D38"
 
+val veryPoor = "hsl(5, 84%, 70%)"
+val poor = "hsl(9, 86%, 80%)"
+val neutral = "hsl(32, 95%, 76%)"
+val good = "hsl(120, 27%, 82%)"
+val veryGood = "hsl(124, 29%, 71%)"
+
+
 def domainColour = Map(
     Domain.Nutrition -> nutritionCol,
     Domain.Environment -> environmentCol,

@@ -81,7 +81,7 @@ def addAnimalPage = <.div(
 )
 
 def summaryCard(animal:Animal) = 
-    val surveys = surveysFor(animal)
+    val surveys = surveysFor(animal).sortBy(_.time)
 
      <.div(
             ^.cls &= Seq(card, backgrounds(animal.display)),
@@ -89,7 +89,35 @@ def summaryCard(animal:Animal) =
                 <.label(^.cls &= Seq(animalName), animal.name)
             ),
             <.div(
-                if surveys.isEmpty then <.div("Never assessed") else <.div(s"${surveys.length} assessments recorded")
+                if surveys.isEmpty then 
+                    <.div("Never assessed") else 
+                    <.div(
+                        <.div(s"${surveys.length} assessments recorded"),
+                        {
+                            val dt = (new scalajs.js.Date().valueOf - surveys.last.time) / (1000 * 60 * 60 * 24)
+                            <.div(s"Last assessed ${dt.toInt} days ago")
+                        }
+                    )
+            ),
+            <.div(
+                surveys.lastOption match {
+                    case Some(s) =>
+                        def score(d:Domain):(String, VHtmlContent) = 
+                            val avg = s.average(d)
+                            val col = avg match 
+                                case x if x < 20 => veryPoor
+                                case x if x < 40 => poor
+                                case x if x < 60 => neutral
+                                case x if x < 80 => good
+                                case _ => veryGood
+
+                            (col, <.p(f"$avg%2.0f"))
+
+                        fiveBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "width: 50%;")
+                    case None => 
+                        fiveBox(Map.empty)(^.style := "width: 50%;")
+                }
+                
             ),
             <.div(^.style := "text-align: right;",
                 <.button(^.cls &= Seq(button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))
