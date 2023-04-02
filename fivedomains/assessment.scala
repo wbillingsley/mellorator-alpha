@@ -38,7 +38,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         leftBlockHeader(
             Router.path(AppRoute.Front),
             "Assessment",
-            <.label(^.cls &= Seq(animalName), animal.name)
+            <.label(^.cls := (animalName), animal.name)
         ),
 
         <.p(^.style := "margin: 1em;",
@@ -48,7 +48,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         <.div(
             for ((title, domain), questions) <- allQuestions yield 
                 val dc = domainColour(domain)
-                <.div(^.cls &= Seq(surveyQstyle), 
+                <.div(^.cls := (surveyQstyle), 
                     <.div(^.style := s"padding: 5px 1em; background: $dc",
                         <.label(^.style := "color: white", title),
                     ),
@@ -65,7 +65,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                         ),
                         <.p(^.style := "margin: 1em;", " "),
                         if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                            <.button(^.cls &= Seq(button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                            <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
                         ) else Seq()                 
                     )
                 )
@@ -73,7 +73,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         ),
 
         <.div(^.style := "text-align: right; margin: 1em;",
-            <.button(^.cls &= Seq(button, primary), "Submit", ^.onClick --> submit())
+            <.button(^.cls := (button, primary), "Submit", ^.onClick --> submit())
         )
 
     )

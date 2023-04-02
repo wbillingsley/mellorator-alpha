@@ -1,19 +1,19 @@
 //> using repository "sonatype:snapshots"
+//> using dep "com.wbillingsley::doctacular::0.3.0"
 
 package fivedomains
 
-import $dep.`com.wbillingsley::doctacular::0.3-M4`
-
 import com.wbillingsley.veautiful.html.*
-import com.wbillingsley.veautiful.templates.DeckBuilder
 import com.wbillingsley.veautiful.doctacular.*
 import org.scalajs.dom
 
 import scalajs.js
 import scala.scalajs.js.annotation._
 
+import Installers.installMarked.installMarked
+
 val root = mount("#render-here", <.p("Loading..."))
-given marked:Markup = Installers.marked
+given marked:Markup = root.installMarked("4.3.0")
 
 given styleSuite:StyleSuite = StyleSuite()
 

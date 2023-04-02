@@ -30,13 +30,13 @@ object AnimalList extends DHtmlComponent {
         listMode.value match {
             case OrderBy.Alphabetical => 
                 Seq(
-                    <.button(^.cls &= Seq(button, "active"), ^.attr("disabled") := "disabled", "Alphabetical"),
-                    <.button(^.cls &= Seq(button, "enabled"), "Survey due", ^.onClick --> listMode.receive(OrderBy.LeastRecentlyUpdated)),
+                    <.button(^.cls := (button, "active"), ^.attr("disabled") := "disabled", "Alphabetical"),
+                    <.button(^.cls := (button, "enabled"), "Survey due", ^.onClick --> listMode.receive(OrderBy.LeastRecentlyUpdated)),
                 )
             case OrderBy.LeastRecentlyUpdated => 
                 Seq(
-                    <.button(^.cls &= Seq(button, "enabled"), "Alphabetical", ^.onClick --> listMode.receive(OrderBy.Alphabetical)),
-                    <.button(^.cls &= Seq(button, "active"), ^.attr("disabled") := "disabled", "Survey due"),
+                    <.button(^.cls := (button, "enabled"), "Alphabetical", ^.onClick --> listMode.receive(OrderBy.Alphabetical)),
+                    <.button(^.cls := (button, "active"), ^.attr("disabled") := "disabled", "Survey due"),
                 )
         }
         
@@ -50,7 +50,7 @@ object AnimalList extends DHtmlComponent {
             ),
         ),
         <.p(^.style := "margin-top: 1em; text-align: center;",
-            <.a(^.cls &= Seq(button, primary), ^.href := Router.path(AppRoute.AddAnimal), "Add an animal")
+            <.a(^.cls := (button, primary), ^.href := Router.path(AppRoute.AddAnimal), "Add an animal")
         )
     )
 
@@ -59,14 +59,14 @@ object AnimalList extends DHtmlComponent {
 case class SensitiveTopicNotice() extends DHtmlComponent {
     import html.{<, ^}
 
-    def render = <.div(^.cls &= Seq(notice),
+    def render = <.div(^.cls := (notice),
         <.h3("Sensitive topics"),
         <.p("This app will help you to monitor your animals' welfare using the \"Five Domains\" model of nutrition, environment, health, behaviour and the mental domain."),
         <.p("At times, this may involve showing how an animal's welfare has declined as well as how it has improved. Some people may find it distressing to see an animal in decline."),
         <.div(^.style := "text-align: right;",
             <.input(^.attr("id") := "dont-show-senstop-again", ^.attr("type") := "checkbox", ^.prop("checked") := "checked"), 
             <.label(^.attr("for") := "dont-show-senstop-again", "Don't show this again "),
-            <.button(^.cls &= Seq(button, noticeButton), "Accept", ^.onClick --> acceptedSensitiveTopics.receive(true))
+            <.button(^.cls := (button, noticeButton), "Accept", ^.onClick --> acceptedSensitiveTopics.receive(true))
         )
     )
 

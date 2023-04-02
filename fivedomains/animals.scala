@@ -3,7 +3,7 @@ package fivedomains
 import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 
-def emptyCard = <.div(^.cls &= Seq(
+def emptyCard = <.div(^.cls := (
         Styling("""|border: 1px dashed #aaa;
                    |border-radius: 0.25em;
                    |text-align: center;
@@ -20,7 +20,7 @@ def emptyCard = <.div(^.cls &= Seq(
 )
 
 def animalCard(a:Animal) = <.div(
-    ^.cls &= Seq(
+    ^.cls := (
         card
     ),
 
@@ -39,13 +39,13 @@ class AnimalForm() extends DHtmlComponent {
         leftBlockHeader(
             Router.path(AppRoute.Front),
             "Add an animal",
-            <.label(^.cls &= Seq(animalName), animal.value.name)
+            <.label(^.cls := (animalName), animal.value.name)
         ),
 
         emptyAnimalsNotice,
 
         <.div(
-            ^.cls &= Seq(card, backgrounds(animal.value.display)),
+            ^.cls := (card, backgrounds(animal.value.display)),
             <.div(
                 <.label("Name"),
                 <.input(^.style := s"margin-left: 0.25em; font-size: $largeFont;",
@@ -60,17 +60,17 @@ class AnimalForm() extends DHtmlComponent {
                             ^.prop("checked") := (if displayStyle == animal.value.display then "true" else ""), 
                             ^.onClick --> (animal.value = animal.value.copy(display=displayStyle))
                         ),
-                        <.label(^.attr("for") := displayStyle.toString, ^.cls &= Seq(patterns(displayStyle)), ^.style := "display: inline-block; width: 40px; height: 40px; vertical-align: middle;"),
+                        <.label(^.attr("for") := displayStyle.toString, ^.cls := (patterns(displayStyle)), ^.style := "display: inline-block; width: 40px; height: 40px; vertical-align: middle;"),
                     )
             ),
             <.div(^.style := "text-align: right;",
-                <.button(^.cls &= Seq(button, noticeButton), "Add", ^.onClick --> add())
+                <.button(^.cls := (button, noticeButton), "Add", ^.onClick --> add())
             )
         )
     )
 }
 
-def emptyAnimalsNotice = if animals.nonEmpty then <.div() else <.div(^.cls &= Seq(notice),
+def emptyAnimalsNotice = if animals.nonEmpty then <.div() else <.div(^.cls := (notice),
         <.h3("Let's add your first animal"),
         <.p("The animal welfare assessment works for most species, so we just need to give your animal a name."),
         <.p("You can also pick a background so that if you have several animals you are monitoring, it's visually easier to distinguish their cards."),
@@ -84,9 +84,9 @@ def summaryCard(animal:Animal) =
     val surveys = surveysFor(animal).sortBy(_.time)
 
      <.div(
-            ^.cls &= Seq(card, backgrounds(animal.display)),
+            ^.cls := (card, backgrounds(animal.display)),
             <.div(
-                <.label(^.cls &= Seq(animalName), animal.name)
+                <.label(^.cls := (animalName), animal.name)
             ),
             <.div(
                 if surveys.isEmpty then 
@@ -107,7 +107,7 @@ def summaryCard(animal:Animal) =
                             val col = scoreColor(avg)
 
                             col -> <.div(^.style := "text-align: center", 
-                                <.label(^.cls &= Seq(fiveboxtext), scoreText(avg))
+                                <.label(^.cls := (fiveboxtext), scoreText(avg))
                             )
 
 
@@ -118,7 +118,7 @@ def summaryCard(animal:Animal) =
                 
             ),
             <.div(^.style := "text-align: right;",
-                <.button(^.cls &= Seq(button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))
+                <.button(^.cls := (button, primary), "Assess", ^.onClick --> Router.routeTo(AppRoute.Assess(animal.id)))
             )            
      )
 
@@ -131,7 +131,7 @@ def animalDetailsPage(aId:AnimalId) =
         leftBlockHeader(
             Router.path(AppRoute.Front),
             "Animal details",
-            <.label(^.cls &= Seq(animalName), a.name)
+            <.label(^.cls := (animalName), a.name)
         ),
 
         for s <- recentSurvey yield <.div(^.style := "margin: 1.5em;",
@@ -140,7 +140,7 @@ def animalDetailsPage(aId:AnimalId) =
                 fiveBox(
                     data=(
                         for d <- Domain.values yield 
-                            d -> (scoreColor(s.average(d)), <.label(^.cls &= Seq(fiveboxtext), d.toString))
+                            d -> (scoreColor(s.average(d)), <.label(^.cls := (fiveboxtext), d.toString))
                     ).toMap
                 )(^.style := "width: 50%;")
             )

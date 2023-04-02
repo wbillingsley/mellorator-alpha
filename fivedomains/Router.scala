@@ -2,7 +2,6 @@ package fivedomains
 
 import com.wbillingsley.veautiful.html.*
 import com.wbillingsley.veautiful.templates.*
-import com.wbillingsley.veautiful.PathDSL
 
 
 enum AppRoute:
@@ -23,13 +22,13 @@ object Router extends HistoryRouter[AppRoute] {
 
     override def render = this.route match 
         case AppRoute.Front => 
-            <.div(^.cls &= Seq(top), frontPage)
+            <.div(^.cls := (top), frontPage)
         case AppRoute.AddAnimal =>
-            <.div(^.cls &= Seq(top), addAnimalPage)
+            <.div(^.cls := (top), addAnimalPage)
         case AppRoute.Animal(id) => 
-            <.div(^.cls &= Seq(top), animalDetailsPage(id))
+            <.div(^.cls := (top), animalDetailsPage(id))
         case AppRoute.Assess(id) => 
-            <.div(^.cls &= Seq(top), assessmentPage(id))
+            <.div(^.cls := (top), assessmentPage(id))
     
     override def routeFromLocation() = PathDSL.hashPathList() match {
         case "addanimal" :: Nil => AppRoute.AddAnimal

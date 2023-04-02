@@ -63,8 +63,15 @@ val flattenedQs = for
     q <- qs
 yield q
 
+/** THe confidence a user has in their answer to a question */
+enum Confidence:
+    case VeryLow
+    case Low
+    case Medium
+    case High
+    case VeryHigh
 
-case class Answer(q:Int, value:Double)
+case class Answer(q:Int, value:Double, confidence:Confidence = Confidence.Medium)
 
 case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
 
@@ -78,10 +85,6 @@ case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
     }
 
 }
-
-val animalMap = mutable.Map.empty[AnimalId, Animal]
-
-def animals = animalMap.values.toSeq.sortBy(_.id)
 
 def addAnimal(a:Animal):Unit =
     animalMap(a.id) = a
