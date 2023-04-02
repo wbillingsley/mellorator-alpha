@@ -6,3 +6,8 @@
 *.js.map
 
 .DS_Store
+
+target/
+
+project/metals.sbt
+project/project/
