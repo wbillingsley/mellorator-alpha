@@ -66,7 +66,7 @@ case class SensitiveTopicNotice() extends DHtmlComponent {
         <.div(^.style := "text-align: right;",
             <.input(^.attr("id") := "dont-show-senstop-again", ^.attr("type") := "checkbox", ^.prop("checked") := "checked"), 
             <.label(^.attr("for") := "dont-show-senstop-again", "Don't show this again "),
-            <.button(^.cls := (button, noticeButton), "Accept", ^.onClick --> acceptedSensitiveTopics.receive(true))
+            <.button(^.cls := (button, noticeButton), "Accept", ^.onClick --> DataStore.acceptedSensitiveTopics.receive(true))
         )
     )
 
@@ -74,5 +74,5 @@ case class SensitiveTopicNotice() extends DHtmlComponent {
 
 def frontPage = html.<.div(
     frontHeader,
-    if acceptedSensitiveTopics.value then AnimalList else SensitiveTopicNotice(),
+    if DataStore.acceptedSensitiveTopics.value then AnimalList else SensitiveTopicNotice(),
 )

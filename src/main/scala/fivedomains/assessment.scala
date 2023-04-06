@@ -63,6 +63,23 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                             ),
                             <.label(^.cls := "sa", "Strongly agree"),
                         ),
+
+                        <.div(^.style := "text-align: center",
+                            <.div({
+                                val a = answers.value.get(q.num)
+                                for level <- Confidence.values yield
+                                    if a.exists(_.confidence == level) then
+                                        <.button(^.attr.disabled := "disabled", ^.attr.style := "background: orange",
+                                        level.abbreviation)
+                                    else
+                                        <.button(
+                                            ^.on.click --> { answers.value = answers.value.updated(q.num, Answer(q.num, a.map(_.value).getOrElse(50), level)) },
+                                            level.abbreviation
+                                        )
+                            }),
+                            <.label(^.cls := "conf", "Confidence"),
+                        ),
+
                         <.p(^.style := "margin: 1em;", " "),
                         if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
                             <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))

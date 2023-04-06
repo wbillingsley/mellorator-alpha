@@ -64,12 +64,12 @@ val flattenedQs = for
 yield q
 
 /** THe confidence a user has in their answer to a question */
-enum Confidence:
-    case VeryLow
-    case Low
-    case Medium
-    case High
-    case VeryHigh
+enum Confidence(val abbreviation:String):
+    case VeryLow extends Confidence("VL")
+    case Low extends Confidence("L")
+    case Medium extends Confidence("M")
+    case High extends Confidence("H")
+    case VeryHigh extends Confidence("VH")
 
 case class Answer(q:Int, value:Double, confidence:Confidence = Confidence.Medium)
 
@@ -94,8 +94,3 @@ def nextAnimalId = (0 :: animals.toList.map(_.id)).max + 1
 val assessments = mutable.Buffer.empty[Assessment]
 
 def surveysFor(a:Animal) = assessments.toSeq.filter(_.animal == a.id)
-
-val acceptedSensitiveTopics = PushVariable(false) {_ => 
-    if animals.isEmpty then Router.routeTo(AppRoute.AddAnimal) else Router.routeTo(AppRoute.Front)
-}
-

@@ -10,10 +10,10 @@ import org.scalajs.dom
 import scalajs.js
 import scala.scalajs.js.annotation._
 
-import Installers.installMarked.installMarked
+import installers.installMarked
 
 val root = mount("#render-here", <.p("Loading..."))
-given marked:Markup = root.installMarked("4.3.0")
+given marked:MarkupTransformer[dom.html.Element] = root.installMarked("4.3.0")
 
 given styleSuite:StyleSuite = StyleSuite()
 
