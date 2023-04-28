@@ -63,13 +63,6 @@ val flattenedQs = for
     q <- qs
 yield q
 
-/** THe confidence a user has in their answer to a question */
-enum Confidence(val abbreviation:String):
-    case VeryLow extends Confidence("VL")
-    case Low extends Confidence("L")
-    case Medium extends Confidence("M")
-    case High extends Confidence("H")
-    case VeryHigh extends Confidence("VH")
 
 case class Answer(q:Int, value:Double, confidence:Confidence = Confidence.Medium)
 

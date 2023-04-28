@@ -10,12 +10,66 @@ val surveyQstyle = Styling(
     " input" -> "width: 40%; margin: 2em;",
 ).register()
 
+
+def confidenceButton(confidence: => Confidence, state:PushVariable[FooterSelection]) = {
+    import html.{<, ^}
+
+    <.button(^.cls := (button, if state.value == FooterSelection.Confidence then "selected" else ""),
+        <.div(
+            <.div("Confidence", ^.style := "font-size: 0.8em;"), 
+            <.div(f" ${confidence.value * 100}%2.0f", "%", ^.style := s"color: ${confidence.colourStyle}"),
+        ), 
+        ^.onClick --> { if state.value == FooterSelection.Confidence then state.value = FooterSelection.None else state.value = FooterSelection.Confidence }
+    )
+}
+
+val confidenceSliderStyle = Styling(
+    """|
+       |""".stripMargin
+).modifiedBy(
+    " input[type=range]::-webkit-slider-thumb" -> "background: orange;",
+)
+
+
+enum FooterSelection:
+    case None
+    case Confidence
+
+def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
+    import html.{<, ^}
+
+    <.div(^.style := "text-align: center", ^.cls := confidenceSliderStyle,
+        <.label(^.cls := "conf", "Confidence"),
+        <.div(
+            <.label(^.cls := "sd", "Low"),
+            <.input(^.attr("type") := "range", 
+                ^.prop.value := (confidence.value * 100).floor.toString,
+                ^.prop.min := "0", ^.prop.max := "100", ^.prop.step := "1",
+                ^.onInput ==> { (e) => for v <- e.inputValue do update(Confidence(v.toDouble / 100)) }
+            ),
+            <.label(^.cls := "sa", "High"),
+        ),
+    )
+}
+
+val questionFooterStyle = Styling(
+    """
+      |display: flex;
+      |flex-direction: row;
+      |justify-content: space-between;
+      |align-items: center;
+      |margin: 1em;
+      |""".stripMargin
+).modifiedBy().register()
+
 case class AssessmentForm(animal:Animal) extends DHtmlComponent {
     import html.{<, ^}
 
     val answers = stateVariable(
         (for q <- flattenedQs yield q.num -> Answer(q.num, 50)).toMap
     )
+
+    val footerSelectors = (for q <- flattenedQs yield q.num -> stateVariable[FooterSelection](FooterSelection.None)).toMap
 
     // Animates scrolling the next question to the top of the screen
     // 20 is an arbitrary offset so the question isn't hard against the top border
@@ -67,27 +121,34 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                 <.label(^.cls := "sa", "Strongly agree"),
                             ),
 
-                        <.div(^.style := "text-align: center",
-                            <.div({
-                                val a = answers.value.get(q.num)
-                                for level <- Confidence.values yield
-                                    if a.exists(_.confidence == level) then
-                                        <.button(^.attr.disabled := "disabled", ^.attr.style := "background: orange",
-                                        level.abbreviation)
-                                    else
-                                        <.button(
-                                            ^.on.click --> { answers.value = answers.value.updated(q.num, Answer(q.num, a.map(_.value).getOrElse(50), level)) },
-                                            level.abbreviation
-                                        )
-                            }),
-                            <.label(^.cls := "conf", "Confidence"),
-                        ),
+                        <.div(^.style := "text-align: center", {
+                            footerSelectors(q.num).value match {
+                                case FooterSelection.None => Seq()
+                                case FooterSelection.Confidence => 
+                                    confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
+
+                            }
+
+                        }),
+
+                        // Mid-space controls
 
                         <.p(^.style := "margin: 1em;", " "),
-                        if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                            <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
-                        ) else Seq()                 
+
+                        // Footer controls
+                        <.div(^.cls := questionFooterStyle,
+                            confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
+
+                            if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
+                                <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                            ) else Seq()                 
+                        )
+
+                        
                     )
+
+
+
                 )
 
         ),

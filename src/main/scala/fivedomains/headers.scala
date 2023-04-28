@@ -16,6 +16,13 @@ val good = "hsl(120, 27%, 82%)"
 val veryGood = "hsl(124, 29%, 71%)"
 
 
+val fgVeryPoor = "hsl(5, 84%, 30%)"
+val fgPoor = "hsl(9, 86%, 30%)"
+val fgNeutral = "hsl(32, 95%, 36%)"
+val fgGood = "hsl(120, 27%, 32%)"
+val fgVeryGood = "hsl(124, 29%, 31%)"
+
+
 /** Which colour to mark up a score in */
 def scoreColor(x:Double) =
     if x < 20 then veryPoor
