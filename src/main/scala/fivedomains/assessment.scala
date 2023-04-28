@@ -53,16 +53,19 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                         <.label(^.style := "color: white", title),
                     ),
                     
-                    for q <- questions yield <.div(^.style := s"border-bottom: 1px solid $dc", ^.attr("id") := s"question${q.num}",
-                        <.p(^.style := "margin: 1em;", q.text(animal)),
-                        <.div(^.style := "text-align: center",
-                            <.label(^.cls := "sd", "Strongly disagree"),
-                            <.input(^.attr("type") := "range", 
-                              for a <- answers.value.get(q.num) yield ^.prop("value") := a.value.toString,
-                              ^.onInput ==> { (e) => for v <- e.inputValue do answers.value = answers.value.updated(q.num, Answer(q.num, v.toDouble)) }
+                    for q <- questions yield
+                        val ans = answers.value.get(q.num).getOrElse(Answer(q.num, 50))
+
+                        <.div(^.style := s"border-bottom: 1px solid $dc", ^.attr("id") := s"question${q.num}",
+                            <.p(^.style := "margin: 1em;", q.text(animal)),
+                            <.div(^.style := "text-align: center",
+                                <.label(^.cls := "sd", "Strongly disagree"),
+                                <.input(^.attr("type") := "range", 
+                                for a <- answers.value.get(q.num) yield ^.prop("value") := a.value.toString,
+                                ^.onInput ==> { (e) => for v <- e.inputValue do answers.value = answers.value.updated(q.num, ans.copy(value = v.toDouble)) }
+                                ),
+                                <.label(^.cls := "sa", "Strongly agree"),
                             ),
-                            <.label(^.cls := "sa", "Strongly agree"),
-                        ),
 
                         <.div(^.style := "text-align: center",
                             <.div({

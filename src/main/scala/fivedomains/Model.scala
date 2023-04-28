@@ -26,14 +26,14 @@ case class Question(num:Int, domain:Domain, text:Animal => String)
 type QuestionSection = (String, Domain)
 
 val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
-    ("Nutrtion", Domain.Nutrition) -> Seq(
-        Question(1, Domain.Nutrition, { (a:Animal) => s"${a.name} has enough clean drinking water." }),
+    ("Nutrition", Domain.Nutrition) -> Seq(
+        Question(1, Domain.Nutrition, { (a:Animal) => s"${a.name} drinks enough clean water." }),
         Question(2, Domain.Nutrition, { (a:Animal) => s"${a.name} eats nutritious, palatable and sufficient food." }),
         Question(3, Domain.Nutrition, { (a:Animal) => s"${a.name} is offered food in ways that are varied and interesting for their species." }),    
     ),
     ("Environment", Domain.Environment) -> Seq(
         Question(4, Domain.Environment, { (a:Animal) => s"${a.name} can avoid unpleasant lighting levels, noises, vibrations and odours." }),
-        Question(5, Domain.Environment, { (a:Animal) => s"${a.name} can choose to occupy clean areas that provide physical and thermal comfort." }),
+        Question(5, Domain.Environment, { (a:Animal) => s"${a.name} can choose to occupy areas that are clean and promote physical and thermal comfort." }),
         Question(6, Domain.Environment, { (a:Animal) => s"${a.name} lives in an environment that allows them to be calm, to rest and to sleep." }),    
     ),
     ("Health", Domain.Health) -> Seq(
