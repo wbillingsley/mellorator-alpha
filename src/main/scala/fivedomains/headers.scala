@@ -3,6 +3,8 @@ package fivedomains
 import com.wbillingsley.veautiful.*
 import html.{VHtmlContent, Styling, DHtmlComponent, Animator}
 
+import model.*
+
 val nutritionCol = "#e6ca84"
 val environmentCol = "#5F6B6A"
 val healthCol = "#FF5F58"
@@ -49,6 +51,8 @@ val otherHeaderHeight = "120px"
 
 val noticeBg = "hsl(240, 33%, 90%)"
 val noticeFg = "hsl(240, 33%, 50%)"
+
+val nakedParaMargins = Styling("margin: 1em").register()
 
 val top = Styling(
     """font-family: sans-serif; max-width: 480px; margin: auto;"""
@@ -117,39 +121,6 @@ def logo =
     assessments.sevenBox(
         (for d <- Domain.values yield d -> (d.color, <.div())).toMap
     )(fakeSparkLine)
-
-def logo1 = 
-    val gap = 10
-    val boxW = 400
-    val boxH = 100
-    val circleR = 140
-
-    def mask = 
-        import svg.*
-        SVG("mask")(
-            ^.attr("id") := "logo-mask",
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            circle(^.attr("fill") := "white", ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR, ^.attr("stroke") := "black", ^.attr("stroke-width") := gap),
-        )
-
-    import svg.*
-    import html.^
-    svg(^.attr("viewBox") := s"0 ${boxH - circleR} ${2 * boxW} ${2 * circleR}",
-        mask,
-        g(^.attr("mask") := "url(#logo-mask)",
-            sparkbox(nutritionCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
-            sparkbox(environmentCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
-            sparkbox(healthCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
-            sparkbox(behaviourCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            fakeSparkLine,
-            circle(^.attr("fill") := mentalCol, ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR),
-        )
-        //text(^.attr("x") := 300, ^.attr("y") := 100, "AWAT")
-    )
-
 
 /**
   * The header that goes at the top of the front page

@@ -1,11 +1,32 @@
 package fivedomains.animals
 
 import fivedomains.{given, *}
+import model.*
 import com.wbillingsley.veautiful.*
 import html.*
 
+
+/**
+ * A short summary message indicating how many assessments we've got on file, etc
+ */
+def assessmentQuantumStats(a:Animal, surveys:Seq[Assessment]) =
+    // TODO - check if many of the surveys have been with low confidence
+    <.div(^.cls := nakedParaMargins,
+        <.p(
+            s"There's ${surveys.length} assessments on file for ${a.name}. ",
+            f"Overall confidence across the surveys was ${surveys.overallConfidence * 100}%.0f%%."
+        ),
+        <.p(
+            s"The most revent survey was on ${new scalajs.js.Date(surveys.last.time).toLocaleDateString}. ",
+            f"Overall confidence in this survey was ${surveys.last.overallConfidence * 100}%.0f%%.",
+
+        )
+        
+    ) 
+
+
 def animalDetailsPage(aId:AnimalId) = 
-    val a = animalMap(aId)
+    val a = DataStore.animal(aId)
     def recentSurvey = DataStore.surveysFor(a).lastOption
 
     <.div(
@@ -15,15 +36,11 @@ def animalDetailsPage(aId:AnimalId) =
             <.label(^.cls := (animalName), a.name)
         ),
 
+        assessmentQuantumStats(a, DataStore.surveysFor(a)),
+
         for s <- recentSurvey yield <.div(^.style := "margin: 1.5em;",
-            <.h3(s"Last assessed ${new scalajs.js.Date(s.time).toLocaleDateString}"),
             <.div(^.style := "text-align: center;",
-                assessments.sevenBox(
-                    data=(
-                        for d <- Domain.values yield 
-                            d -> (scoreColor(s.average(d)), <.label(^.cls := (fiveboxtext), d.toString))
-                    ).toMap
-                )(^.style := "")
+                assessments.scoreText7(s)
             )
         ),
 

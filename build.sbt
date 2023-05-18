@@ -11,7 +11,7 @@ lazy val animalWellbeing = project.in(file("."))
 
     libraryDependencies ++= Seq(
       "com.wbillingsley" %%% "doctacular" % "0.3.0+2-7eae7e5d-SNAPSHOT",
-      "com.lihaoyi" %%% "upickle" % "3.0.0",
+      "com.lihaoyi" %%% "upickle" % "3.1.0",
     ),
 
     // This is an application with a main method

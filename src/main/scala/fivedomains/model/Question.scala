@@ -1,30 +1,6 @@
-package fivedomains
+package fivedomains.model
 
-import com.wbillingsley.veautiful.PushVariable
-
-import scala.collection.mutable
-
-/** The display style is purely decorative, as placeholder because at the moment we don't have iconography to make animals disinct */
-enum DisplayStyle:
-    case Curls
-    case Herringbone
-    case Flowers
-    case Circles
-    case Plaid
-
-/** Used internally to track animals etc */
-type AnimalId = Int
-
-case class Animal(id:AnimalId, name:String, display:DisplayStyle = DisplayStyle.Curls)
-
-enum Domain(val title:String, val color:String):
-    case Nutrition extends Domain("Nutrition", nutritionCol)
-    case Environment extends Domain("Environment", environmentCol)
-    case Health extends Domain("Health", healthCol)
-    case InteractionsEnvironment extends Domain("Interactions with the environment", behaviourCol)
-    case InteractionsSocial extends Domain("Social interactions", behaviourCol)
-    case InteractionsHuman extends Domain("Interactions with humans", behaviourCol)
-    case Mental extends Domain("Mental wellbeing", mentalCol)
+import fivedomains.*
 
 case class Question(num:Int, domain:Domain, text:Animal => String)
 
@@ -63,6 +39,8 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
     ),
 )
 
+lazy val questionMap = allQuestions.flatMap { case (s, qs) => qs.map(q => q.num -> q) }.toMap
+
 val flattenedQs = for 
     (_, qs) <- allQuestions
     q <- qs
@@ -70,22 +48,3 @@ yield q
 
 
 case class Answer(q:Int, value:Double, confidence:Confidence = Confidence.Medium)
-
-case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
-
-    /** Average score in a given domain */
-    def average(domain:Domain):Double = domain match {
-        case Domain.Mental => 
-            answers.values.map(_.value).sum / answers.size
-        case d => 
-            val filtered = answers.values.filter { (a) => flattenedQs.find(_.num == a.q).map(_.domain).contains(d) }
-            filtered.map(_.value).sum / filtered.size
-    }
-
-}
-
-def addAnimal(a:Animal):Unit =
-    animalMap(a.id) = a
-
-def nextAnimalId = (0 :: DataStore.animals.toList.map(_.id)).max + 1
-

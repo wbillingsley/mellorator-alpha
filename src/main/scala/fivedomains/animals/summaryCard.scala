@@ -4,6 +4,8 @@ import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 
 import fivedomains.{given, *}
+import model.*
+import fivedomains.assessments.scoreText7
 
 def summaryCard(animal:Animal) = 
     val surveys = DataStore.surveysFor(animal).sortBy(_.time)
@@ -11,22 +13,15 @@ def summaryCard(animal:Animal) =
      <.div(
         ^.cls := (card, backgrounds(animal.display)),
         <.div(
-            <.label(^.cls := (animalName), animal.name)
+            <.a(^.cls := "title", ^.href := Router.path(AppRoute.Animal(animal.id)), 
+                <.label(^.cls := (animalName), animal.name)
+            )
         ),
        
         <.div(^.attr.style := "margin: 1em 0;",
             surveys.lastOption match {
                 case Some(s) =>
-                    def score(d:Domain):(String, VHtmlContent) = 
-                        val avg = s.average(d)
-                        val col = scoreColor(avg)
-
-                        col -> <.div(^.style := "text-align: center", 
-                            <.label(^.cls := (fiveboxtext), scoreText(avg))
-                        )
-
-
-                    assessments.sevenBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "")
+                    scoreText7(s)
                 case None => 
                     assessments.sevenBox(Map.empty)(^.style := "")
             }

@@ -4,13 +4,14 @@ import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 
 import fivedomains.{given, *}
+import model.*
 
 class AnimalForm() extends DHtmlComponent {
 
-    val animal = stateVariable(Animal(nextAnimalId, "Almeira"))
+    val animal = stateVariable(Animal(DataStore.nextAnimalId, "Almeira"))
 
     def add():Unit = 
-        addAnimal(animal.value)
+        DataStore.addAnimal(animal.value)
         Router.routeTo(AppRoute.Front)
 
     def render = <.div(

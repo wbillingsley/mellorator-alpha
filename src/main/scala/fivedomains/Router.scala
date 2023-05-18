@@ -3,6 +3,8 @@ package fivedomains
 import com.wbillingsley.veautiful.html.*
 import com.wbillingsley.veautiful.templates.*
 
+import model.*
+
 
 enum AppRoute:
     case Front
@@ -32,7 +34,8 @@ object Router extends HistoryRouter[AppRoute] {
     
     override def routeFromLocation() = PathDSL.hashPathList() match {
         case "addanimal" :: Nil => AppRoute.AddAnimal
-        case "assess" :: a :: Nil if animalMap.contains(a.toInt) => AppRoute.Assess(a.toInt)
+        case "animals" :: a :: Nil if DataStore.animalMap.contains(a.toInt) => AppRoute.Animal(a.toInt)
+        case "assess" :: a :: Nil if DataStore.animalMap.contains(a.toInt) => AppRoute.Assess(a.toInt)
         case _ => AppRoute.Front
     }
 

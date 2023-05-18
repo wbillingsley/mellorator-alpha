@@ -4,6 +4,7 @@ import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, EventMethods}
 
 import fivedomains.*
+import model.*
 
 def nextRandomChar():Char = (scala.util.Random.nextInt(0xc7ff) + 0x1000).toChar
 
@@ -96,3 +97,18 @@ def sevenBox(data: Map[Domain, (String, VHtmlContent)]) =
             mentalDomainCircle
         )
     )
+
+
+
+/** A sevenBox containing just the text of one survey */
+def scoreText7(assessment:Assessment) =
+    import html.* 
+    def score(d:Domain):(String, VHtmlContent) = 
+        val avg = assessment.average(d)
+        val col = scoreColor(avg)
+
+        col -> <.div(^.style := "text-align: center", 
+            <.label(^.cls := (fiveboxtext), scoreText(avg))
+        )
+
+    sevenBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "")

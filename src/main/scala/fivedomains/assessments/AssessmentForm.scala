@@ -4,6 +4,7 @@ import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 
 import fivedomains.{given, *}
+import model.*
 
 val surveyQstyle = Styling(
     """"""
@@ -88,7 +89,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
     val maxQNum = 18 // TODO: Don't hardcode this
 
     def submit():Unit = 
-        DataStore.assessments.append(Assessment(animal.id, new scalajs.js.Date().valueOf, answers.value))
+        DataStore.addAssessment(Assessment(animal.id, new scalajs.js.Date().valueOf, answers.value))
         Router.routeTo(AppRoute.Animal(animal.id))
 
     def render = 
@@ -168,5 +169,5 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
  * The assessment page for a given animal
  */
 def assessmentPage(aId: AnimalId) = 
-    val a = animalMap(aId)
+    val a = DataStore.animal(aId)
     assessments.AssessmentForm(a)
