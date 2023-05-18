@@ -14,9 +14,9 @@ object AnimalList extends DHtmlComponent {
 
     def sortedAnimals = listMode.value match {
         case OrderBy.Alphabetical => 
-            animals.sortBy(_.name)
+            DataStore.animals.sortBy(_.name)
         case OrderBy.LeastRecentlyUpdated => 
-            animals.sortBy { a => assessments.filter(_.animal == a.id).sortBy(_.time).map(_.time).lastOption.getOrElse(0d) }
+            DataStore.animals.sortBy { a => DataStore.assessments.filter(_.animal == a.id).sortBy(_.time).map(_.time).lastOption.getOrElse(0d) }
 
     }
 
@@ -43,10 +43,10 @@ object AnimalList extends DHtmlComponent {
     )
 
     def render = <.div(
-        if animals.isEmpty then Seq(emptyCard) else Seq(
+        if DataStore.animals.isEmpty then Seq(animals.emptyCard) else Seq(
             switcher,
             <.div(
-                for a <- sortedAnimals yield summaryCard(a)
+                for a <- sortedAnimals yield animals.summaryCard(a)
             ),
         ),
         <.p(^.style := "margin-top: 1em; text-align: center;",

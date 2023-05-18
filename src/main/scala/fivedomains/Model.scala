@@ -51,12 +51,12 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
         Question(11, Domain.InteractionsEnvironment, { (a:Animal) => s"${a.name} has enough room to move around freely" }),
         Question(12, Domain.InteractionsEnvironment, { (a:Animal) => s"${a.name} can choose to exercise and explore freely." }),    
     ),
-    Domain.Nutrition -> Seq(
+    Domain.InteractionsSocial -> Seq(
         Question(13, Domain.InteractionsSocial, { (a:Animal) => s"${a.name} can choose how long they spend interacting with their own species" }),
         Question(14, Domain.InteractionsSocial, { (a:Animal) => s"${a.name} has the space to avoid conflicts with other non-human animals" }),
         Question(15, Domain.InteractionsSocial, { (a:Animal) => s"${a.name} can choose to interact appropriately with non-human animals of other species." }),    
     ),
-    Domain.Nutrition -> Seq(
+    Domain.InteractionsHuman -> Seq(
         Question(16, Domain.InteractionsHuman, { (a:Animal) => s"${a.name} has healthy bonds with their carer(s)" }),
         Question(17, Domain.InteractionsHuman, { (a:Animal) => s"${a.name} is calm in the presence of humans" }),
         Question(18, Domain.InteractionsHuman, { (a:Animal) => s"${a.name} engages confidently and safely when interacting with familiar humans" }),    
@@ -87,8 +87,5 @@ case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
 def addAnimal(a:Animal):Unit =
     animalMap(a.id) = a
 
-def nextAnimalId = (0 :: animals.toList.map(_.id)).max + 1
+def nextAnimalId = (0 :: DataStore.animals.toList.map(_.id)).max + 1
 
-val assessments = mutable.Buffer.empty[Assessment]
-
-def surveysFor(a:Animal) = assessments.toSeq.filter(_.animal == a.id)

@@ -104,9 +104,21 @@ def sparkbox(color:String, width:Int, height:Int) =
     rect(^.attr("width") := width, ^.attr("height") := height, ^.attr("fill") := color)
 
 
+val fakeSparkLine =
+    import svg.* 
+    path(
+        ^.attr("d") := "M 40 140 c 30 0 60 -80 90 -80 c 30 0 60 60 90 60 c 40 0 80 -60 120 -60 c 40 0 80 60 120 60 c 40 0 60 -60 90 -60 c 40 0 80 60 120 60 c 30 0 60 -80 90 -80",
+        ^.attr("style") := "fill: none; stroke: white; stroke-width: 5;"
+    )
 
 
-def logo = 
+def logo =
+    import html.* 
+    assessments.sevenBox(
+        (for d <- Domain.values yield d -> (d.color, <.div())).toMap
+    )(fakeSparkLine)
+
+def logo1 = 
     val gap = 10
     val boxW = 400
     val boxH = 100
@@ -132,10 +144,7 @@ def logo =
             sparkbox(environmentCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
             sparkbox(healthCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
             sparkbox(behaviourCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            path(
-                ^.attr("d") := "M 40 140 c 30 0 60 -80 90 -80 c 30 0 60 60 90 60 c 40 0 80 -60 120 -60 c 40 0 80 60 120 60 c 40 0 60 -60 90 -60 c 40 0 80 60 120 60 c 30 0 60 -80 90 -80",
-                ^.attr("style") := "fill: none; stroke: white; stroke-width: 5;"
-            ),
+            fakeSparkLine,
             circle(^.attr("fill") := mentalCol, ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR),
         )
         //text(^.attr("x") := 300, ^.attr("y") := 100, "AWAT")

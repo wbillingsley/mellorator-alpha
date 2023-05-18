@@ -24,11 +24,11 @@ object Router extends HistoryRouter[AppRoute] {
         case AppRoute.Front => 
             <.div(^.cls := (top), frontPage)
         case AppRoute.AddAnimal =>
-            <.div(^.cls := (top), addAnimalPage)
+            <.div(^.cls := (top), animals.addAnimalPage)
         case AppRoute.Animal(id) => 
-            <.div(^.cls := (top), animalDetailsPage(id))
+            <.div(^.cls := (top), animals.animalDetailsPage(id))
         case AppRoute.Assess(id) => 
-            <.div(^.cls := (top), assessmentPage(id))
+            <.div(^.cls := (top), assessments.assessmentPage(id))
     
     override def routeFromLocation() = PathDSL.hashPathList() match {
         case "addanimal" :: Nil => AppRoute.AddAnimal

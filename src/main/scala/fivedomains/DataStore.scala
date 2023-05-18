@@ -12,7 +12,6 @@ import upickle.default.{ReadWriter => RW, macroRW}
 
 val animalMap = mutable.Map.empty[AnimalId, Animal]
 
-def animals = animalMap.values.toSeq.sortBy(_.id)
 
 case class DataBlob(
     acceptedSensitiveTopics:Boolean,
@@ -50,4 +49,5 @@ object DataStore {
 
     def surveysFor(a:Animal) = assessments.toSeq.filter(_.animal == a.id)
 
+    def animals = animalMap.values.toSeq.sortBy(_.id)
 }
