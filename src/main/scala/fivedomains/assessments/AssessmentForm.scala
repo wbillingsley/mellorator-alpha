@@ -5,6 +5,7 @@ import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 
 import fivedomains.{given, *}
 import model.*
+import typings.std.stdStrings.s
 
 val surveyQstyle = Styling(
     """"""
@@ -14,6 +15,7 @@ val surveyQstyle = Styling(
 ).register()
 
 
+/** Opens and closes the confidence slider */
 def confidenceButton(confidence: => Confidence, state:PushVariable[FooterSelection]) = {
     import html.{<, ^}
 
@@ -33,11 +35,14 @@ val confidenceSliderStyle = Styling(
     " input[type=range]::-webkit-slider-thumb" -> "background: orange;",
 )
 
-
+/**
+ * Which of the footer elements (e.g. confidence) is currently open
+ */
 enum FooterSelection:
     case None
     case Confidence
 
+/** A slider for confidence */
 def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
     import html.{<, ^}
 
@@ -52,6 +57,41 @@ def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
             ),
             <.label(^.cls := "sa", "High"),
         ),
+    )
+}
+
+
+
+/** A slider for strongly agree / strongly disagree */
+def stronglyAgreeSlider(value:AnswerValue.Numeric)(update: (AnswerValue) => Unit) = {
+    import html.*
+    <.div(^.style := "text-align: center",
+        <.label(^.cls := "sd", "Strongly disagree"),
+        <.input(^.attr("type") := "range", 
+            ^.prop("value") := value.value.toString,
+            ^.onInput ==> { (e) => for v <- e.inputValue do update(AnswerValue.Numeric(v.toDouble)) }
+        ),
+        <.label(^.cls := "sa", "Strongly agree"),
+    )
+}
+
+/** A picker for Very Poor to Very Good */
+def ratingPicker(value:AnswerValue.Rated)(update: (AnswerValue) => Unit) = {
+    import html.*
+    <.div(^.style := "text-align: center",
+        <.label(^.cls := "sd", "Very Poor"),
+
+        for level <- Rating.values yield
+            if value.value == level then
+                <.button(^.attr.disabled := "disabled", ^.attr.style := "background: orange",
+                level.abbreviation)
+            else
+                <.button(
+                    ^.on.click --> update(AnswerValue.Rated(level)),
+                    level.abbreviation
+                ),
+                
+        <.label(^.cls := "sa", "Very Good"),
     )
 }
 
@@ -71,7 +111,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
     import html.{<, ^}
 
     val answers = stateVariable(
-        (for q <- flattenedQs yield q.num -> Answer(q.num, 50)).toMap
+        (for q <- flattenedQs yield q.num -> q.defaultAnswer).toMap
     )
 
     val footerSelectors = (for q <- flattenedQs yield q.num -> stateVariable[FooterSelection](FooterSelection.None)).toMap
@@ -113,45 +153,43 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                     ),
                     
                     for q <- questions yield
-                        val ans = answers.value.get(q.num).getOrElse(Answer(q.num, 50))
+                        val ans = answers.value.get(q.num).getOrElse(q.defaultAnswer)
 
                         <.div(^.style := s"border-bottom: 1px solid $dc", ^.attr("id") := s"question${q.num}",
                             <.p(^.style := "margin: 1em;", q.text(animal)),
-                            <.div(^.style := "text-align: center",
-                                <.label(^.cls := "sd", "Strongly disagree"),
-                                <.input(^.attr("type") := "range", 
-                                for a <- answers.value.get(q.num) yield ^.prop("value") := a.value.toString,
-                                ^.onInput ==> { (e) => for v <- e.inputValue do answers.value = answers.value.updated(q.num, ans.copy(value = v.toDouble)) }
-                                ),
-                                <.label(^.cls := "sa", "Strongly agree"),
-                            ),
+                            
+                            ans.value match {
+                                case AnswerValue.Numeric(v) => 
+                                    stronglyAgreeSlider(AnswerValue.Numeric(v)) { v => answers.value = answers.value.updated(q.num, ans.copy(value = v)) }
+                                case AnswerValue.Rated(v) => 
+                                    ratingPicker(AnswerValue.Rated(v)) { v => answers.value = answers.value.updated(q.num, ans.copy(value = v)) }
+                            },                            
 
-                        <.div(^.style := "text-align: center", {
-                            footerSelectors(q.num).value match {
-                                case FooterSelection.None => Seq()
-                                case FooterSelection.Confidence => 
-                                    confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
+                            <.div(^.style := "text-align: center", {
+                                footerSelectors(q.num).value match {
+                                    case FooterSelection.None => Seq()
+                                    case FooterSelection.Confidence => 
+                                        confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
 
-                            }
+                                }
 
-                        }),
+                            }),
 
-                        // Mid-space controls
+                            // Mid-space controls
 
-                        <.p(^.style := "margin: 1em;", " "),
+                            <.p(^.style := "margin: 1em;", " "),
 
-                        // Footer controls
-                        <.div(^.cls := questionFooterStyle,
-                            confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
+                            // Footer controls
+                            <.div(^.cls := questionFooterStyle,
+                                confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
 
-                            if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                                <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
-                            ) else Seq()                 
+                                if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
+                                    <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                                ) else Seq()                 
+                            )
+
+                            
                         )
-
-                        
-                    )
-
 
 
                 )

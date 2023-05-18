@@ -12,6 +12,9 @@ import upickle.default.*
 import upickle.default.{ReadWriter => RW, macroRW}
 import typings.std.stdStrings.a
 
+import fivedomains.model.Confidence
+
+
 
 given RW[Animal] = macroRW
 given RW[Confidence] = macroRW
@@ -62,9 +65,9 @@ object DataStore {
         val stored = Option(localStorage.getItem("assessments"))
         stored match {
             case Some(json) =>
-                val parsed = read[Seq[Assessment]](json) 
-                parsed.to(mutable.Buffer)
-                
+                //val parsed = read[Seq[Assessment]](json) 
+                //parsed.to(mutable.Buffer)
+                mutable.Buffer.empty[Assessment]
             case None => 
                 mutable.Buffer.empty[Assessment]
         }

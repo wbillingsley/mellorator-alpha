@@ -1,6 +1,6 @@
-package fivedomains
+package fivedomains.model
 
-
+import fivedomains.*
 
 /** Confidence as a value between 0 and 1 */
 case class Confidence(value: Double) {

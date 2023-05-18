@@ -2,11 +2,28 @@ package fivedomains.model
 
 import fivedomains.*
 
-case class Question(num:Int, domain:Domain, text:Animal => String)
+case class Question(num:Int, domain:Domain, text:Animal => String, kind:QuestionType = QuestionType.StronglyAgreeSlider) {
+
+    /**
+     * The default (unchanged) answer to show for this question when a form is first presented
+     */
+    def defaultAnswer:Answer = kind match {
+        case QuestionType.StronglyAgreeSlider => Answer(num,AnswerValue.Numeric(50), Confidence.Medium)
+        case QuestionType.RatingPicker => Answer(num, AnswerValue.Rated(Rating.Neutral), Confidence.Medium)
+    }
+
+}
 
 type QuestionSection = Domain
 
+enum QuestionType derives upickle.default.ReadWriter:
+    case StronglyAgreeSlider
+    case RatingPicker
+
 val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
+    Domain.Mental -> Seq(
+        Question(0, Domain.Mental, { (a:Animal) => s"Overall, how would you rate ${a.name}'s wellbeing?" }, QuestionType.RatingPicker),
+    ),
     Domain.Nutrition -> Seq(
         Question(1, Domain.Nutrition, { (a:Animal) => s"${a.name} drinks enough clean water." }),
         Question(2, Domain.Nutrition, { (a:Animal) => s"${a.name} eats nutritious, palatable and sufficient food." }),
@@ -47,4 +64,14 @@ val flattenedQs = for
 yield q
 
 
-case class Answer(q:Int, value:Double, confidence:Confidence = Confidence.Medium)
+enum AnswerValue derives upickle.default.ReadWriter:
+    case Numeric(value:Double)
+    case Rated(value:Rating)
+
+    def asDouble = this match {
+        case Numeric(v) => v
+        case Rated(r) => r.value
+    }
+
+
+case class Answer(q:Int, value:AnswerValue, confidence:Confidence = Confidence.Medium)
