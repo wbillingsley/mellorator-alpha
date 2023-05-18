@@ -8,7 +8,12 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "marked": "^4.0.8"
+  },
   "devDependencies": {
-    "vite": "^4.3.2"
+    "vite": "^4.3.2",
+    "typescript": "4.6.2",
+    "@types/marked": "^4.0.8"
   }
 }

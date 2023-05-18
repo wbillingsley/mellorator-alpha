@@ -71,7 +71,7 @@ class AnimalForm() extends DHtmlComponent {
 }
 
 def emptyAnimalsNotice = if animals.nonEmpty then <.div() else <.div(^.cls := (notice),
-    marked(
+    markdown.div(
         """|### Let's add your first animal
            |
            |The animal welfare assessment works for most species, so we just need to give your animal a name.

@@ -5,6 +5,7 @@ resolvers ++= Resolver.sonatypeOssRepos("snapshots")
 import org.scalajs.linker.interface.ModuleSplitStyle
 lazy val animalWellbeing = project.in(file("."))
   .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
   .settings(
     scalaVersion := "3.2.0",
 
@@ -20,6 +21,11 @@ lazy val animalWellbeing = project.in(file("."))
     scalaJSLinkerConfig ~= {
       _.withModuleKind(ModuleKind.ESModule)
         .withModuleSplitStyle(ModuleSplitStyle.SmallModulesFor(List("animalWellbeing"))) 
+    },
+
+    // To use ScalablyTypedConverterExternalNpmPlugin
+    externalNpm := {
+      baseDirectory.value
     }
   )
 

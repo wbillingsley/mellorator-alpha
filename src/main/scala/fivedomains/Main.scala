@@ -14,8 +14,12 @@ import installers.installMarked
 
 val root = mount("#app", <.p("Loading..."))
 
+import typings.marked.mod.marked
+
+given markdown:Markup = Markup(marked(_))
+
 /** Marked.js markdown transformer, for text elements of the app */
-given marked:MarkupTransformer[dom.html.Element] = root.installMarked("4.3.0")
+//given marked:MarkupTransformer[dom.html.Element] = root.installMarked("4.3.0")
 
 /** Stylesheet */
 given styleSuite:StyleSuite = StyleSuite()
