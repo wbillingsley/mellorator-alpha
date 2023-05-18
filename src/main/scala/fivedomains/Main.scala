@@ -12,7 +12,7 @@ import scala.scalajs.js.annotation._
 
 import installers.installMarked
 
-val root = mount("#render-here", <.p("Loading..."))
+val root = mount("#app", <.p("Loading..."))
 
 /** Marked.js markdown transformer, for text elements of the app */
 given marked:MarkupTransformer[dom.html.Element] = root.installMarked("4.3.0")
