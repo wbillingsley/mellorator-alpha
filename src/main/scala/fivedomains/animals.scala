@@ -71,10 +71,15 @@ class AnimalForm() extends DHtmlComponent {
 }
 
 def emptyAnimalsNotice = if animals.nonEmpty then <.div() else <.div(^.cls := (notice),
-        <.h3("Let's add your first animal"),
-        <.p("The animal welfare assessment works for most species, so we just need to give your animal a name."),
-        <.p("You can also pick a background so that if you have several animals you are monitoring, it's visually easier to distinguish their cards."),
+    marked(
+        """|### Let's add your first animal
+           |
+           |The animal welfare assessment works for most species, so we just need to give your animal a name.
+           |
+           |You can also pick a background so that if you have several animals you are monitoring, it's visually easier to distinguish their cards.
+           |""".stripMargin
     )
+)
 
 def addAnimalPage = <.div(
     AnimalForm()
@@ -142,11 +147,11 @@ def animalDetailsPage(aId:AnimalId) =
                         for d <- Domain.values yield 
                             d -> (scoreColor(s.average(d)), <.label(^.cls := (fiveboxtext), d.toString))
                     ).toMap
-                )(^.style := "width: 50%;")
+                )(^.style := "")
             )
         ),
 
-        <.div(^.style := s"padding: 5px 1em; background: ${domainColour(Domain.Mental)}",
+        <.div(^.style := s"padding: 5px 1em; background: ${Domain.Mental.color}",
                         <.label(^.style := "color: white", Domain.Mental.toString),
         ),
 
@@ -154,7 +159,7 @@ def animalDetailsPage(aId:AnimalId) =
             <.p("...trend of last surveys...?")
         ),
 
-        for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health, Domain.Behaviour) yield <.div(
+        /*for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health, Domain.Behaviour) yield <.div(
             <.div(^.style := s"padding: 5px 1em; background: ${domainColour(d)}",
                             <.label(^.style := "color: white", d.toString),
             ),
@@ -163,7 +168,7 @@ def animalDetailsPage(aId:AnimalId) =
                 <.p("...trend of last surveys...?")
             ),
         )
-
+                */
 
 
 

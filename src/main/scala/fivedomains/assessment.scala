@@ -100,11 +100,11 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         ),
 
         <.div(
-            for ((title, domain), questions) <- allQuestions yield 
-                val dc = domainColour(domain)
+            for (domain, questions) <- allQuestions yield 
+                val dc = domain.color
                 <.div(^.cls := (surveyQstyle), 
                     <.div(^.style := s"padding: 5px 1em; background: $dc",
-                        <.label(^.style := "color: white", title),
+                        <.label(^.style := "color: white", domain.title),
                     ),
                     
                     for q <- questions yield
@@ -166,49 +166,88 @@ def assessmentPage(aId: AnimalId) =
     AssessmentForm(a)
 
 
+
+
 /**
   * Draws a "five box" diagram. Takes a map from each domain to a CSS colour (for the box) and VHtmlContent to show
   *
   */
 def fiveBox(data: Map[Domain, (String, VHtmlContent)]) = 
+    import svg.*
+
     val gap = 10
-    val boxW = 400
+    val boxW = 500
     val boxH = 100
     val circleR = 140
+
+    val width = 2 * boxW + gap // Width of the stack of rectangles
+    val height = 3 * boxH + 2 * gap // Height of the stack of rectangles
+    val centreX = width / 2 // centre of the stack of rectangles
+    val centreY = height / 2 // centre of the stack of rectangles
+
+    val svgTop = Math.min(0, centreY - circleR)
+    val svgHeight = Math.max(height, 2 * circleR)
+
+    // The central box fits into the central circle
+    val centreH = boxH 
+    val centreW = (Math.sqrt(Math.pow(circleR, 2) - Math.pow(centreH / 2, 2)) * 2).toInt
 
     def emptyContent = html.<.p("")
     def emptyCol = "gainsboro"
 
-    val (nCol, nCont) = data.getOrElse(Domain.Nutrition, (emptyCol, emptyContent))
-    val (eCol, eCont) = data.getOrElse(Domain.Environment, (emptyCol, emptyContent))
-    val (hCol, hCont) = data.getOrElse(Domain.Health, (emptyCol, emptyContent))
-    val (bCol, bCont) = data.getOrElse(Domain.Behaviour, (emptyCol, emptyContent))
-    val (mCol, mCont) = data.getOrElse(Domain.Mental, (emptyCol, emptyContent))
+    /** Aligns boxes on top of each other. */
+    def stackBoxes(data: Seq[(Domain, (String, VHtmlContent))], alignLeft:Boolean) = {
+        (for 
+            ((domain, (col, content)), index) <- data.zipWithIndex            
+        yield Seq(
+            sparkbox(col, boxW, boxH)(
+                ^.attr("x") := (if alignLeft then 0 else boxW + gap), 
+                ^.attr("y") := (index * (boxH + gap)),
+            ),
+            foreignObject(
+                ^.attr("x") := (if alignLeft then 0 else boxW + gap + boxH), 
+                ^.attr("y") := (index * (boxH + gap)), 
+                ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, content),
+        )).flatten
+    }
 
-    def mask = 
-        import svg.*
-        SVG("mask")(
-            ^.attr("id") := "logo-mask",
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
-            sparkbox("white", boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            circle(^.attr("fill") := "white", ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR, ^.attr("stroke") := "black", ^.attr("stroke-width") := gap),
+    def stackMask(alignLeft:Boolean) = {
+        for 
+            index <- 0 to 3
+        yield 
+            sparkbox("white", boxW, boxH)(
+                ^.attr("x") := (if alignLeft then 0 else boxW + gap), 
+                ^.attr("y") := (index * (boxH + gap)),
+            )
+    }
+
+    def mentalDomainCircle =
+        val (mCol, mCont) = data.get(Domain.Mental).getOrElse((emptyCol, emptyContent)) 
+        Seq( 
+            circle(^.attr("fill") := mCol, ^.attr("cx") := centreX, ^.attr("cy") := centreY, ^.attr("r") := circleR),
+            foreignObject(^.attr("x") := centreX - centreW/2, ^.attr("y") := centreY - centreH/2, ^.attr("width") := centreW, ^.attr("height") := centreH, mCont),
         )
 
-    import svg.*
-    svg(^.attr("viewBox") := s"0 ${boxH - circleR} ${2 * boxW} ${2 * circleR}",
+    /** Masks the SVG, so that the gaps between the boxes let the background show through, rather than white */
+    def mask = 
+        SVG("mask")(
+            ^.attr("id") := "logo-mask",
+            stackMask(true),
+            stackMask(false),
+            circle(^.attr("fill") := "white", ^.attr("cx") := centreX, ^.attr("cy") := centreY, ^.attr("r") := circleR, ^.attr("stroke") := "black", ^.attr("stroke-width") := gap),
+        )
+
+    svg(^.attr("viewBox") := s"0 $svgTop $width $svgHeight",
         mask,
         g(^.attr("mask") := "url(#logo-mask)",
-            sparkbox(nCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := 0),
-            foreignObject(^.attr("x") := 0, ^.attr("y") := 0, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, nCont),
-            sparkbox(eCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := 0),
-            foreignObject(^.attr("x") := boxW + gap/2 + boxH, ^.attr("y") := 0, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, eCont),
-            sparkbox(hCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := 0, ^.attr("y") := boxH + gap/2),
-            foreignObject(^.attr("x") := 0, ^.attr("y") := boxH + gap/2, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, hCont),
-            sparkbox(bCol, boxW - gap/2, boxH - gap/2)(^.attr("x") := boxW + gap/2, ^.attr("y") := boxH+gap/2),
-            foreignObject(^.attr("x") := boxW + gap/2 + boxH, ^.attr("y") := boxH+gap/2, ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, bCont),
-            circle(^.attr("fill") := mCol, ^.attr("cx") := boxW, ^.attr("cy") := boxH, ^.attr("r") := circleR),
-            foreignObject(^.attr("x") := boxW - boxH, ^.attr("y") := boxH - boxH/2, ^.attr("width") := 2 * boxH, ^.attr("height") := boxH, mCont),
+            stackBoxes(
+                for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health) yield d -> data.getOrElse(d, (emptyCol, emptyContent)),
+                false
+            ),
+            stackBoxes(
+                for d <- Seq(Domain.InteractionsEnvironment, Domain.InteractionsSocial, Domain.InteractionsHuman) yield d -> data.getOrElse(d, (emptyCol, emptyContent)),
+                true
+            ),
+            mentalDomainCircle
         )
     )

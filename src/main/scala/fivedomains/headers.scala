@@ -38,13 +38,6 @@ def scoreText(x:Double) =
     else if x < 80 then "Good"
     else "Very Good"
 
-def domainColour = Map(
-    Domain.Nutrition -> nutritionCol,
-    Domain.Environment -> environmentCol,
-    Domain.Health -> healthCol,
-    Domain.Behaviour -> behaviourCol,
-    Domain.Mental -> mentalCol,
-)
 
 val smallFont = "15px"
 val smallLineHeight  = "18px"
