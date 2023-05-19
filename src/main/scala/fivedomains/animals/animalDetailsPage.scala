@@ -17,8 +17,10 @@ def assessmentQuantumStats(a:Animal, surveys:Seq[Assessment]) =
             f"Overall confidence across the surveys was ${surveys.overallConfidence * 100}%.0f%%."
         ),
         <.p(
-            s"The most revent survey was on ${new scalajs.js.Date(surveys.last.time).toLocaleDateString}. ",
-            f"Overall confidence in this survey was ${surveys.last.overallConfidence * 100}%.0f%%.",
+            for s <- surveys.lastOption.toSeq yield <.div(
+                s"The most revent survey was on ${new scalajs.js.Date(s.time).toLocaleDateString}. ",
+                f"Overall confidence in this survey was ${s.overallConfidence * 100}%.0f%%.",
+            )
 
         )
         
@@ -27,7 +29,7 @@ def assessmentQuantumStats(a:Animal, surveys:Seq[Assessment]) =
 
 def animalDetailsPage(aId:AnimalId) = 
     val a = DataStore.animal(aId)
-    def recentSurvey = DataStore.surveysFor(a).lastOption
+    val surveys = DataStore.surveysFor(a)
 
     <.div(
         leftBlockHeader(
@@ -38,11 +40,22 @@ def animalDetailsPage(aId:AnimalId) =
 
         assessmentQuantumStats(a, DataStore.surveysFor(a)),
 
-        for s <- recentSurvey yield <.div(^.style := "margin: 1.5em;",
-            <.div(^.style := "text-align: center;",
-                assessments.scoreText7(s)
+        // Widget for surveys
+        if surveys.isEmpty then 
+            assessments.sevenBox(Map.empty)(^.style := "")
+        else if surveys.length == 1 then
+            val s = surveys.head
+            <.div(^.style := "margin: 1.5em;",
+                <.div(^.style := "text-align: center;",
+                    assessments.scoreText7(s)
+                )
             )
-        ),
+        else
+            <.div(^.style := "margin: 1.5em;",
+                <.div(^.style := "text-align: center;",
+                    assessments.sparkTrend7(surveys)
+                )
+            ),
 
         <.div(^.style := s"padding: 5px 1em; background: ${Domain.Mental.color}",
                         <.label(^.style := "color: white", Domain.Mental.toString),

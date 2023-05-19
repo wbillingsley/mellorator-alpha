@@ -3,12 +3,16 @@ package fivedomains.assessments
 import com.wbillingsley.veautiful.*
 import html.{Styling, VHtmlContent, DHtmlComponent, EventMethods}
 
-import fivedomains.*
+import fivedomains.{given, *}
 import model.*
 
 def nextRandomChar():Char = (scala.util.Random.nextInt(0xc7ff) + 0x1000).toChar
 
 def randomHtmlId() = Seq.fill(10)(nextRandomChar()).mkString
+
+val alignLeftStyle = Styling("text-align: left;").register()
+val alignRightStyle = Styling("text-align: right;").register()
+val alignCentreStyle = Styling("text-align: center;").register()
 
 /**
   * The "seven box" diagram contains the six manually surveyed domains (as rectangles), with the 
@@ -22,7 +26,7 @@ def sevenBox(data: Map[Domain, (String, VHtmlContent)]) =
     val gap = 10
     val boxW = 500
     val boxH = 100
-    val circleR = 140
+    val circleR = 180
 
     val width = 2 * boxW + gap // Width of the stack of rectangles
     val height = 3 * boxH + 2 * gap // Height of the stack of rectangles
@@ -51,6 +55,7 @@ def sevenBox(data: Map[Domain, (String, VHtmlContent)]) =
             foreignObject(
                 ^.attr("x") := (if alignLeft then 0 else boxW + gap + boxH), 
                 ^.attr("y") := (index * (boxH + gap)), 
+                ^.cls := (if alignLeft then alignLeftStyle else alignRightStyle),
                 ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, content),
         )).flatten
     }
@@ -69,7 +74,13 @@ def sevenBox(data: Map[Domain, (String, VHtmlContent)]) =
         val (mCol, mCont) = data.get(Domain.Mental).getOrElse((emptyCol, emptyContent)) 
         Seq( 
             circle(^.attr("fill") := mCol, ^.attr("cx") := centreX, ^.attr("cy") := centreY, ^.attr("r") := circleR),
-            foreignObject(^.attr("x") := centreX - centreW/2, ^.attr("y") := centreY - centreH/2, ^.attr("width") := centreW, ^.attr("height") := centreH, mCont),
+            foreignObject(
+                ^.attr.style := "text-anchor: middle; dominant-baseline: middle;",
+                ^.attr("x") := centreX - centreW/2, ^.attr("y") := centreY - centreH/2, 
+                ^.attr("width") := centreW, ^.attr("height") := centreH,
+                ^.cls := alignCentreStyle, 
+                mCont
+            ),
         )
 
     
@@ -109,6 +120,35 @@ def scoreText7(assessment:Assessment) =
 
         col -> <.div(^.style := "text-align: center", 
             <.label(^.cls := (fiveboxtext), scoreText(avg))
+        )
+
+    sevenBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "")
+
+/** A sevenBox containing just the text of one survey */
+def sparkTrend7(assessments:Seq[Assessment]) =
+    import html.* 
+    val boxW = 250
+    val boxH = 80
+
+    def score(d:Domain):(String, VHtmlContent) = 
+        d.color -> <.div(sparkLine(
+            for (a, i) <- assessments.zipWithIndex yield i.toDouble /*a.time*/ -> a.average(d), (0, 100), boxW, boxH, "white"
+        ))
+
+    sevenBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "")
+
+/** A sevenBox containing just the text of one survey */
+def colouredSparkTrend7(assessments:Seq[Assessment]) =
+    import html.* 
+    val boxW = 280
+    val boxH = 80
+
+    def score(d:Domain):(String, VHtmlContent) =
+        val color = (for last <- assessments.lastOption yield scoreColor(last.average(d))).getOrElse(d.color)
+        color -> <.div(
+            sparkLine(
+                for (a, i) <- assessments.zipWithIndex yield i.toDouble /*a.time*/ -> a.average(d), (0, 100), boxW, boxH, "white"
+            )
         )
 
     sevenBox((for d <- Domain.values yield d -> score(d)).toMap)(^.style := "")

@@ -6,6 +6,7 @@ import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
 import fivedomains.{given, *}
 import model.*
 import fivedomains.assessments.scoreText7
+import fivedomains.assessments.colouredSparkTrend7
 
 def summaryCard(animal:Animal) = 
     val surveys = DataStore.surveysFor(animal).sortBy(_.time)
@@ -19,13 +20,12 @@ def summaryCard(animal:Animal) =
         ),
        
         <.div(^.attr.style := "margin: 1em 0;",
-            surveys.lastOption match {
-                case Some(s) =>
-                    scoreText7(s)
-                case None => 
-                    assessments.sevenBox(Map.empty)(^.style := "")
-            }
-            
+            if surveys.isEmpty then 
+                assessments.sevenBox(Map.empty)(^.style := "")
+            else if surveys.length == 1 then
+                scoreText7(surveys.head)
+            else 
+                colouredSparkTrend7(surveys)            
         ),
 
          <.div(
