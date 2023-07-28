@@ -5,11 +5,12 @@ val deployFull = taskKey[Unit]("Copies the fullLinkJS script to deployscripts/")
 
 import org.scalajs.linker.interface.ModuleSplitStyle
 
+ThisBuild / scalaVersion := "3.3.0"
+
 lazy val awClient = project.in(file("client"))
   .enablePlugins(ScalaJSPlugin)
   .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
   .settings(
-    scalaVersion := "3.2.0",
 
     resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
     libraryDependencies ++= Seq(
@@ -41,6 +42,14 @@ lazy val awClient = project.in(file("client"))
       val opt = (Compile / fullOptJS).value
       IO.copyFile(opt.data, new java.io.File("target/compiled.js"))
     }
+  )
+
+
+lazy val awServer = project.in(file("server"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "dev.zio" %% "zio-http" % "3.0.0-RC2"
+    )
   )
 
 
