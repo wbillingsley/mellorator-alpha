@@ -7,6 +7,17 @@ import org.scalajs.linker.interface.ModuleSplitStyle
 
 ThisBuild / scalaVersion := "3.3.0"
 
+lazy val root = project.in(file("."))
+  .aggregate(commonJS, commonJVM, awServer, awClient)
+
+lazy val common = crossProject(JVMPlatform, JSPlatform).in(file("common"))
+  .settings(
+    libraryDependencies += "org.scala-js" %% "scalajs-stubs" % "1.1.0" % "provided"
+
+  )
+lazy val commonJS = common.js
+lazy val commonJVM = common.jvm
+
 lazy val awClient = project.in(file("client"))
   .enablePlugins(ScalaJSPlugin)
   .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
