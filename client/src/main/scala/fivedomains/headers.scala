@@ -5,12 +5,6 @@ import html.{VHtmlContent, Styling, DHtmlComponent, Animator}
 
 import model.*
 
-val nutritionCol = "#e6ca84"
-val environmentCol = "#5F6B6A"
-val healthCol = "#FF5F58"
-val behaviourCol = "#354D51"
-val mentalCol = "#4D5D38"
-
 val veryPoor = "hsl(5, 84%, 70%)"
 val poor = "hsl(9, 86%, 80%)"
 val neutral = "hsl(32, 95%, 76%)"
@@ -118,6 +112,7 @@ val fakeSparkLine =
 
 def logo =
     import html.* 
+    import assessments.*
     assessments.sevenBox(
         (for d <- Domain.values yield d -> (d.color, <.div())).toMap
     )(fakeSparkLine)

@@ -12,13 +12,18 @@ lazy val root = project.in(file("."))
 
 lazy val common = crossProject(JVMPlatform, JSPlatform).in(file("common"))
   .settings(
-    libraryDependencies += "org.scala-js" %% "scalajs-stubs" % "1.1.0" % "provided"
+
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "upickle" % "3.1.0",
+      "org.scala-js" %% "scalajs-stubs" % "1.1.0" % "provided"
+    )
 
   )
 lazy val commonJS = common.js
 lazy val commonJVM = common.jvm
 
 lazy val awClient = project.in(file("client"))
+  .dependsOn(commonJS)
   .enablePlugins(ScalaJSPlugin)
   .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
   .settings(
@@ -26,7 +31,6 @@ lazy val awClient = project.in(file("client"))
     resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
     libraryDependencies ++= Seq(
       "com.wbillingsley" %%% "doctacular" % "0.3.0+2-7eae7e5d-SNAPSHOT",
-      "com.lihaoyi" %%% "upickle" % "3.1.0",
     ),
 
     // This is an application with a main method
@@ -59,7 +63,9 @@ lazy val awClient = project.in(file("client"))
 lazy val awServer = project.in(file("server"))
   .settings(
     libraryDependencies ++= Seq(
-      "dev.zio" %% "zio-http" % "3.0.0-RC2"
+      "dev.zio" %% "zio-http" % "3.0.0-RC2",
+
+      "io.getquill" %% "quill-jdbc-zio" % "4.5.0",
     )
   )
 
