@@ -4,6 +4,7 @@ import fivedomains.{given, *}
 import model.*
 import com.wbillingsley.veautiful.*
 import html.*
+import assessments.*
 
 
 /**
