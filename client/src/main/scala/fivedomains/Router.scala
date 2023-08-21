@@ -4,6 +4,7 @@ import com.wbillingsley.veautiful.html.*
 import com.wbillingsley.veautiful.templates.*
 
 import model.*
+import java.util.UUID
 
 
 enum AppRoute:
@@ -34,8 +35,8 @@ object Router extends HistoryRouter[AppRoute] {
     
     override def routeFromLocation() = PathDSL.hashPathList() match {
         case "addanimal" :: Nil => AppRoute.AddAnimal
-        case "animals" :: a :: Nil if DataStore.animalMap.contains(a.toInt) => AppRoute.Animal(a.toInt)
-        case "assess" :: a :: Nil if DataStore.animalMap.contains(a.toInt) => AppRoute.Assess(a.toInt)
+        case "animals" :: AnimalId(a) :: Nil if DataStore.animalMap.contains(a) => AppRoute.Animal(a)
+        case "assess" :: AnimalId(a) :: Nil if DataStore.animalMap.contains(a) => AppRoute.Assess(a)
         case _ => AppRoute.Front
     }
 

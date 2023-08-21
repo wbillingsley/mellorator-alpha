@@ -61,12 +61,20 @@ lazy val awClient = project.in(file("client"))
 
 
 lazy val awServer = project.in(file("server"))
+  .dependsOn(commonJVM)
   .settings(
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio-http" % "3.0.0-RC2",
 
       "io.getquill" %% "quill-jdbc-zio" % "4.5.0",
+    ),
+
+    excludeDependencies ++= Seq(
+      // zio-http and protoQuill clash on the version of geny
+      "com.lihaoyi" % "geny_2.13"
+
     )
+
   )
 
 

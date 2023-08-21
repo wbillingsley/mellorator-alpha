@@ -1,0 +1,13 @@
+CREATE DATABASE mellorator WITH ENCODING 'UTF8';
+
+CREATE TABLE IF NOT EXISTS melluser (
+    id UUID,
+    name VARCHAR NOT NULL,
+    PRIMARY KEY(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS animal (
+    id UUID,
+    name VARCHAR NOT NULL  
+);

@@ -13,6 +13,7 @@ import upickle.default.{ReadWriter => RW, macroRW}
 import typings.std.stdStrings.a
 
 import fivedomains.model.Confidence
+import java.util.UUID
 
 
 
@@ -59,7 +60,7 @@ object DataStore {
         animalMap(a.id) = a
         localStorage.setItem("animalMap", write(animalMap))
 
-    def nextAnimalId = (0 :: animals.toList.map(_.id)).max + 1
+    def nextAnimalId = UUID.randomUUID()
 
     private val _assessments:mutable.Buffer[Assessment] = 
         val stored = Option(localStorage.getItem("assessments"))
