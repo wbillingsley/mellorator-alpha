@@ -12,6 +12,8 @@ services:
       POSTGRES_PASSWORD: example
     volumes: 
       - ./initdb/init.sql:/docker-entrypoint-initdb.d/db.sql
+    ports:
+      - "25432:5432"
 
   adminer:
     image: adminer

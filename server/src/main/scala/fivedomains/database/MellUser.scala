@@ -2,7 +2,6 @@ package fivedomains.database
 
 import io.getquill.*
 import io.getquill.jdbczio.Quill
-import dbContext.*
 
 
 import fivedomains.model.*
@@ -12,12 +11,13 @@ case class MellUser(id:UUID, name:String)
 
 
 class MellUserDAO(quill: Quill.Postgres[LowerCase]) {
+    import quill.*
 
-    def save(u:MellUser) = dbContext.run(quote {
+    def save(u:MellUser) = quill.run(quote {
         query[MellUser].insertValue(lift(u))
     })
 
-    def list = dbContext.run(
+    def list = quill.run(
         query[MellUser]
     )
 

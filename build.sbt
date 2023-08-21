@@ -67,6 +67,10 @@ lazy val awServer = project.in(file("server"))
       "dev.zio" %% "zio-http" % "3.0.0-RC2",
 
       "io.getquill" %% "quill-jdbc-zio" % "4.5.0",
+
+      "org.postgresql"       %  "postgresql"     % "42.3.1",
+
+      "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.20.0"
     ),
 
     excludeDependencies ++= Seq(
