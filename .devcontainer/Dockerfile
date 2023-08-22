@@ -40,4 +40,9 @@ RUN bash -c 'npm install -g http-server'
 #  echo 'enablePlugins(ScalaJSPlugin); scalaVersion := "'${SCALA_VERSION}'"' > build.sbt && \
 #  sbt fastLinkJS && cd / && rm -r -f /tmp/sbt-precompile
 
+# Things I forgot; added late to reuse docker layers
+RUN apt-get update && apt-get install -y \
+  procps \
+  && rm -rf /var/lib/apt/lists/* 
+
 CMD bash

@@ -5,7 +5,7 @@ val deployFull = taskKey[Unit]("Copies the fullLinkJS script to deployscripts/")
 
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-ThisBuild / scalaVersion := "3.3.0"
+ThisBuild / scalaVersion := "3.2.2"
 
 lazy val root = project.in(file("."))
   .aggregate(commonJS, commonJVM, awServer, awClient)
@@ -66,7 +66,7 @@ lazy val awServer = project.in(file("server"))
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio-http" % "3.0.0-RC2",
 
-      "io.getquill" %% "quill-jdbc-zio" % "4.5.0",
+      "io.getquill" %% "quill-jdbc-zio" % "4.6.0.1",
 
       "org.postgresql"       %  "postgresql"     % "42.3.1",
 

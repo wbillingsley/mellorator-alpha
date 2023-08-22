@@ -1,7 +1,7 @@
 # Default docker compose for postgres; will need changing
 
 # Use postgres/example user/password credentials
-version: '3.1'
+version: '3.5'
 
 services:
 
@@ -13,7 +13,10 @@ services:
     volumes: 
       - ./initdb/init.sql:/docker-entrypoint-initdb.d/db.sql
     ports:
-      - "25432:5432"
+      - target: 5432
+        published: 25432
+        protocol: tcp
+        mode: host
 
   adminer:
     image: adminer

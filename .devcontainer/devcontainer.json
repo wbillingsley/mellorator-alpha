@@ -1,5 +1,6 @@
 {
     "name": "Doctacular codespace config",
+    "runArgs": [ "--network=host" ],
     "build": {
         "dockerfile": "Dockerfile"
     },

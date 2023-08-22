@@ -21,18 +21,20 @@ object Main extends ZIOAppDefault {
       (for 
         n <- DataLayer.saveUser(MellUser(UUID.randomUUID(), "Cecily"))
         _ = println(n)
-      yield Response.text(s"It was $n")).orDie
+      yield Response.text(s"It was $n")).orDieWith({ case x => x.printStackTrace; x })
   }
 
 
   override val run =
 
+  /*
     val u = MellUser(UUID.randomUUID(), "Bob")
 
     val h = (for {
       n <- DataLayer.saveUser(u)
       _ = println(n)
     } yield n).provide(dataserviceLive, datasourceLive, postgresLive)
+    */
 
     Server.serve(app).provide(Server.defaultWithPort(8081), dataserviceLive, datasourceLive, postgresLive)
 }
