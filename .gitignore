@@ -2,7 +2,6 @@
 .scala-build/
 .bsp/
 .metals/
-*.js
 *.js.map
 
 .DS_Store

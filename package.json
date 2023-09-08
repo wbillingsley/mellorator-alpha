@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "marked": "^4.0.8"
+    "marked": "^4.3.0"
   },
   "devDependencies": {
     "@scala-js/vite-plugin-scalajs": "^1.0.0",

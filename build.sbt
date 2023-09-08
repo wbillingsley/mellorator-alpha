@@ -53,12 +53,12 @@ lazy val awClient = project.in(file("client"))
     // Used by GitHub Actions to get the script out from the .gitignored target directory
     deployFast := {
       val opt = (Compile / fastOptJS).value
-      IO.copyFile(opt.data, new java.io.File("target/compiled.js"))
+      IO.copyFile(opt.data, new java.io.File("client/target/compiled.js"))
     },
 
     deployFull := {
       val opt = (Compile / fullOptJS).value
-      IO.copyFile(opt.data, new java.io.File("target/compiled.js"))
+      IO.copyFile(opt.data, new java.io.File("client/target/compiled.js"))
     }
   )
 
