@@ -8,7 +8,7 @@ import model.*
 
 class AnimalForm() extends DHtmlComponent {
 
-    val animal = stateVariable(Animal(DataStore.nextAnimalId, "Almeira"))
+    val animal = stateVariable(Animal(DataStore.nextAnimalId, "Almeira", Species.Horse))
 
     def add():Unit = 
         DataStore.addAnimal(animal.value)
