@@ -33,6 +33,9 @@ lazy val awClient = project.in(file("client"))
       "com.wbillingsley" %%% "doctacular" % "0.3.0+2-7eae7e5d-SNAPSHOT",
     ),
 
+    // For java.security.SecureRandom which is used in UUID generation
+    libraryDependencies += ("org.scala-js" %%% "scalajs-java-securerandom" % "1.0.0").cross(CrossVersion.for3Use2_13),
+
     // This is an application with a main method
     scalaJSUseMainModuleInitializer := true,
     
