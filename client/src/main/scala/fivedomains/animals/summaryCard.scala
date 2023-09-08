@@ -16,6 +16,11 @@ def summaryCard(animal:Animal) =
         <.div(
             <.a(^.cls := "title", ^.href := Router.path(AppRoute.Animal(animal.id)), 
                 <.label(^.cls := (animalName), animal.name)
+            ),
+
+            <.div(^.attr.style := "float: right;",
+                animal.species.longText
+        
             )
         ),
        

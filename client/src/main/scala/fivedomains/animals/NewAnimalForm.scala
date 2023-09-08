@@ -32,6 +32,18 @@ class AnimalForm() extends DHtmlComponent {
                     ^.on("input") ==> { e => for n <- e.inputValue do animal.value = animal.value.copy(name = n) }
                 )
             ),
+            <.div(
+                <.label("Species"),
+                <.select(^.style := s"margin-left: 0.25em; max-width: 300px; font-size: $largeFont;",
+                    ^.on("input") ==> { e => for n <- e.inputValue do animal.value = animal.value.copy(name = n) },
+
+                    for s <- Species.values yield 
+                        <.option(
+                            ^.prop.value := s.longText, s.longText,
+                            if s.longText == animal.value.species.longText then ^.prop.selected := "selected" else None
+                        )
+                )
+            ),
             <.ul(^.style := "list-item: none; padding: 0;",
                 for displayStyle <- DisplayStyle.values yield
                     <.li(^.style := "display: inline-block; margin: 1em;",
