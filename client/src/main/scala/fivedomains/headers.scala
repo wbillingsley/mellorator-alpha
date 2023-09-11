@@ -144,7 +144,7 @@ def frontHeader =
                 logo(^.cls := "five-domains-logo")
             ),
             <.div(^.cls := "title",
-                "Animal Welfare Assessment Toolkit"
+                "Mellorator"
             )
         )        
     )

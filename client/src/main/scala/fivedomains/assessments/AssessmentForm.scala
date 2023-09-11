@@ -28,6 +28,18 @@ def confidenceButton(confidence: => Confidence, state:PushVariable[FooterSelecti
     )
 }
 
+/** Opens and closes the explanation */
+def explanationButton(state:PushVariable[FooterSelection]) = {
+    import html.{<, ^}
+
+    <.button(^.cls := (button, if state.value == FooterSelection.Explanation then "selected" else ""),
+        <.div(
+            <.div("?"), 
+        ), 
+        ^.onClick --> { if state.value == FooterSelection.Explanation then state.value = FooterSelection.None else state.value = FooterSelection.Explanation }
+    )
+}
+
 val confidenceSliderStyle = Styling(
     """|
        |""".stripMargin
@@ -41,12 +53,13 @@ val confidenceSliderStyle = Styling(
 enum FooterSelection:
     case None
     case Confidence
+    case Explanation
 
 /** A slider for confidence */
 def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
     import html.{<, ^}
 
-    <.div(^.style := "text-align: center", ^.cls := confidenceSliderStyle,
+    <.div(^.style := "text-align: center; margin: 1em;", ^.cls := confidenceSliderStyle,
         <.label(^.cls := "conf", "Confidence"),
         <.div(
             <.label(^.cls := "sd", "Low"),
@@ -156,7 +169,10 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                         val ans = answers.value.get(q.num).getOrElse(q.defaultAnswer)
 
                         <.div(^.style := s"border-bottom: 1px solid $dc", ^.attr("id") := s"question${q.num}",
-                            <.p(^.style := "margin: 1em;", q.text(animal)),
+                            <.div(^.style := "margin: 1em;",
+                                <.h4(q.headline(animal)),
+                                <.p(q.shortExplanation(animal))
+                            ),                            
                             
                             ans.value match {
                                 case AnswerValue.Numeric(v) => 
@@ -170,7 +186,8 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                     case FooterSelection.None => Seq()
                                     case FooterSelection.Confidence => 
                                         confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
-
+                                    case FooterSelection.Explanation => 
+                                        <.div(^.style := "margin: 1em; text-align: left;", q.longExplanation(animal))
                                 }
 
                             }),
@@ -182,6 +199,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                             // Footer controls
                             <.div(^.cls := questionFooterStyle,
                                 confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
+                                explanationButton(footerSelectors(q.num)),
 
                                 if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
                                     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
