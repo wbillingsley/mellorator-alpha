@@ -1,7 +1,7 @@
 package fivedomains.assessments
 
 import com.wbillingsley.veautiful.*
-import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods}
+import html.{Styling, VHtmlContent, DHtmlComponent, <, ^, EventMethods, DHtmlModifier}
 
 import fivedomains.{given, *}
 import model.*
@@ -29,14 +29,14 @@ def confidenceButton(confidence: => Confidence, state:PushVariable[FooterSelecti
 }
 
 /** Opens and closes the explanation */
-def explanationButton(state:PushVariable[FooterSelection]) = {
+def footerButton(state:PushVariable[FooterSelection], text: DHtmlModifier, mode:FooterSelection) = {
     import html.{<, ^}
 
-    <.button(^.cls := (button, if state.value == FooterSelection.Explanation then "selected" else ""),
+    <.button(^.cls := (button, if state.value == mode then "selected" else ""),
         <.div(
-            <.div("?"), 
+            text
         ), 
-        ^.onClick --> { if state.value == FooterSelection.Explanation then state.value = FooterSelection.None else state.value = FooterSelection.Explanation }
+        ^.onClick --> { if state.value == mode then state.value = FooterSelection.None else state.value = mode }
     )
 }
 
@@ -54,13 +54,16 @@ enum FooterSelection:
     case None
     case Confidence
     case Explanation
+    case Notes
+    case Photo
 
 /** A slider for confidence */
 def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
     import html.{<, ^}
 
     <.div(^.style := "text-align: center; margin: 1em;", ^.cls := confidenceSliderStyle,
-        <.label(^.cls := "conf", "Confidence"),
+        <.h4(^.cls := "conf", "Confidence"),
+        <.p("This lets you mark cases where there is unusually weak or strong evidence to make a conclusion"),
         <.div(
             <.label(^.cls := "sd", "Low"),
             <.input(^.attr("type") := "range", 
@@ -188,6 +191,18 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                         confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
                                     case FooterSelection.Explanation => 
                                         <.div(^.style := "margin: 1em; text-align: left;", q.longExplanation(animal))
+                                    case FooterSelection.Notes => 
+                                        <.div(^.style := "margin: 1em; text-align: left;", 
+                                          <.h4("Notes"),
+                                          <.textarea(^.style := "width: 100%;",
+                                            ^.prop.value := ans.note.getOrElse(""),
+                                            ^.onChange ==> { (e) => for v <- e.inputValue do answers.value = answers.value.updated(q.num, ans.copy(note = Some(v))) }
+                                          )                                        
+                                        )
+                                    case FooterSelection.Photo => 
+                                        <.div(^.style := "margin: 1em; text-align: left;", 
+                                          "Photo feature to be added..."
+                                        )
                                 }
 
                             }),
@@ -199,7 +214,9 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                             // Footer controls
                             <.div(^.cls := questionFooterStyle,
                                 confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
-                                explanationButton(footerSelectors(q.num)),
+                                footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
+                                footerButton(footerSelectors(q.num), "✎", FooterSelection.Notes),
+                                footerButton(footerSelectors(q.num), "📷", FooterSelection.Photo),
 
                                 if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
                                     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))

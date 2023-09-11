@@ -115,7 +115,7 @@ def logo =
     import assessments.*
     assessments.sevenBox(
         (for d <- Domain.values yield d -> (d.color, <.div())).toMap
-    )(fakeSparkLine)
+    )
 
 /**
   * The header that goes at the top of the front page

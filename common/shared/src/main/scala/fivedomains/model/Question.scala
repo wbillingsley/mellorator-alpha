@@ -30,7 +30,7 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
         Question(0, Domain.Mental, { 
             (a:Animal) => s"Overall, how would you rate ${a.name}'s wellbeing?" }, 
             (_) => "From a high level persepective (or 'blurring your vision'), what would you consider the animal's overall well-being to be?",
-            (a:Animal) => s"""Over time, the more detailed questions in each category will help the app to understand what domains to focus on for ${a.name}. Keeping track of a human high-level judgment of the animal's wellbeing, howver, helps to understand what detailed changes will predict declines and improvements in overall well-being.""",
+            (a:Animal) => s"""Over time, the more detailed questions in each category will help the app to understand what domains to focus on for ${a.name}. Keeping track of a human high-level judgment of the animal's wellbeing, however, helps to understand what detailed changes will predict declines and improvements in overall well-being.""",
             QuestionType.RatingPicker
         ),
     ),
