@@ -27,6 +27,14 @@ def assessmentQuantumStats(a:Animal, surveys:Seq[Assessment]) =
     ) 
 
 
+def currentRedFlags(assess:Assessment) = 
+    <.div(^.cls := nakedParaMargins,
+        <.h3("Current concerns"),
+
+        //for d 
+
+    )
+
 def animalDetailsPage(aId:AnimalId) = 
     val a = DataStore.animal(aId)
     val surveys = DataStore.surveysFor(a)

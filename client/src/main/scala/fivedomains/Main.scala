@@ -15,6 +15,7 @@ import installers.installMarked
 val root = mount("#app", <.p("Loading..."))
 
 import typings.marked.mod.marked
+import fivedomains.testdata.addPickles
 
 given markdown:Markup = Markup(marked(_))
 
@@ -26,5 +27,10 @@ given styleSuite:StyleSuite = StyleSuite()
 
 @main def main = {
   styleSuite.install()
+
+  // add test data
+  DataStore.clearAll()
+  addPickles()
+
   root.render(Router)
 }

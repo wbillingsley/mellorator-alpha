@@ -55,6 +55,7 @@ class AnimalForm() extends DHtmlComponent {
                     )
             ),
             <.div(^.style := "text-align: right;",
+                <.button(^.cls := (button), "📷"),
                 <.button(^.cls := (button, noticeButton), "Add", ^.onClick --> add())
             )
         )

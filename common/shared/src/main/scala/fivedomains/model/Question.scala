@@ -25,6 +25,28 @@ enum QuestionType derives upickle.default.ReadWriter:
     case StronglyAgreeSlider
     case RatingPicker
 
+
+enum QuestionIdentifier:
+    case Overall
+    case DrinksEnough
+    case EatsEnough
+    case FoodVariety
+    case Lighting
+    case ThermalComfort
+    case Sleep
+    case InjuriesDisease
+    case Bodyweight
+    case Pain
+    case StimulatingEnvironment
+    case Room
+    case Exercise
+    case SameSpeciesInteraction
+    case OtherSpeciesConflict
+    case OtherSpeciesInteraction
+    case CarerBond
+    case PeopleInteraction
+    case CalmWithPeople
+
 val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
     Domain.Mental -> Seq(
         Question(0, Domain.Mental, { 

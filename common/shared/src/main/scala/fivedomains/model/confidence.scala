@@ -17,5 +17,9 @@ case class Confidence(value: Double) {
 }
 
 object Confidence {
+    val VeryLow = Confidence(0)
+    val Low = Confidence(0.25)
     val Medium = Confidence(0.5)
+    val High = Confidence(0.75)
+    val VeryHigh = Confidence(1)
 }

@@ -56,9 +56,10 @@ object DataStore {
 
     def animal(a:AnimalId) = animalMap(a)
 
-    def addAnimal(a:Animal):Unit =
+    def addAnimal(a:Animal):Animal =
         animalMap(a.id) = a
         localStorage.setItem("animalMap", write(animalMap))
+        a
 
     def nextAnimalId = UUID.randomUUID()
 
@@ -79,10 +80,22 @@ object DataStore {
         _assessments.append(a)
         localStorage.setItem("assessments", write(assessments))
 
+    def addAssessment(animal:AnimalId, time:Double, answers:Seq[(AnswerValue, Confidence, Option[String])]):Unit = 
+        _assessments.append(Assessment(animal=animal, time=time, 
+          (for ((ans, conf, note), i) <- answers.zipWithIndex yield i -> Answer(i, ans, conf, note)).toMap
+        ))
+        localStorage.setItem("assessments", write(assessments))
+
     def assessments = _assessments.toSeq
 
     def surveysFor(a:Animal) = assessments.toSeq.filter(_.animal == a.id)
 
     def animals = animalMap.values.toSeq.sortBy(_.id)
+
+    def clearAll() = 
+        _assessments.clear()
+        animalMap.clear()
+        localStorage.setItem("assessments", write(assessments))
+        localStorage.setItem("animalMap", write(animalMap))
 
 }
