@@ -28,12 +28,47 @@ def assessmentQuantumStats(a:Animal, surveys:Seq[Assessment]) =
 
 
 def currentRedFlags(assess:Assessment) = 
+    val animal = DataStore.animalMap(assess.animal)
     <.div(^.cls := nakedParaMargins,
         <.h3("Current concerns"),
 
-        //for d 
+        if assess.domainsContainingConcern.isEmpty then <.p("None") else None,
+
+        // For each domain, if there exists a value scored low, show the section
+        for d <- assess.domainsContainingConcern yield <.div(
+            <.h4(d.title),
+            for a <- assess.lowAnswers if a.question.domain == d yield <.div(
+                <.h5(a.question.headline(animal)),
+                <.p(a.value.labelText),
+                for n <- a.note yield <.p(^.style := "font-style: italic;", n)
+            )
+        )        
 
     )
+
+def pastRedFlags(assessments:Seq[Assessment]):DHtmlModifier = 
+    if assessments.isEmpty then 
+        None
+    else
+        val animal = DataStore.animalMap(assessments.head.animal)
+
+        <.div(
+            for assess <- assessments.sortBy(- _.time) if assess.domainsContainingConcern.nonEmpty yield <.div(^.cls := nakedParaMargins,
+
+                <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
+
+                // For each domain, if there exists a value scored low, show the section
+                for d <- assess.domainsContainingConcern yield <.div(
+                    <.h4(d.title),
+                    for a <- assess.lowAnswers if a.question.domain == d yield <.div(
+                        <.h5(a.question.headline(animal)),
+                        <.p(a.value.labelText),
+                        for n <- a.note yield <.p(^.style := "font-style: italic;", n)
+                    )
+                )        
+
+            )
+        )
 
 def animalDetailsPage(aId:AnimalId) = 
     val a = DataStore.animal(aId)
@@ -46,23 +81,7 @@ def animalDetailsPage(aId:AnimalId) =
             <.label(^.cls := (animalName), a.name)
         ),
 
-        
-
         SurveySelectWidget(a, surveys)
-
-
-        /*for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health, Domain.Behaviour) yield <.div(
-            <.div(^.style := s"padding: 5px 1em; background: ${domainColour(d)}",
-                            <.label(^.style := "color: white", d.toString),
-            ),
-
-            <.div(^.style := "margin: 1.5em;",
-                <.p("...trend of last surveys...?")
-            ),
-        )
-                */
-
-
 
     )
 
@@ -101,20 +120,26 @@ def surveySummary(animal:Animal, surveys:Seq[Assessment]) = <.div(
         <.div(^.style := "margin: 1.5em;",
             <.div(^.style := "text-align: center;",
                 assessments.scoreText7(s)
-            )
+            ),
+
+            currentRedFlags(s),
         )
     else
         <.div(^.style := "margin: 1.5em;",
             <.div(^.style := "text-align: center;",
                 assessments.colouredSparkTrend7(surveys)
-            )
+            ),
+
+            currentRedFlags(surveys.last),
+
+            pastRedFlags(surveys.dropRight(1))
         ),
 
     <.div(^.cls := nakedParaMargins,
-        assessmentQuantumStats(animal, surveys),
-        warningFlags(surveys),
-        lowestRatingAdvice(surveys), 
-        confidenceAdvice(surveys)   
+        // assessmentQuantumStats(animal, surveys),
+        // warningFlags(surveys),
+        // lowestRatingAdvice(surveys), 
+        // confidenceAdvice(surveys)   
     )
 )
 

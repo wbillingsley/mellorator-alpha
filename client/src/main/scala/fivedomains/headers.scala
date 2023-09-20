@@ -27,14 +27,6 @@ def scoreColor(x:Double) =
     else if x < 80 then good
     else veryGood
 
-def scoreText(x:Double) =
-    if x < 20 then "Very Poor"
-    else if x < 40 then "Poor"
-    else if x < 60 then "Neutral"
-    else if x < 80 then "Good"
-    else "Very Good"
-
-
 val smallFont = "15px"
 val smallLineHeight  = "18px"
 val largeFont = "21px"

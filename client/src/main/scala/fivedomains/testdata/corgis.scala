@@ -101,7 +101,7 @@ def addPickles() =
         )
     )
 
-    DataStore.addAssessment(animal = pickles.id, time = js.Date.UTC(2023, 4, 8, 18, 22, 0, 0), Seq(
+    DataStore.addAssessment(animal = pickles.id, time = js.Date.UTC(2023, 5, 8, 18, 22, 0, 0), Seq(
             (AnswerValue.Numeric(100), Confidence.Medium, None),
             (AnswerValue.Numeric(75), Confidence.High, None),
             (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
@@ -147,7 +147,167 @@ def addPickles() =
         )
     )
 
-    pickles
+    val rufus = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Rufus", Species.Dog, DisplayStyle.Circles))
 
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 1, 12, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),        
+        )
+    )
 
-val rufus = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Rufus", Species.Dog, DisplayStyle.Circles))
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 2, 14, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(85), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(15), Confidence.Medium, None),
+            (AnswerValue.Numeric(55), Confidence.Medium, None),
+            (AnswerValue.Numeric(55), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),           
+        )
+    )
+
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 3, 10, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(95), Confidence.High, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(10), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),           
+        )
+    )
+
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 4, 8, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(10), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(35), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),           
+        )
+    )
+
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 5, 8, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(20), Confidence.Medium, None),
+            (AnswerValue.Numeric(45), Confidence.Medium, None),
+            (AnswerValue.Numeric(55), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),           
+        )
+    )
+
+    DataStore.addAssessment(animal = rufus.id, time = js.Date.UTC(2023, 6, 7, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(12), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(12), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(65), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),           
+        )
+    )
+
+    val betsy = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Betsy", Species.Horse, DisplayStyle.Plaid))
+
+    DataStore.addAssessment(animal = betsy.id, time = js.Date.UTC(2023, 7, 8, 18, 22, 0, 0), Seq(
+            (AnswerValue.Numeric(100), Confidence.Medium, None),
+            (AnswerValue.Numeric(100), Confidence.High, None),
+            (AnswerValue.Numeric(100), Confidence.VeryHigh, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(12), Confidence.Low, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(65), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(75), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),
+            (AnswerValue.Numeric(25), Confidence.Medium, None),           
+        )
+    )

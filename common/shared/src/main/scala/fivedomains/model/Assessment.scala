@@ -11,7 +11,16 @@ case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
             filtered.map(_.value.asDouble).sum / filtered.size
     }
 
+    def answersBelow(level:Double) = answers.values.filter(_.value.asDouble <= level)
+
+    // Answers rated poor or worse
+    lazy val lowAnswers = answersBelow(Rating.Poor.value)
+
+    lazy val domainsContainingConcern = Domain.values.filter(d => lowAnswers.exists(a => a.question.domain == d))
+
     def overallConfidence = answers.values.map(_.confidence.value).sum / answers.size
+
+    def answer(q:Question) = answers(q.num)
 
 }
 

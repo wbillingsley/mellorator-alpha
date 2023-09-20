@@ -172,6 +172,8 @@ val flattenedQs = for
     q <- qs
 yield q
 
+// The questions for a given domain
+def domainQuestions(d:Domain) = flattenedQs.filter(_.domain == d)
 
 enum AnswerValue derives upickle.default.ReadWriter:
     case Numeric(value:Double)
@@ -180,5 +182,10 @@ enum AnswerValue derives upickle.default.ReadWriter:
     def asDouble = this match {
         case Numeric(v) => v
         case Rated(r) => r.value
+    }
+
+    def labelText = this match {
+        case Numeric(v) => scoreText(v) //f" ${v * 100}%2.0f"
+        case Rated(r) => scoreText(r)
     }
 
