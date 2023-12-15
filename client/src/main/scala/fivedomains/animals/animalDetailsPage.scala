@@ -91,12 +91,13 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
     val max = surveys.length
     val number = stateVariable(max)
 
-    def subset = surveys.slice(surveys.length - number.value, surveys.length)
+    def subset = surveys.take(number.value)
 
     override def render = <.div(
 
         <.div(^.cls := alignCentreStyle,    
-            <.p(s"Showing most recent ${number.value} of $max surveys"),
+            <.p(s"Showing surveys up to ${new scalajs.js.Date(surveys.last.time).toLocaleDateString}"),
+            <.p(^.style := "font-style: italic", s"(to go back in time, drag this slider left)"),
             <.p(
                 <.input(
                     ^.attr("type") := "range", ^.attr("min") := 1, ^.attr("max") := max,

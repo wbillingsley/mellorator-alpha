@@ -75,6 +75,8 @@ enum Species(val longText:String):
     case Wolf extends Species("Wolf")
     case Unknown extends Species("Unknown")
 
+    def beta = Seq(Horse, Dog, Cat)
+
 object Species:
     /** As there's more than 32 species, we can't just derive a readwriter using the macros */
     given rw:ReadWriter[Species] = upickle.default.readwriter[String].bimap(

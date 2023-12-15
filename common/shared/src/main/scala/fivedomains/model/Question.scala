@@ -64,7 +64,7 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
                       |""".stripMargin
         ),
         Question(2, Domain.Nutrition, { 
-            (a:Animal) => s"${a.name} eats nutritious, palatable and sufficient food." },
+            (a:Animal) => s"${a.name} eats sufficient, nutritious, and palatable food." },
             (_) => "Do the animal's diet and feed intake meet its nutritional and behaviour needs?",
             (_) => """|From a welfare perspective, when we talk about animals receiving sufficient food, or animals being hungry, we are not talking about them being too thin or malnourished. We are referring to them fasting for periods longer than are healthy and natural. 
                       |""".stripMargin
@@ -79,7 +79,7 @@ val allQuestions:Seq[(QuestionSection, Seq[Question])] = Seq(
     ),
     Domain.Environment -> Seq(
         Question(4, Domain.Environment, { 
-            (a:Animal) => s"${a.name} can avoid unpleasant lighting levels, noises, vibrations and odours." },
+            (a:Animal) => s"${a.name} can avoid unpleasant lighting levels, noises, and odours." },
             (_) => "Here we encourage you to think about all the events that animals of this species naturally seek to avoid.",
             (_) => """Just because an animal tolerates a noise, an odour or a certain level of lighting does not mean that they woud rather not experience it."""
         ),
@@ -131,17 +131,17 @@ Such ‘blind spots’ can happen because we become habituated or desensitised. 
     ),
     Domain.InteractionsSocial -> Seq(
         Question(13, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} can choose how long they spend interacting with their own species" },
+            (a:Animal) => s"${a.name} can choose how long they spend interacting with animals of their own species" },
             (_) => "Here we are mainly looking at whether the facilities and management schedules afford them any agency – that is, the opportunity to choose to interact or not interact with other members of their species, and how long for.",
             (_) => """Retrieving data. Wait a few seconds and try to cut or copy again.By observing the choices the animal makes and their behaviour towards others, you can learn a lot about their subjective experience - and whether the interactions they engage in are giving rise to negative, neutral or positive experiences at least at the time of the assessment."""
         ),
         Question(14, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} has the space to avoid conflicts with other non-human animals" },
+            (a:Animal) => s"${a.name} has the space to avoid conflicts with animals of other species" },
             (_) => "There are other situations where confined animals do not have the space to avoid conflicts with members of other species. Whether the reason they can’t avoid conflict is because they are confined, tethered, held, or cornered by another animal, the correct decision would be to strongly disagree with the statement.",
             (_) => """"Another reason to disagree with the statement is where the animal does not have the space, or the shape and design features of their housing do not allow them to avoid conflict with animals of other species who are present at the time of the assessment. """"
         ),
         Question(15, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} can choose to interact appropriately with non-human animals of other species." },
+            (a:Animal) => s"${a.name} can choose to interact appropriately with animals of other species." },
             (_) => "To decide on this question, we first need to consider what the term “appropriately” refers to, because what matters is what animals of this species may consider ‘appropriate’ – from their perspective. This is easier to do if we remind ourselves of the nature of the species in question.",
             (_) => """It is reasonable to say that, in most cases, from the animal’s perspective, maintaining a sense of safety during such interactions would be their very top priority."""
         ),    
@@ -153,15 +153,15 @@ Such ‘blind spots’ can happen because we become habituated or desensitised. 
             (_) => """Trust is associated with positive feelings of predictability and, it is built, maintained or eroded over time. Trust contributes to a sense of safety and security, and this is a positive subjective experience that is compatible with good welfare."""
         ),
         Question(17, Domain.InteractionsHuman, { 
-            (a:Animal) => s"${a.name} is calm in the presence of humans" },
-            (_) => "For this statement, focus on the interaction – and whether the animal responds appropriately to the carer. By appropriately, we are referring to the animal showing the qualities of good training; they consistently and calmly respond to light signals or cues and; they keep doing what they have been cued to do, without having to be constantly corrected, and without having to use strong pressures or coercive measures.",
-            (_) => """We know that the absence of coercion and responding to subtle cues are the keys to an animal feeling in control, safe and confident, and these qualities are compatible with enhanced welfare,"""
-        ),
-        Question(18, Domain.InteractionsHuman, { 
-            (a:Animal) => s"${a.name} engages confidently and safely when interacting with familiar humans" },
+            (a:Animal) => s"${a.name} interacts with familiar people confidently and safely" },
             (_) => "During their lifetime, domestic animals often have to interact with many different humans – and every interaction will leave them feeling either negative, neutral or positive about the experience. It is important that animals generalize their trust, so they behave appropriately and safely with all humans, not just their main care providers.",
             (_) => """During their lifetime, domestic animals often have to interact with many different humans – and every interaction will leave them feeling either negative, neutral or positive about the experience. It is important that animals generalize their trust, so they behave appropriately and safely with all humans, not just their main care providers."""
         ),    
+        Question(18, Domain.InteractionsHuman, { 
+            (a:Animal) => s"${a.name} is calm in the presence of most people" },
+            (_) => "For this statement, focus on the interaction – and whether the animal responds appropriately to the carer. By appropriately, we are referring to the animal showing the qualities of good training; they consistently and calmly respond to light signals or cues and; they keep doing what they have been cued to do, without having to be constantly corrected, and without having to use strong pressures or coercive measures.",
+            (_) => """We know that the absence of coercion and responding to subtle cues are the keys to an animal feeling in control, safe and confident, and these qualities are compatible with enhanced welfare,"""
+        ),
     ),
 )
 

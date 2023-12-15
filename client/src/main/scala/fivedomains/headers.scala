@@ -136,7 +136,7 @@ def frontHeader =
                 logo(^.cls := "five-domains-logo")
             ),
             <.div(^.cls := "title",
-                "Mellorator"
+                "Mellorater"
             )
         )        
     )
