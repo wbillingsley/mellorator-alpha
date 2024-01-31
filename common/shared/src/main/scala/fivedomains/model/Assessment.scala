@@ -1,6 +1,6 @@
 package fivedomains.model
 
-case class Assessment(animal:AnimalId, time:Double, answers:Map[Int, Answer]) {
+case class Assessment(animal:AnimalId, situation:Situation, time:Double, answers:Map[Int, Answer]) {
 
     /** Average score in a given domain */
     def average(domain:Domain):Double = domain match {

@@ -130,6 +130,8 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         (for q <- flattenedQs yield q.num -> q.defaultAnswer).toMap
     )
 
+    val situation = stateVariable(Situation.DayToDay)
+
     val footerSelectors = (for q <- flattenedQs yield q.num -> stateVariable[FooterSelection](FooterSelection.None)).toMap
 
     // Animates scrolling the next question to the top of the screen
@@ -145,7 +147,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
     val maxQNum = 18 // TODO: Don't hardcode this
 
     def submit():Unit = 
-        DataStore.addAssessment(Assessment(animal.id, new scalajs.js.Date().valueOf, answers.value))
+        DataStore.addAssessment(Assessment(animal.id, situation.value, new scalajs.js.Date().valueOf, answers.value))
         Router.routeTo(AppRoute.Animal(animal.id))
 
     def render = 
@@ -155,6 +157,20 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
             "Assessment",
             <.label(^.cls := (animalName), animal.name)
         ),
+
+        <.p(^.style := "margin: 1em;",
+            s"Which situation is this assessment for?",
+            <.select(^.style := s"margin-left: 0.25em; max-width: 300px; font-size: $largeFont;",
+                    ^.on("input") ==> { e => for n <- e.inputValue do situation.value = Situation.fromOrdinal(n.toInt) },
+
+                    for s <- allowableSituations(animal.species) yield 
+                        <.option(
+                            ^.prop.value := s.ordinal, s.toString,
+                            if s.ordinal == situation.value.ordinal then ^.prop.selected := "selected" else None
+                        )
+                )
+        ),
+
 
         <.p(^.style := "margin: 1em;",
             s"Thinking of ${animal.name}, what is your level of agreement with each of the following statements",

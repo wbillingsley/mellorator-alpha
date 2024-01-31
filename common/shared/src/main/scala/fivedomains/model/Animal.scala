@@ -22,6 +22,6 @@ object AnimalId {
     }
 }
 
-case class Animal(id:AnimalId, name:String, species:Species, display:DisplayStyle = DisplayStyle.Curls)
+case class Animal(id:AnimalId, name:String, species:Species, display:DisplayStyle = DisplayStyle.Curls) 
 
 

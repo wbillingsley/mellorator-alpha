@@ -1,14 +1,27 @@
 package fivedomains.model
 
-enum Situation(descr:String):
-    case DayToDay extends Situation("day-to-day living")
-    case Exercising extends Situation("exercising")
-    case Transport extends Situation("being transported")
-    case Training extends Situation("training")
-    case Working extends Situation("working")
-    case Competition extends Situation("competition")
-    case Showing extends Situation("showing")
-    case Veterinary extends Situation("veterinary care or grooming")
+import upickle.default.*
+
+enum Situation derives ReadWriter:
+    case DayToDay 
+    case Exercising 
+    case Transport 
+    case Training 
+    case Working
+    case Competition
+    case Showing
+    case Veterinary
+
+    def descr = this match {
+        case DayToDay => "day-to-day living"
+        case Exercising => "exercising"
+        case Transport => "being transported"
+        case Training => "training"
+        case Working => "working"
+        case Competition => "competition"
+        case Showing => "showing"
+        case Veterinary => "veterinary care or grooming"
+    }
 
 enum Frequencies(toText: () => String):
     case DaysPerMonth(n:Int) extends Frequencies(() => n match {

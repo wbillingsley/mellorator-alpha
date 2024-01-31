@@ -20,6 +20,7 @@ import java.util.UUID
 given RW[Animal] = macroRW
 given RW[Confidence] = macroRW
 given RW[Answer] = macroRW
+//given RW[Situation] = RW.merge(macroRW[Situation.Competition], macroRW[Situation.DayToDay], macroRW[Situation.Exercising], macroRW[Situation.Showing], macroRW[Situation.Training], macroRW[Situation.Transport], macroRW[Situation.Veterinary], macroRW[Situation.Working])
 given RW[Assessment] = macroRW
 
 case class DataBlob(
@@ -80,8 +81,8 @@ object DataStore {
         _assessments.append(a)
         localStorage.setItem("assessments", write(assessments))
 
-    def addAssessment(animal:AnimalId, time:Double, answers:Seq[(AnswerValue, Confidence, Option[String])]):Unit = 
-        _assessments.append(Assessment(animal=animal, time=time, 
+    def addAssessment(animal:AnimalId, situation:Situation, time:Double, answers:Seq[(AnswerValue, Confidence, Option[String])]):Unit = 
+        _assessments.append(Assessment(animal=animal, situation=situation, time=time, 
           (for ((ans, conf, note), i) <- answers.zipWithIndex yield i -> Answer(i, ans, conf, note)).toMap
         ))
         localStorage.setItem("assessments", write(assessments))
