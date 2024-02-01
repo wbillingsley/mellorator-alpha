@@ -53,6 +53,34 @@ def colouredScoreFace(x:Double) =
     else 
         happy(scoreColorClassName(x))
 
+def creamFace(x:Double) = 
+    if x < 40 then 
+        unhappy("cream")
+    else if x < 60 then 
+        neutral("cream")
+    else 
+        happy("cream")
+
+def boxedScoreFaceHtml(score:Double) = 
+    import html.* 
+    <.div(
+        ^.attr.style := s"display: inline-block; background: ${scoreColor(score)}; border: 1px solid $cream; border-radius: 5px; padding: 0;",
+        creamFace(score)(^.attr.width := 30, ^.attr.height := 25) 
+    )
+
+def unboxedDomainLogo(d:Domain, score:Double) = 
+    import html.* 
+    <.div(^.style := s"color: ${scoreColor(score)}",
+        domainLogo(d) 
+    )
+
+def boxedDomainLogo(d:Domain, score:Double) = 
+    import html.* 
+    <.div(
+        ^.attr.style := s"display: inline-block; background: ${scoreColor(score)}; border: 1px solid $cream; border-radius: 5px; padding: 0;",
+        domainLogo(d) 
+    )
+
 
 val faceStyling = Styling("").modifiedBy(
     " .eye" -> "stroke: none;",
@@ -76,25 +104,25 @@ val faceStyling = Styling("").modifiedBy(
 def happy(colour:String) = 
     import svg.*
     svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
-        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        path(^.cls := "mouth", ^.attr.d := "M 25 60 A 50 85 1 0 0 75 60")
+        circle(^.attr.cx := "30", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 70 A 50 95 1 0 0 75 70")
     )
 
 def neutral(colour:String) = 
     import svg.*
     svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
-        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        path(^.cls := "mouth", ^.attr.d := "M 25 65 L 75 65")
+        circle(^.attr.cx := "30", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 70 L 75 70")
     )
 
 def unhappy(colour:String) = 
     import svg.*
     svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
-        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
-        path(^.cls := "mouth", ^.attr.d := "M 25 70 A 50 85 1 0 1 75 70")
+        circle(^.attr.cx := "30", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "38", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 80 A 50 90 1 0 1 75 80")
     )
 
 
@@ -249,16 +277,16 @@ def leftBlockHeader(backurl:String, title:String, block:VHtmlContent, decoration
         ^.cls := Styling(
                 "margin: 0 0 1.5em; position: relative; top: 0; height: 120px; padding: 20px; box-shadow: 0 3px 3px #aaa; font-family: sans-serif;"
             ).modifiedBy(
-                " .bgimage" -> """
+                " .bgimage" -> s"""
                   |opacity: 0.5;
                   |position: absolute; height: 100%; width: 100%; top: 0; left: 0;
-                  |background-image: url("images/grass oil.jpeg");
+                  |background-color: $darkCream 
                   |background-position: center;
                   |background-size: cover;
                   |""".stripMargin,
                 " .foreground" -> "position: relative; top: 0; left: 0; height: 100%;",
                 " .links a" -> s"text-decoration: none; font-size: $smallFont; color: black;",
-                " .title-block" -> s"font-size: $largeFont; width: 100%; color: white; margin-top: 1em;",
+                " .title-block" -> s"font-size: $largeFont; width: 100%; color: $darkCream; margin-top: 1em;",
                 " .block" -> "position: absolute; bottom: 0;",
             ).register().className,
 

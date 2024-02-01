@@ -82,6 +82,9 @@ def confidenceSlider(confidence:Confidence)(update: (Confidence) => Unit) = {
 def stronglyAgreeSlider(value:AnswerValue.Numeric)(update: (AnswerValue) => Unit) = {
     import html.*
     <.div(^.style := "text-align: center",
+        <.div(^.style := "position; relative; height: 5px; overflow: visible",
+            colouredScoreFace(value.value)(^.attr.width := 30, ^.attr.height := 30)
+        ),
         <.label(^.cls := "sd", "Strongly disagree"),
         <.input(^.attr("type") := "range", 
             ^.prop("value") := value.value.toString,
@@ -99,12 +102,15 @@ def ratingPicker(value:AnswerValue.Rated)(update: (AnswerValue) => Unit) = {
 
         for level <- Rating.values yield
             if value.value == level then
-                <.button(^.attr.disabled := "disabled", ^.attr.style := "background: orange",
-                level.abbreviation)
+                <.button(^.attr.disabled := "disabled", 
+                    ^.attr.style := s"background: ${scoreColor(level.value)}; border: 4px solid black; border-radius: 5px; padding: 0;",
+                    creamFace(level.value)(^.attr.width := 30, ^.attr.height := 25)    
+                )
             else
                 <.button(
                     ^.on.click --> update(AnswerValue.Rated(level)),
-                    level.abbreviation
+                    ^.attr.style := s"background: ${scoreColor(level.value)}; border: none; border-radius: 5px; padding: 0;",
+                    creamFace(level.value)(^.attr.width := 30, ^.attr.height := 25)
                 ),
                 
         <.label(^.cls := "sa", "Very Good"),

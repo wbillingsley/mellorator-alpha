@@ -38,8 +38,11 @@ def currentRedFlags(assess:Assessment) =
         for d <- assess.domainsContainingConcern yield <.div(
             <.h4(d.title),
             for a <- assess.lowAnswers if a.question.domain == d yield <.div(
-                <.h5(a.question.headline(animal)),
-                <.p(a.value.labelText),
+                <.h5(
+                    <.div(^.style := "float: left; margin-right: 10px; margin-top: 2px;", boxedScoreFaceHtml(a.value.asDouble)), 
+                    a.question.headline(animal)
+                ),
+                
                 for n <- a.note yield <.p(^.style := "font-style: italic;", n)
             )
         )        
@@ -57,15 +60,36 @@ def pastRedFlags(assessments:Seq[Assessment]):DHtmlModifier =
 
                 <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
 
+                <.table(
+
+                    for (i, a) <- assess.answers.toSeq if a.value.asDouble < 60 yield 
+                        <.tr(^.style := "vertical-align: top",
+                            <.td(
+                                unboxedDomainLogo(a.question.domain, assess.categoryScore(a.question.domain))
+                            ),
+                            <.td(
+                                boxedScoreFaceHtml(a.value.asDouble)
+                            ),
+                            <.td(
+                                <.h5(a.question.headline(animal), ^.style := "margin-top: 0"),
+                                for n <- a.note yield <.p(^.style := "font-style: italic;", n)
+                            )
+                        )
+
+                
+                )
+
                 // For each domain, if there exists a value scored low, show the section
-                for d <- assess.domainsContainingConcern yield <.div(
-                    <.h4(d.title),
-                    for a <- assess.lowAnswers if a.question.domain == d yield <.div(
-                        <.h5(a.question.headline(animal)),
-                        <.p(a.value.labelText),
-                        for n <- a.note yield <.p(^.style := "font-style: italic;", n)
-                    )
-                )        
+                // for d <- assess.domainsContainingConcern yield <.div(
+                //     <.h4(d.title),
+                //     for a <- assess.lowAnswers if a.question.domain == d yield <.div(
+                //         <.h5(
+                //             <.div(^.style := "float: left; margin-right: 10px; margin-top: 2px;", boxedScoreFaceHtml(a.value.asDouble)), 
+                //             a.question.headline(animal)
+                //         ),
+                //         for n <- a.note yield <.p(^.style := "font-style: italic;", n)
+                //     )
+                // )        
 
             )
         )
@@ -91,14 +115,15 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
     val max = surveys.length
     val number = stateVariable(max)
 
-    def subset = surveys.take(number.value)
+    def subset = surveys.reverse.drop(max - number.value)
 
     override def render = <.div(
 
         <.div(^.cls := alignCentreStyle,    
-            <.p(s"Showing surveys up to ${new scalajs.js.Date(surveys.last.time).toLocaleDateString}"),
-            <.p(^.style := "font-style: italic", s"(to go back in time, drag this slider left)"),
-            <.p(
+
+            scoringRose(subset),
+
+            <.p("Time machine: ",
                 <.input(
                     ^.attr("type") := "range", ^.attr("min") := 1, ^.attr("max") := max,
                     ^.prop("value") := number.value, ^.on.input ==> { e => for v <- e.inputValue do number.value = v.toInt }
@@ -106,7 +131,7 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
             ),
         ),
 
-        surveySummary(animal, subset)
+        pastRedFlags(subset)
     )
 
 }
@@ -115,25 +140,14 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
 def surveySummary(animal:Animal, surveys:Seq[Assessment]) = <.div(
     // Widget for surveys
     if surveys.isEmpty then 
-        assessments.sevenBox(Map.empty)(^.style := "")
-    else if surveys.length == 1 then
-        val s = surveys.head
+        scoringRose(surveys.reverse)
+    else 
         <.div(^.style := "margin: 1.5em;",
             <.div(^.style := "text-align: center;",
-                assessments.scoreText7(s)
+                scoringRose(surveys.reverse)
             ),
 
-            currentRedFlags(s),
-        )
-    else
-        <.div(^.style := "margin: 1.5em;",
-            <.div(^.style := "text-align: center;",
-                assessments.colouredSparkTrend7(surveys)
-            ),
-
-            currentRedFlags(surveys.last),
-
-            pastRedFlags(surveys.dropRight(1))
+            pastRedFlags(surveys)
         ),
 
     <.div(^.cls := nakedParaMargins,

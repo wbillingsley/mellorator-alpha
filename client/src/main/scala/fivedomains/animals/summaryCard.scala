@@ -23,7 +23,7 @@ def summaryCard(animal:Animal) =
             )
         ),
        
-        <.div(^.attr.style := "margin: 1em 0;", scoringRose(surveys)),
+        <.div(^.attr.style := "margin: 1em 0;", scoringRose(surveys.reverse)),
 
          <.div(
             if surveys.isEmpty then 
