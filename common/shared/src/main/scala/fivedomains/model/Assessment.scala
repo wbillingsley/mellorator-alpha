@@ -22,6 +22,21 @@ case class Assessment(animal:AnimalId, situation:Situation, time:Double, answers
 
     def answer(q:Question) = answers(q.num)
 
+
+    def heuristic(numbers:Iterable[Double]):Double = 
+        val minScore = numbers.min
+        val avgScore = numbers.sum / numbers.size
+        Math.min(avgScore, minScore + 20)
+
+    def categoryScore(d:Domain):Double = 
+        val filtered = answers.values.filter { (a) => flattenedQs.find(_.num == a.q).map(_.domain).contains(d) }
+        val numeric = filtered.map(_.value.categoryMidpoint)
+        heuristic(numeric)
+
+    def overallScore:Double = 
+        val catScores = for d <- Domain.scoredDomains yield categoryScore(d)
+        heuristic(catScores)
+
 }
 
 extension (s:Iterable[Assessment]) {

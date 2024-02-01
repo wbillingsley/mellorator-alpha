@@ -184,6 +184,12 @@ enum AnswerValue derives upickle.default.ReadWriter:
         case Rated(r) => r.value
     }
 
+    def categoryBase = Math.floor(asDouble / 20) * 20
+
+    def categoryMidpoint = Math.floor(asDouble / 20) * 20 + 10
+
+
+
     def labelText = this match {
         case Numeric(v) => scoreText(v) //f" ${v * 100}%2.0f"
         case Rated(r) => scoreText(r)

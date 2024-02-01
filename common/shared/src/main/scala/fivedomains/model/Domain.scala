@@ -10,3 +10,6 @@ enum Domain(val title:String):
     case InteractionsSocial extends Domain("Social interactions")
     case InteractionsHuman extends Domain("Interactions with humans")
     case Mental extends Domain("Overall wellbeing")
+
+object Domain:
+    val scoredDomains = Seq(Nutrition, Environment, Health, InteractionsEnvironment, InteractionsSocial, InteractionsHuman)

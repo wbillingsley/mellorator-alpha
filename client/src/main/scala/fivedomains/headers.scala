@@ -5,11 +5,22 @@ import html.{VHtmlContent, Styling, DHtmlComponent, Animator}
 
 import model.*
 
-val veryPoor = "hsl(5, 84%, 70%)"
-val poor = "hsl(9, 86%, 80%)"
-val neutral = "hsl(32, 95%, 76%)"
-val good = "hsl(120, 27%, 82%)"
-val veryGood = "hsl(124, 29%, 71%)"
+val darkGreen = "#4b7b55"
+val lightGreen = "#82ac8c"
+val orange = "#f8ba52"
+val lavender = "#cca5cd"
+val darkPurple = "#713291"
+
+val cream = "#f5f2e3"
+val darkCream = "#d4c787" // cream darkened by 25%
+
+val headerFontFamily = "Lexend, sans-serif"
+
+val veryPoor = darkPurple // "hsl(5, 84%, 70%)"
+val poor = lavender // "hsl(9, 86%, 80%)"
+val neutral = orange // "hsl(32, 95%, 76%)"
+val good = lightGreen //"hsl(120, 27%, 82%)"
+val veryGood = darkGreen //"hsl(124, 29%, 71%)"
 
 
 val fgVeryPoor = "hsl(5, 84%, 30%)"
@@ -27,6 +38,92 @@ def scoreColor(x:Double) =
     else if x < 80 then good
     else veryGood
 
+def scoreColorClassName(x:Double) =
+    if x < 20 then "darkPurple"
+    else if x < 40 then "lavender"
+    else if x < 60 then "orange"
+    else if x < 80 then "lightGreen"
+    else "darkGreen"
+        
+def colouredScoreFace(x:Double) = 
+    if x < 40 then 
+        unhappy(scoreColorClassName(x))
+    else if x < 60 then 
+        neutral(scoreColorClassName(x))
+    else 
+        happy(scoreColorClassName(x))
+
+
+val faceStyling = Styling("").modifiedBy(
+    " .eye" -> "stroke: none;",
+    " .mouth" -> "fill: none; stroke-width: 7; stroke-linecap: round;",
+    ".cream .eye" -> s"fill: $cream",
+    ".cream .mouth" -> s"stroke: $cream",
+    ".darkCream .eye" -> s"fill: $darkCream",
+    ".darkCream .mouth" -> s"stroke: $darkCream",
+    ".orange .eye" -> s"fill: $orange",
+    ".orange .mouth" -> s"stroke: $orange",
+    ".lavender .eye" -> s"fill: $lavender",
+    ".lavender .mouth" -> s"stroke: $lavender",
+    ".darkPurple .eye" -> s"fill: $darkPurple",
+    ".darkPurple .mouth" -> s"stroke: $darkPurple",
+    ".darkGreen .eye" -> s"fill: $darkGreen",
+    ".darkGreen .mouth" -> s"stroke: $darkGreen",
+    ".lightGreen .eye" -> s"fill: $lightGreen",
+    ".lightGreen .mouth" -> s"stroke: $lightGreen",
+).register()
+
+def happy(colour:String) = 
+    import svg.*
+    svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
+        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 60 A 50 85 1 0 0 75 60")
+    )
+
+def neutral(colour:String) = 
+    import svg.*
+    svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
+        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 65 L 75 65")
+    )
+
+def unhappy(colour:String) = 
+    import svg.*
+    svg(^.attr.viewBox := "0 0 100 100", ^.cls := (faceStyling, colour),
+        circle(^.attr.cx := "30", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        circle(^.attr.cx := "70", ^.attr.cy := "33", ^.attr.r := 8, ^.cls := "eye"),
+        path(^.cls := "mouth", ^.attr.d := "M 25 70 A 50 85 1 0 1 75 70")
+    )
+
+
+
+def domainLogo(d:Domain):VHtmlContent = 
+    import html.*
+    d match {
+        case Domain.Environment => <.span(^.cls := "material-symbols-outlined", "cottage")
+        case Domain.Health => <.span(^.cls := "material-symbols-outlined", "ecg_heart")
+        case Domain.Nutrition => <.span(^.cls := "material-symbols-outlined", "nutrition")
+        case Domain.InteractionsEnvironment => <.span(^.cls := "material-symbols-outlined", "nature")
+        case Domain.InteractionsSocial => <.span(^.cls := "material-symbols-outlined", "pets")
+        case Domain.InteractionsHuman => <.span(^.cls := "material-symbols-outlined", "person")
+        case Domain.Mental => <.span(^.cls := "material-symbols-outlined", "planner_review")
+    }
+
+def domainLogoSvg(d:Domain) = 
+    import html.*
+    d match {
+        case Domain.Environment => SVG.text(^.cls := "material-symbols-outlined", "cottage")
+        case Domain.Health => SVG.text(^.cls := "material-symbols-outlined", "ecg_heart")
+        case Domain.Nutrition => SVG.text(^.cls := "material-symbols-outlined", "nutrition")
+        case Domain.InteractionsEnvironment => SVG.text(^.cls := "material-symbols-outlined", "nature")
+        case Domain.InteractionsSocial => SVG.text(^.cls := "material-symbols-outlined", "pets")
+        case Domain.InteractionsHuman => SVG.text(^.cls := "material-symbols-outlined", "person")
+        case Domain.Mental => SVG.text(^.cls := "material-symbols-outlined", "planner_review")
+    }
+
+
 val smallFont = "15px"
 val smallLineHeight  = "18px"
 val largeFont = "21px"
@@ -43,6 +140,7 @@ val nakedParaMargins = Styling("margin: 1em").register()
 val top = Styling(
     """font-family: sans-serif; max-width: 480px; margin: auto;"""
 ).modifiedBy(
+    " h1,h2,h3,h4,h5,h6 " -> s"font-family: $headerFontFamily",
     " input,button,label" -> s"font-size: $smallFont; line-height: $smallLineHeight;"
 ).register()
 
@@ -64,7 +162,7 @@ val card = Styling(
 ).register()
 
 val animalName = Styling(
-    s"font-size: $largeFont; font-weight: bold;"
+    s"font-size: $largeFont; font-family: $headerFontFamily, font-weight: bold;"
 ).register()
 
 val notice = Styling(
@@ -102,6 +200,15 @@ val fakeSparkLine =
     )
 
 
+def imageFile(name:String, alt:String) = 
+    import html.* 
+    img(^.src := "images/" + name, ^.attr.alt := alt)
+
+
+def fullLogo = imageFile("logo full.png", "Mellorator logo")
+
+
+
 def logo =
     import html.* 
     import assessments.*
@@ -119,24 +226,19 @@ def frontHeader =
             s"margin: 0 0 1.5em; position: relative; top: 0; height: $frontHeaderHeight; box-shadow: 0 3px 3px #aaa;"
         ).modifiedBy(
             " .bgimage" -> """
-                |height: 100%;
-                |opacity: 0.5;
+                |width: 100%;
                 |position: absolute; height: 100%; width: 100%; top: 0;
-                |background-image: url("images/grass oil.jpeg");
+                |background-image: url("images/logo full.png");
                 |background-position: center;
                 |background-blend-mode: soft-light;
-                |background-size: cover;
+                |background-size: contain;
                 |""".stripMargin,
             " .title-block" -> s"text-align: center; position: absolute; bottom: 1em; font-family: sans-serif; font-size: $largeFont; width: 100%;",
             " .five-domains-logo" -> "width: 90px;"
         ).register().className,
         <.div(^.cls := "bgimage"),
         <.div(^.cls := "title-block",
-            <.div(
-                logo(^.cls := "five-domains-logo")
-            ),
             <.div(^.cls := "title",
-                "Mellorater"
             )
         )        
     )

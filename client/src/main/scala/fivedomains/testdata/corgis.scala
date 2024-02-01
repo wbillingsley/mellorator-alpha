@@ -311,3 +311,5 @@ def addPickles() =
             (AnswerValue.Numeric(25), Confidence.Medium, None),           
         )
     )
+
+    val empty = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Empty", Species.Horse, DisplayStyle.Plaid))

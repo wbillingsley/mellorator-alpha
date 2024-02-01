@@ -26,6 +26,7 @@ given markdown:Markup = Markup(marked(_))
 given styleSuite:StyleSuite = StyleSuite()
 
 @main def main = {
+
   styleSuite.install()
 
   // add test data
