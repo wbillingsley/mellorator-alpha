@@ -28,6 +28,9 @@ case class Assessment(animal:AnimalId, situation:Situation, time:Double, answers
         val avgScore = numbers.sum / numbers.size
         Math.min(avgScore, minScore + 20)
 
+    def answersInDomain(d:Domain) = 
+        answers.values.filter { (a) => flattenedQs.find(_.num == a.q).map(_.domain).contains(d) }
+
     def categoryScore(d:Domain):Double = 
         val filtered = answers.values.filter { (a) => flattenedQs.find(_.num == a.q).map(_.domain).contains(d) }
         val numeric = filtered.map(_.value.categoryMidpoint)

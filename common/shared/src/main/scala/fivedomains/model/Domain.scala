@@ -13,3 +13,5 @@ enum Domain(val title:String):
 
 object Domain:
     val scoredDomains = Seq(Nutrition, Environment, Health, InteractionsEnvironment, InteractionsSocial, InteractionsHuman)
+
+    val interactionDomains = Seq(InteractionsEnvironment, InteractionsSocial, InteractionsHuman)

@@ -164,7 +164,7 @@ def colouredSparkTrend7(assessments:Seq[Assessment]) =
   * 
   * This SVG diagram format is also used to generate the logo for the app.
   */
-def rosetteAndSides(rosette:svg.DSvgContent)(data: Map[Domain, (String, VHtmlContent)]) = 
+def rosetteAndSides(rosette:svg.DSvgContent)(data: Map[Domain, (String, svg.DSvgContent)]) = 
     import svg.*
 
     val gap = 10
@@ -184,29 +184,32 @@ def rosetteAndSides(rosette:svg.DSvgContent)(data: Map[Domain, (String, VHtmlCon
     val centreH = boxH 
     val centreW = (Math.sqrt(Math.pow(circleR, 2) - Math.pow(centreH / 2, 2)) * 2).toInt
 
-    def emptyContent = html.<.p("")
+    def emptyContent = SVG.g()
     def emptyCol = "gainsboro"
 
     /** Aligns boxes on top of each other. */
-    def stackBoxes(data: Seq[(Domain, (String, VHtmlContent))], alignLeft:Boolean) = {
+    def stackBoxes(data: Seq[(Domain, (String, DSvgContent))], left:Boolean) = {
         (for 
             ((domain, (col, content)), index) <- data.zipWithIndex            
-        yield Seq(
+        yield g(^.attr.transform := s"translate(${(if left then 0 else boxW + gap)}, ${(index * (boxH + gap))})",
             sparkbox(col, boxW, boxH)(
-                ^.attr("x") := (if alignLeft then 0 else boxW + gap), 
-                ^.attr("y") := (index * (boxH + gap)),
+                ^.attr("x") := 0,//(if left then 0 else boxW + gap), 
+                ^.attr("y") := 0, //(index * (boxH + gap)),
                 ^.attr.style := s"fill: $cream"
             ),
             domainLogoSvg(domain)(^.style := s"fill: $darkCream; font-size: 55px;", ^.attr("text-anchor") := "middle", ^.attr("dominant-baseline") := "middle", 
-                ^.attr.y := (index * (boxH + gap)) + boxH / 2 + 5,
-                ^.attr.x := (if alignLeft then 40 else boxW + gap + boxW - 40)
+                ^.attr.y := boxH / 2 + 5, //(index * (boxH + gap)) + boxH / 2 + 5,
+                ^.attr.x := (if left then 40 else boxW - 40)
             ),
-            foreignObject(
-                ^.attr("x") := (if alignLeft then 80 else boxW + gap + boxH), 
-                ^.attr("y") := (index * (boxH + gap)), 
-                ^.cls := (if alignLeft then alignLeftStyle else alignRightStyle),
-                ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, content),
-        )).flatten
+            g(^.attr.transform := s"translate(${if left then boxW - 180 else 180}, 0) scale(${if left then -1 else 1}, 1) ",
+                content
+            )
+            // foreignObject(
+            //     ^.attr("x") := (if alignLeft then 80 else boxW + gap + boxH), 
+            //     ^.attr("y") := (index * (boxH + gap)), 
+            //     ^.cls := (if alignLeft then alignLeftStyle else alignRightStyle),
+            //     ^.attr("width") := boxW - boxH, ^.attr("height") := boxH, content),
+        ))
     }
 
     def stackMask(alignLeft:Boolean) = {
@@ -279,7 +282,7 @@ def scoringRose(assessments:Seq[Assessment]) =
 
     }
 
-    rosetteAndSides(ros)((for d <- Domain.values yield d -> ("", <.span)).toMap)(^.style := "")
+    rosetteAndSides(ros)((for d <- Domain.values yield d -> ("", domainTrack(d, assessments))).toMap)(^.style := "")
 
 val rosetteStyling = Styling(
     """|
@@ -301,6 +304,37 @@ def rosette(content:Map[Domain, (Seq[svg.DSvgModifier], Seq[svg.DSvgModifier])])
         for (seg, cont) <- content.get(Domain.Mental) yield g(circle(^.attr.r := "80", ^.cls := "mental")(seg*), g(cont*))
     )
 
+
+def domainTrack(d:Domain, assessments:Seq[Assessment]):svg.DSvgContent = 
+    import svg.* 
+    
+    // How many assessments to show in the grid
+    val subset = assessments.take(8)
+    val leftToRight = Domain.interactionDomains.contains(d)
+    
+    var x = 0 // if leftToRight then 0 else 100
+    val cellSize = 20
+    val cellGap = 5
+    val y0 = 15 /* d match {
+        case Domain.Nutrition | Domain.InteractionsEnvironment => 50 - cellSize / 2
+        case Domain.Environment | Domain.InteractionsSocial | Domain.Mental => cellSize + cellGap + 50 - cellSize / 2 
+        case Domain.Health | Domain.InteractionsHuman => 2 * (cellSize + cellGap) + 50 - cellSize / 2 
+    }*/
+
+    val xIncr = cellGap + cellSize //if leftToRight then cellGap + cellSize else -cellGap - cellSize
+    var alpha = 1d
+    g(
+        (for a <- subset yield
+            x = x + xIncr
+            alpha = alpha * 0.88
+            for (ans, i) <- a.answersInDomain(d).zipWithIndex yield {
+                rect(^.attr.x := x, ^.attr.y := y0 + i * (cellSize + cellGap), ^.attr.width := cellSize, ^.attr.height := cellSize, ^.attr.rx := 5,
+                ^.style := f"fill: ${scoreColor(ans.value.asDouble)}; opacity: $alpha%2.1f;"
+                
+                )
+            }
+        ).flatten
+    )
 
 
 
