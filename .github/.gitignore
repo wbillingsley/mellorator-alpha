@@ -1,0 +1,19 @@
+.vscode/
+.scala-build/
+.bsp/
+.metals/
+*.js.map
+
+.DS_Store
+
+target/
+
+project/metals.sbt
+project/project/
+
+node_modules/
+
+package-lock.json
+
+# In the gh-pages version, we include the packed directory
+!dist/
