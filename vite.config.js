@@ -7,6 +7,9 @@ export default defineConfig({
     projectID: "awClient",  
   })],
   
+  base: '/mellorator-alpha/',
+  publicDir: 'assets',
+
   server: {
     host: true
   }
