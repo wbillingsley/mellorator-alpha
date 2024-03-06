@@ -9,6 +9,10 @@ ThisBuild / scalaVersion := "3.2.2"
 
 lazy val root = project.in(file("."))
   .aggregate(commonJS, commonJVM, awServer, awClient)
+  .settings(
+    Compile / fullLinkJSOutput / aggregate := false,
+
+  )
 
 lazy val common = crossProject(JVMPlatform, JSPlatform).in(file("common"))
   .settings(
@@ -27,7 +31,6 @@ lazy val awClient = project.in(file("client"))
   .enablePlugins(ScalaJSPlugin)
   .enablePlugins(ScalablyTypedConverterExternalNpmPlugin)
   .settings(
-
     resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
     libraryDependencies ++= Seq(
       "com.wbillingsley" %%% "doctacular" % "0.3.0+2-7eae7e5d-SNAPSHOT",

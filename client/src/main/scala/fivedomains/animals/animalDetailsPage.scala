@@ -115,7 +115,8 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
     val max = surveys.length
     val number = stateVariable(max)
 
-    def subset = surveys.reverse.drop(max - number.value)
+    def subset = surveys.reverse.drop(max - 
+    number.value)
 
     override def render = <.div(
 
