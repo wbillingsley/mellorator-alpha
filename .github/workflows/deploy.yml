@@ -36,12 +36,18 @@ jobs:
         run: echo Deploy script has started!
 
       # Runs a set of commands using the runners shell
+      - name: npm install in client
+        run: |
+          cd client
+          npm install
+
+      # Runs a set of commands using the runners shell
       - name: Compile the deck to JavaScript
         run: |
           npm install
           npm run build
-          sbt deployScript
           mv .github/workflows/.gitignore.gh-pages .gitignore
+
       # Deploy to gh-pages branch
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
