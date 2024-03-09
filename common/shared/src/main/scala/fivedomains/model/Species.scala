@@ -4,6 +4,12 @@ import upickle.default.{given, *}
 import java.util.UUID
 
 enum Species(val longText:String):
+    case Horse extends Species("Horse / Pony")
+    case Dog extends Species("Dog")
+    case Cat extends Species("Cat")
+    case Unknown extends Species(" ")
+
+
     case AmphibianUnspecified extends Species("Amphibian (unspecified)")
     case Arthropod extends Species("Arthropod (unspecified)")
     case Budgerigar extends Species("Bird - Budgerigar")
@@ -18,6 +24,7 @@ enum Species(val longText:String):
     case ParrotOther extends Species("Bird - Parrot (Psittacine) - other")
     case Parakeet extends Species("Bird - Parrot (Psittacine) - Parakeet")
     case Turkey extends Species("Bird - Turkey")
+    case Donkey extends Species("Donkey (Equine)")
     case Duck extends Species("Bird - Waterfowl - Duck")
     case Goose extends Species("Bird - Waterfowl - Goose")
     case WaterfowlOther extends Species("Bird - Waterfowl - other")
@@ -26,15 +33,10 @@ enum Species(val longText:String):
     case Guanaco extends Species("Camelid - Guanaco")
     case Llama extends Species("Camelid - Llama")
     case CamelidOther extends Species("Camelid - other")
-    case Cat extends Species("Cat (Feline - Domestic)")
     case Marmoset extends Species("Common marmoset")
     case Cow extends Species("Cow (Bovine)")
     case Deer extends Species("Deer (Cervidae)")
-    case Dog extends Species("Dog (Canine - Domestic)")
     case DuprasiGerbil extends Species("Duprasi (gerbil)")
-    case Donkey extends Species("Equine - Donkey")
-    case Horse extends Species("Equine - Horse / Pony")
-    case Mule extends Species("Equine - Mule")
     case Ferret extends Species("Ferret")
     case Goldfish extends Species("Fish - Coldwater - Carp, Goldfish")
     case CarpOther extends Species("Fish - Coldwater - Carp, other")
@@ -46,6 +48,7 @@ enum Species(val longText:String):
     case EuropeanHedgehog extends Species("Hedgehog - European (Erinaceus europaeus) ")
     case HedgehogOther extends Species("Hedgehog - other")
     case Lion extends Species("Lion")
+    case Mule extends Species("Mule (Equine)")
     case Panther extends Species("Panther")
     case Pig extends Species("Pig (Porcine)")
     case RabbitDomestic extends Species("Rabbit (Domestic)")
@@ -73,7 +76,6 @@ enum Species(val longText:String):
     case Rat extends Species("Rodent - Rat")
     case Sheep extends Species("Sheep (Ovine)")
     case Wolf extends Species("Wolf")
-    case Unknown extends Species("Unknown")
 
     def beta = Seq(Horse, Dog, Cat)
 

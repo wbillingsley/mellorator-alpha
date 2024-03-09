@@ -11,6 +11,9 @@ enum DisplayStyle derives ReadWriter:
     case Circles
     case Plaid
 
+object DisplayStyle:
+    def random = DisplayStyle.fromOrdinal(scala.util.Random.nextInt(DisplayStyle.values.length))
+
 /** Used internally to track animals etc */
 type AnimalId = UUID
 
@@ -22,6 +25,20 @@ object AnimalId {
     }
 }
 
-case class Animal(id:AnimalId, name:String, species:Species, display:DisplayStyle = DisplayStyle.Curls) 
+
+enum Sex derives ReadWriter:
+    case Male
+    case Female
+    case Unspecified
+
+case class Animal(
+    id:AnimalId, 
+    name:String, 
+    species:Species,
+    breed:String = "",
+    sex:Sex = Sex.Unspecified, 
+    desexed:Option[Long] = None,
+    display:DisplayStyle = DisplayStyle.random
+) 
 
 
