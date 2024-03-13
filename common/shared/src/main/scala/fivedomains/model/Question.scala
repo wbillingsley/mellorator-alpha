@@ -119,7 +119,7 @@ Such ‘blind spots’ can happen because we become habituated or desensitised. 
             (_) => """As well as being nourished, thermally comfortable, and rested, animals (like us) need to be physically and mentally occupied. """
         ),
         Question(11, Domain.InteractionsEnvironment, { 
-            (a:Animal) => s"${a.name} has enough room to move around freely" },
+            (a:Animal) => s"${a.name} has enough room to move around easily" },
             (_) => "This statement is especially relevant to animal living in artificially built environments, which are much smaller than their natural habitats.",
             (_) => """From the animal’s perspective, anything smaller than a natural home range, is in principle, a compromise! But don’t give up, instead, you can apply the following rules of thumb: The longer an animal spends in an enclosure, the larger the enclosure  should be. The more choice (agency) the animal has to leave the enclosure, the more its management is aligned with their telos. Whenever confinement is imposed by the human carers or where the animal has no real choice, the general principle is that shorter periods of confinement are better."""
         ),
@@ -131,17 +131,17 @@ Such ‘blind spots’ can happen because we become habituated or desensitised. 
     ),
     Domain.InteractionsSocial -> Seq(
         Question(13, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} can choose how long they spend interacting with animals of their own species" },
+            (a:Animal) => s"${a.name} can choose how long they spend interacting with other ${a.species.plural}." },
             (_) => "Here we are mainly looking at whether the facilities and management schedules afford them any agency – that is, the opportunity to choose to interact or not interact with other members of their species, and how long for.",
             (_) => """Retrieving data. Wait a few seconds and try to cut or copy again.By observing the choices the animal makes and their behaviour towards others, you can learn a lot about their subjective experience - and whether the interactions they engage in are giving rise to negative, neutral or positive experiences at least at the time of the assessment."""
         ),
         Question(14, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} has the space to avoid conflicts with animals of other species" },
+            (a:Animal) => s"${a.name} has positive interactions with other ${a.species.plural}." },
             (_) => "There are other situations where confined animals do not have the space to avoid conflicts with members of other species. Whether the reason they can’t avoid conflict is because they are confined, tethered, held, or cornered by another animal, the correct decision would be to strongly disagree with the statement.",
             (_) => """"Another reason to disagree with the statement is where the animal does not have the space, or the shape and design features of their housing do not allow them to avoid conflict with animals of other species who are present at the time of the assessment. """"
         ),
         Question(15, Domain.InteractionsSocial, { 
-            (a:Animal) => s"${a.name} can choose to interact appropriately with animals of other species." },
+            (a:Animal) => s"${a.name} can avoid conflicts with animals of other species." },
             (_) => "To decide on this question, we first need to consider what the term “appropriately” refers to, because what matters is what animals of this species may consider ‘appropriate’ – from their perspective. This is easier to do if we remind ourselves of the nature of the species in question.",
             (_) => """It is reasonable to say that, in most cases, from the animal’s perspective, maintaining a sense of safety during such interactions would be their very top priority."""
         ),    

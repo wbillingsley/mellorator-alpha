@@ -3,10 +3,10 @@ package fivedomains.model
 import upickle.default.{given, *}
 import java.util.UUID
 
-enum Species(val longText:String):
-    case Horse extends Species("Horse / Pony")
-    case Dog extends Species("Dog")
-    case Cat extends Species("Cat")
+enum Species(val longText:String, val plural:String = "animals of their own species"):
+    case Horse extends Species("Horse / Pony", "horses")
+    case Dog extends Species("Dog", "dogs")
+    case Cat extends Species("Cat", "cats")
     case Unknown extends Species(" ")
 
 

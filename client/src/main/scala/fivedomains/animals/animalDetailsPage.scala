@@ -79,18 +79,6 @@ def pastRedFlags(assessments:Seq[Assessment]):DHtmlModifier =
                 
                 )
 
-                // For each domain, if there exists a value scored low, show the section
-                // for d <- assess.domainsContainingConcern yield <.div(
-                //     <.h4(d.title),
-                //     for a <- assess.lowAnswers if a.question.domain == d yield <.div(
-                //         <.h5(
-                //             <.div(^.style := "float: left; margin-right: 10px; margin-top: 2px;", boxedScoreFaceHtml(a.value.asDouble)), 
-                //             a.question.headline(animal)
-                //         ),
-                //         for n <- a.note yield <.p(^.style := "font-style: italic;", n)
-                //     )
-                // )        
-
             )
         )
 

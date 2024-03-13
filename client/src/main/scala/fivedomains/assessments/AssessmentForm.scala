@@ -212,7 +212,10 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                     case FooterSelection.Confidence => 
                                         confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
                                     case FooterSelection.Explanation => 
-                                        <.div(^.style := "margin: 1em; text-align: left;", q.longExplanation(animal))
+                                        <.div(^.style := "margin: 1em; text-align: left;", 
+                                            // q.longExplanation(animal)
+                                            "Help and advice on answering the question will be added here but is still being worked on..."
+                                        )
                                     case FooterSelection.Notes => 
                                         <.div(^.style := "margin: 1em; text-align: left;", 
                                           <.h4("Notes"),
