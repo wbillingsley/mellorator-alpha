@@ -187,7 +187,8 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                 val dc = domain.color
                 <.div(^.cls := (surveyQstyle), 
                     <.div(^.style := s"padding: 5px 1em; background: $dc",
-                        <.label(^.style := "color: white", domain.title),
+                        
+                        <.label(^.style := "color: white", domainLogo(domain), domain.title),
                     ),
                     
                     for q <- questions yield
@@ -239,9 +240,9 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                             // Footer controls
                             <.div(^.cls := questionFooterStyle,
                                 confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
-                                footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
-                                footerButton(footerSelectors(q.num), "✎", FooterSelection.Notes),
-                                footerButton(footerSelectors(q.num), "📷", FooterSelection.Photo),
+                                // footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
+                                footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "edit_note"), FooterSelection.Notes),
+                               // footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "photo_camera"), FooterSelection.Photo),
 
                                 if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
                                     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))

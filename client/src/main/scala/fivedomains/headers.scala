@@ -173,7 +173,7 @@ val top = Styling(
 ).register()
 
 val button = Styling(
-    s"font-size: $smallFont; margin-left: 0.5em; border-radius: 0.25em; padding: 1em; border: none; text-decoration: none; display: inline-block;"
+    s"font-size: $smallFont; margin-left: 0.5em; border-radius: 0.25em; padding: 0.75em; border: none; text-decoration: none; display: inline-block;"
 ).modifiedBy(
     ".active" -> "font-weight: bold; background: none; color: black;",
     ".enabled" -> "background-color: aliceblue; color: cornflowerblue;"
