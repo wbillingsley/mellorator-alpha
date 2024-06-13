@@ -50,8 +50,6 @@ object AnimalList extends DHtmlComponent {
             ),
         ),
 
-        <.h3("I put this text here in the demo"),
-
         <.p(^.style := "margin-top: 1em; text-align: center;",
             <.a(^.cls := (button, primary), ^.href := Router.path(AppRoute.AddAnimal), "Add an animal")
         )
