@@ -325,15 +325,20 @@ def domainTrack(d:Domain, assessments:Seq[Assessment]):svg.DSvgContent =
     var alpha = 1d
     g(
         (for a <- subset yield
-            x = x + xIncr
-            alpha = alpha * 0.88
+            x = if x == xIncr then x + xIncr + xIncr/2 else x + xIncr
+            alpha = alpha * 0.85
             for (ans, i) <- a.answersInDomain(d).zipWithIndex yield {
                 rect(^.attr.x := x, ^.attr.y := y0 + i * (cellSize + cellGap), ^.attr.width := cellSize, ^.attr.height := cellSize, ^.attr.rx := 5,
                 ^.style := f"fill: ${scoreColor(ans.value.asDouble)}; opacity: $alpha%2.1f;"
                 
                 )
             }
-        ).flatten
+        ).flatten,
+
+        line(
+            ^.attr.x1 := 2 * xIncr + xIncr/8, ^.attr.x2 := 2 * xIncr + xIncr/8, ^.attr.y1 := y0 - cellGap, ^.attr.y2 := y0 + 3 * (cellSize + cellGap), 
+            ^.attr.style := s"stroke: $darkCream; stroke-width: 2px;"
+        )
     )
 
 
