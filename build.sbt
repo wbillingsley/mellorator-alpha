@@ -5,7 +5,7 @@ val deployFull = taskKey[Unit]("Copies the fullLinkJS script to deployscripts/")
 
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-ThisBuild / scalaVersion := "3.2.2"
+ThisBuild / scalaVersion := "3.5.0"
 
 lazy val root = project.in(file("."))
   .aggregate(commonJS, commonJVM, awServer, awClient)

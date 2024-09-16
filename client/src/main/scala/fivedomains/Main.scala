@@ -27,6 +27,8 @@ given styleSuite:StyleSuite = StyleSuite()
 
 @main def main = {
 
+  dom.console.info("Site code loaded. Starting Mellorater.")
+
   styleSuite.install()
 
   // add test data
