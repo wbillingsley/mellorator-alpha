@@ -197,7 +197,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                         <.div(^.style := s"border-bottom: 1px solid $dc", ^.attr("id") := s"question${q.num}",
                             <.div(^.style := "margin: 1em;",
                                 <.h4(q.headline(animal)),
-                                <.p(q.shortExplanation(animal))
+                                // <.p(q.shortExplanation(animal)) 
                             ),                            
                             
                             ans.value match {
@@ -214,8 +214,8 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                         confidenceSlider(ans.confidence) { c => answers.value = answers.value.updated(q.num, ans.copy(confidence = c)) }
                                     case FooterSelection.Explanation => 
                                         <.div(^.style := "margin: 1em; text-align: left;", 
-                                            // q.longExplanation(animal)
-                                            "Help and advice on answering the question will be added here but is still being worked on..."
+                                            q.shortExplanation(animal)
+                                            // "Help and advice on answering the question will be added here but is still being worked on..."
                                         )
                                     case FooterSelection.Notes => 
                                         <.div(^.style := "margin: 1em; text-align: left;", 
@@ -240,7 +240,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                             // Footer controls
                             <.div(^.cls := questionFooterStyle,
                                 confidenceButton(answers.value(q.num).confidence, footerSelectors(q.num)),
-                                // footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
+                                footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
                                 footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "edit_note"), FooterSelection.Notes),
                                // footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "photo_camera"), FooterSelection.Photo),
 
