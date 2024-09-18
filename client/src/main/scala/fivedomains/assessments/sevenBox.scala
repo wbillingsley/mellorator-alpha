@@ -158,6 +158,30 @@ def colouredSparkTrend7(assessments:Seq[Assessment]) =
 /// ----
 /// ----
 
+
+        
+// /**
+//  * Material icons use font ligatures. This is causing us an issue whereby on Safari, the SVG text element they are a part of is getting its dimensions
+//  * calculated off the raw text (without the ligature), causing icons to be misplaced and general trouble in the image when it's transformed.
+//  * 
+//  * To try to solve this, this declares them as symbols so we can define a viewbox
+//  *
+//  * @param d
+//  */
+// def domainSymbol(domain:Domain):svg.DSvgContent = 
+//     import svg.*
+//     symbol(^.attr.id := "domain-" + domain.toString, ^.attr.width := 30, ^.attr.height := 30, ^.attr.viewBox := "-15 -15 30 30",
+//         domainLogoSvg(domain)(^.style := s"font-size: 55px;", ^.attr("text-anchor") := "middle", ^.attr("dominant-baseline") := "middle", 
+//             ^.attr.y := 0,
+//             ^.attr.x := 0
+//         ), 
+//     )
+
+// def useDomainSymbol(domain:Domain):svg.DSvgContent = 
+//     import svg.*
+//     use(^.attr.href := "#domain-" + domain.toString)
+
+
 /**
   * The "seven box" diagram contains the six manually surveyed domains (as rectangles), with the 
   * mental domain superimposed as a circle in the middle.
@@ -233,8 +257,12 @@ def rosetteAndSides(rosette:svg.DSvgContent)(data: Map[Domain, (String, svg.DSvg
             circle(^.attr("fill") := "white", ^.attr("cx") := centreX, ^.attr("cy") := centreY, ^.attr("r") := circleR, ^.attr("stroke") := "black", ^.attr("stroke-width") := 7),
         )
 
+
     svg(^.attr("viewBox") := s"0 $svgTop $width $svgHeight",
         mask,
+
+        // (for d <- Domain.values yield domainSymbol(d)),
+
         g(^.attr("mask") := s"url(#$maskId)",
             stackBoxes(
                 for d <- Seq(Domain.Nutrition, Domain.Environment, Domain.Health) yield d -> data.getOrElse(d, (emptyCol, emptyContent)),

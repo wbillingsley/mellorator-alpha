@@ -142,13 +142,13 @@ def domainLogo(d:Domain):VHtmlContent =
 def domainLogoSvg(d:Domain) = 
     import html.*
     d match {
-        case Domain.Environment => SVG.text(^.cls := "material-symbols-outlined", "partly_cloudy_day")
-        case Domain.Health => SVG.text(^.cls := "material-symbols-outlined", "ecg_heart")
-        case Domain.Nutrition => SVG.text(^.cls := "material-symbols-outlined", "nutrition")
-        case Domain.InteractionsEnvironment => SVG.text(^.cls := "material-symbols-outlined", "nature")
-        case Domain.InteractionsSocial => SVG.text(^.cls := "material-symbols-outlined", "spoke")
-        case Domain.InteractionsHuman => SVG.text(^.cls := "material-symbols-outlined", "person")
-        case Domain.Mental => SVG.text(^.cls := "material-symbols-outlined", "planner_review")
+        case Domain.Environment => SVG.text(^.cls := "material-symbols-outlined", "\uf172" /*"partly_cloudy_day" */)
+        case Domain.Health => SVG.text(^.cls := "material-symbols-outlined", "\uf6e9" /* ecg_heart */)
+        case Domain.Nutrition => SVG.text(^.cls := "material-symbols-outlined", "\ue110" /* "nutrition" */)
+        case Domain.InteractionsEnvironment => SVG.text(^.cls := "material-symbols-outlined", "\ue406" /* "nature" */)
+        case Domain.InteractionsSocial => SVG.text(^.cls := "material-symbols-outlined", "\ue9a7" /* "spoke" */)
+        case Domain.InteractionsHuman => SVG.text(^.cls := "material-symbols-outlined", "\ue7fd" /* "person" */)
+        case Domain.Mental => SVG.text(^.cls := "material-symbols-outlined",  "\ue694" /* "planner_review" */)
     }
 
 
