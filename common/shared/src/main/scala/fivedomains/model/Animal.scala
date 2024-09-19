@@ -38,7 +38,8 @@ case class Animal(
     breed:String = "",
     sex:Sex = Sex.Unspecified, 
     desexed:Option[Long] = None,
-    display:DisplayStyle = DisplayStyle.random
+    display:DisplayStyle = DisplayStyle.random,
+    testData:Boolean = false
 ) 
 
 

@@ -29,7 +29,11 @@ case class DataBlob(
     assessments:mutable.Buffer[Assessment] = mutable.Buffer.empty[Assessment]
 )  
  
-/** A data store for the five domains app */
+/** 
+ * While we're prototyping, the data store is just held in memory. This will change 
+ * - first to saving it in the browser's temporary storage
+ * - then to some kind of server solution
+ */
 object DataStore {
 
     val acceptedSensitiveTopics = PushVariable(
