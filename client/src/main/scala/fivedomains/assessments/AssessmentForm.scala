@@ -183,7 +183,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
         ),
 
         <.div(
-            for (domain, questions) <- allQuestions yield 
+            for (domain, questions) <- allQuestions if questions.exists(!_.dontAsk) yield 
                 val dc = domain.color
                 <.div(^.cls := (surveyQstyle), 
                     <.div(^.style := s"padding: 5px 1em; background: $dc",

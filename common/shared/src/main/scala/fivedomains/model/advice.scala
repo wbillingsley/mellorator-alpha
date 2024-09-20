@@ -6,6 +6,9 @@ package fivedomains.model
 
 import QuestionIdentifier.*
 
+
+
+
 val redFlagFeedback = Map[QuestionIdentifier, Animal => String] (
     DrinksEnough -> {
         (a:Animal) => s"Please ensure that water source is clean and take time to observe ${a.name} drinking to establish that their drinkng behaviour is normal"
@@ -49,7 +52,7 @@ val redFlagFeedback = Map[QuestionIdentifier, Animal => String] (
     CarerBond -> {
         (a:Animal) => s"Please ensure that the animal is safe, calm and content in the presence of their carer"
     },
-    PeopleInteraction -> {
+    FamiliarPeople -> {
         (a:Animal) => s"Please ensure that the animal is safe, calm and content in the presence of familiar people  - then transition these attributes to encounters with less familiar people"
     },
     CalmWithPeople -> {

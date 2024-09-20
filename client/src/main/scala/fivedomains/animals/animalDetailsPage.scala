@@ -49,37 +49,63 @@ def currentRedFlags(assess:Assessment) =
 
     )
 
-def pastRedFlags(assessments:Seq[Assessment]):DHtmlModifier = 
+
+def pastRedFlags(assessments:Seq[Assessment], mode:AnswerFilter):DHtmlModifier = 
     if assessments.isEmpty then 
         None
     else
         val animal = DataStore.animalMap(assessments.head.animal)
 
         <.div(
-            for assess <- assessments.sortBy(- _.time) if assess.domainsContainingConcern.nonEmpty yield <.div(^.cls := nakedParaMargins,
+            for assess <- assessments.sortBy(- _.time) yield 
 
-                <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
-
-                <.table(
-
-                    for (i, a) <- assess.answers.toSeq if a.value.asDouble < 60 yield 
-                        <.tr(^.style := "vertical-align: top",
-                            <.td(
-                                unboxedDomainLogo(a.question.domain, assess.categoryScore(a.question.domain))
-                            ),
-                            <.td(
-                                boxedScoreFaceHtml(a.value.asDouble)
-                            ),
-                            <.td(
-                                <.h5(a.question.headline(animal), ^.style := "margin-top: 0"),
-                                for n <- a.note yield <.p(^.style := "font-style: italic;", n)
-                            )
-                        )
-
-                
+                val filteredAnswers = assess.answers.toSeq.sortBy(_._1).filter((num, a) => 
+                    mode match {
+                        case AnswerFilter.Everything => !a.question.dontAsk
+                        case AnswerFilter.LowConfidence => !a.question.dontAsk && a.confidence.low
+                        case AnswerFilter.LowScore => !a.question.dontAsk && Seq(Agreement.Neutral, Agreement.Disagree, Agreement.StronglyDisagree).contains(a.value.agreement)
+                        case AnswerFilter.HasNote => !a.question.dontAsk && a.note.nonEmpty
+                    }
+                    
                 )
 
-            )
+
+                <.div(^.cls := nakedParaMargins,
+
+                    <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
+
+                    <.table(
+
+                        if filteredAnswers.isEmpty then 
+                            <.p("No questions matched the filter")
+                        else
+                            for (i, a) <- filteredAnswers yield 
+                                <.tr(^.style := "vertical-align: top",
+                                    <.td(
+                                        unboxedDomainLogo(a.question.domain, assess.categoryScore(a.question.domain))
+                                    ),
+                                    <.td(
+                                        boxedScoreFaceHtml(a.value.asDouble)
+                                    ),
+                                    <.td(
+                                        if a.confidence.low then <.span(^.cls := "material-symbols-outlined", "question_mark") else " "
+                                    ),
+                                    <.td(
+                                        <.h5(a.question.headline(animal), ^.style := "margin-top: 0"),
+
+                                        for n <- a.note yield <.p(^.style := "font-style: italic;", n),
+
+                                        <.div(^.style := "font-variant: all-small-caps",
+                                            feedback(animal, assess, QuestionIdentifier.fromOrdinal(a.q))
+                                        )
+
+                                    )
+                                )
+
+                    
+                    )
+
+                )
         )
 
 def animalDetailsPage(aId:AnimalId) = 
@@ -98,7 +124,15 @@ def animalDetailsPage(aId:AnimalId) =
     )
 
 
+enum AnswerFilter(val text:String):
+    case Everything extends AnswerFilter("Everything")
+    case LowConfidence extends AnswerFilter("Low confidence questions")
+    case LowScore extends AnswerFilter("Low scoring questions")
+    case HasNote extends AnswerFilter("Questions with notes")
+
 case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DHtmlComponent {
+
+    val mode = stateVariable(AnswerFilter.Everything)
 
     val max = surveys.length
     val number = stateVariable(max)
@@ -118,9 +152,24 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
                     ^.prop("value") := number.value, ^.on.input ==> { e => for v <- e.inputValue do number.value = v.toInt }
                 ),
             ),
+
+            <.p(
+                "Show ",
+                <.select(^.style := s"margin-left: 0.25em; ",
+                    ^.on.change ==> { (e) => 
+                        val n = e.target.asInstanceOf[scalajs.js.Dynamic].value.asInstanceOf[String]
+                        mode.value = AnswerFilter.fromOrdinal(n.toInt) 
+                    },
+                    for s <- AnswerFilter.values yield 
+                        <.option(
+                            ^.prop.value := s.ordinal, s.text,
+                            if mode.value == s then ^.prop.selected := "selected" else None
+                        )
+                )
+            )
         ),
 
-        pastRedFlags(subset)
+        pastRedFlags(subset, mode.value)
     )
 
 }
@@ -136,7 +185,7 @@ def surveySummary(animal:Animal, surveys:Seq[Assessment]) = <.div(
                 scoringRose(surveys.reverse)
             ),
 
-            pastRedFlags(surveys)
+            pastRedFlags(surveys, AnswerFilter.Everything)
         ),
 
     <.div(^.cls := nakedParaMargins,

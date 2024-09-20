@@ -13,6 +13,8 @@ case class Confidence(value: Double) {
         else "VH"
     }
 
+    def low:Boolean = value < 0.5
+
 
 }
 
