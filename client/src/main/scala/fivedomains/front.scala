@@ -32,11 +32,13 @@ object AnimalList extends DHtmlComponent {
                 Seq(
                     <.button(^.cls := (button, "active"), ^.attr("disabled") := "disabled", "Alphabetical"),
                     <.button(^.cls := (button, "enabled"), "Survey due", ^.onClick --> listMode.receive(OrderBy.LeastRecentlyUpdated)),
+                    <.a(^.href := Router.path(AppRoute.Settings), <.span(^.cls := "material-symbols-outlined", "settings", ^.style := "float: right; right: 20px;"))
                 )
             case OrderBy.LeastRecentlyUpdated => 
                 Seq(
                     <.button(^.cls := (button, "enabled"), "Alphabetical", ^.onClick --> listMode.receive(OrderBy.Alphabetical)),
                     <.button(^.cls := (button, "active"), ^.attr("disabled") := "disabled", "Survey due"),
+                    <.a(^.href := Router.path(AppRoute.Settings), <.span(^.cls := "material-symbols-outlined", "settings", ^.style := "float: right; right: 20px;"))
                 )
         }
         

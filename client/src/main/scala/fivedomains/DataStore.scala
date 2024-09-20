@@ -97,6 +97,7 @@ object DataStore {
 
     def animals = animalMap.values.toSeq.sortBy(_.id)
 
+    /** Delete all stored data */
     def clearAll() = 
         _assessments.clear()
         animalMap.clear()

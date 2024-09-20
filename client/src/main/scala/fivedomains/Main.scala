@@ -31,9 +31,5 @@ given styleSuite:StyleSuite = StyleSuite()
 
   styleSuite.install()
 
-  // add test data
-  DataStore.clearAll()
-  addPickles()
-
   root.render(Router)
 }

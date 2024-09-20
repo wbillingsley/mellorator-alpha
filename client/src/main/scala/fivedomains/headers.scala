@@ -163,6 +163,10 @@ val otherHeaderHeight = "120px"
 val noticeBg = "hsl(240, 33%, 90%)"
 val noticeFg = "hsl(240, 33%, 50%)"
 
+val dangerBg = "hsl(4, 85%, 90%)"
+val dangerFg = "hsl(4, 85%, 50%)"
+
+
 val nakedParaMargins = Styling("margin: 1em").register()
 
 val top = Styling(
@@ -202,6 +206,14 @@ val noticeButton = Styling(
 ).modifiedBy(
     ":hover" -> "filter: brightness(85%);"
 ).register()
+
+val dangerButton = Styling(
+   s"color: white; background: $dangerFg;"
+).modifiedBy(
+    ":hover" -> "filter: brightness(85%);",
+    ":disabled,:hover:disabled" -> "filter: opacity(35%);"
+).register()
+
 
 val fiveboxtext = Styling(
    s"color: white; font-size: 48px; width: 75px; line-height: 100px;"
