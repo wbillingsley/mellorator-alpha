@@ -316,8 +316,8 @@ val rosetteStyling = Styling(
     """|
        |""".stripMargin
 ).modifiedBy(
-    " .segment" -> "filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7));",
-    " .mental" -> "filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.7));",
+    // " .segment" -> "filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.7));",
+    // " .mental" -> "filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.7));",
 ).register()
 
 
@@ -395,6 +395,7 @@ def rosetteSegment(num:Int)(mods: svg.DSvgModifier*)(content: svg.DSvgModifier*)
         path(
             ^.attr.d := f"M 0 ${-outerR} A $outerR $outerR 0 0 1 ${outerR * sin + 0.5}%2.0f ${-outerR * cos + 0.5}%2.0f L ${innerR * sin + 0.5}%2f ${-innerR * cos + 0.5}%2f A $innerR $innerR 0 0 0 0 ${-innerR} z",
         )(mods*),
+        line(^.style := "stroke: rgba(0, 0, 0, 0.2); stroke-width: 2;", ^.attr.y1 := innerR, ^.attr.y2 := -outerR, ^.attr.x1 := 0, ^.attr.x2 := 0),
 
         // rotate the content back to horizontal, about a mid-point in the segment
         g(^.attr.transform := f"translate(${cx}%2.0f, ${cy}%2.0f) rotate(${-rotate})")(content*)
