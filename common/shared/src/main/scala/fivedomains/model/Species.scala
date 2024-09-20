@@ -7,13 +7,31 @@ enum Species(val longText:String, val plural:String = "animals of their own spec
     case Horse extends Species("Horse / Pony", "horses")
     case Dog extends Species("Dog", "dogs")
     case Cat extends Species("Cat", "cats")
+
+    case Cattle extends Species("Cattle", "cattle")
+    case Chicken extends Species("Chicken", "chickens")
+    case Donkey extends Species("Donkey", "donkeys")
+    case Goat extends Species("Goat", "goats")
+    case Goose extends Species("Goose", "geese")
+    case Duck extends Species("Duck", "ducks")
+    case Mouse extends Species("Mouse", "mice")
+    case Pig extends Species("Pig", "pigs")
+    case RabbitDomestic extends Species("Rabbit", "rabbits")
+    case Sheep extends Species("Sheep", "sheep")
+
+
+
     case Unknown extends Species(" ")
 
+
+    // personal, professional, both
+    // breeder, trainer/coach, competitor/exhibitor, vet, vet nurse, shelter worker, animal attendant, groomer, farmer/producer, inspector, academic/researcher, zookeeper, processor, other
+
+    // rabbit, chicken, goose, duck, goat, cattle, sheep, fish, donkey, pig, mouse
 
     case AmphibianUnspecified extends Species("Amphibian (unspecified)")
     case Arthropod extends Species("Arthropod (unspecified)")
     case Budgerigar extends Species("Bird - Budgerigar")
-    case Chicken extends Species("Bird - Chicken")
     case Cockatiel extends Species("Bird - Cockatiel")
     case Cockatoo extends Species("Bird - Cockatoo")
     case BirdOther extends Species("Bird - other")
@@ -24,9 +42,6 @@ enum Species(val longText:String, val plural:String = "animals of their own spec
     case ParrotOther extends Species("Bird - Parrot (Psittacine) - other")
     case Parakeet extends Species("Bird - Parrot (Psittacine) - Parakeet")
     case Turkey extends Species("Bird - Turkey")
-    case Donkey extends Species("Donkey (Equine)")
-    case Duck extends Species("Bird - Waterfowl - Duck")
-    case Goose extends Species("Bird - Waterfowl - Goose")
     case WaterfowlOther extends Species("Bird - Waterfowl - other")
     case Swan extends Species("Bird - Waterfowl - Swan")
     case Alpaca extends Species("Camelid - Alpaca")
@@ -34,7 +49,6 @@ enum Species(val longText:String, val plural:String = "animals of their own spec
     case Llama extends Species("Camelid - Llama")
     case CamelidOther extends Species("Camelid - other")
     case Marmoset extends Species("Common marmoset")
-    case Cow extends Species("Cow (Bovine)")
     case Deer extends Species("Deer (Cervidae)")
     case DuprasiGerbil extends Species("Duprasi (gerbil)")
     case Ferret extends Species("Ferret")
@@ -43,15 +57,12 @@ enum Species(val longText:String, val plural:String = "animals of their own spec
     case ColdwaterOther extends Species("Fish - Coldwater - other")
     case FishOther extends Species("Fish - other (unspecified)")
     case FishTropical extends Species("Fish - Tropical (unspecified)")
-    case Goat extends Species("Goat (Caprine)")
     case AfricanPygmyHedgehog extends Species("Hedgehog - African Pygmy (Atelerix albiventris) ")
     case EuropeanHedgehog extends Species("Hedgehog - European (Erinaceus europaeus) ")
     case HedgehogOther extends Species("Hedgehog - other")
     case Lion extends Species("Lion")
     case Mule extends Species("Mule (Equine)")
     case Panther extends Species("Panther")
-    case Pig extends Species("Pig (Porcine)")
-    case RabbitDomestic extends Species("Rabbit (Domestic)")
     case RabbitUnspecified extends Species("Rabbit (unspecified)")
     case BeardedDragon extends Species("Reptile - Lizard - Bearded Dragon (Pogona vitticeps)")
     case Iguana extends Species("Reptile - Lizard - Iguana")
@@ -71,10 +82,8 @@ enum Species(val longText:String, val plural:String = "animals of their own spec
     case Gerbil extends Species("Rodent - Gerbil")
     case GuineaPig extends Species("Rodent - Guinea Pig")
     case Hamster extends Species("Rodent - Hamster")
-    case Mouse extends Species("Rodent - Mouse")
     case RodentOther extends Species("Rodent - other")
     case Rat extends Species("Rodent - Rat")
-    case Sheep extends Species("Sheep (Ovine)")
     case Wolf extends Species("Wolf")
 
     def beta = Seq(Horse, Dog, Cat)
