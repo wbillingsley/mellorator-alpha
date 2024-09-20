@@ -49,7 +49,7 @@ object AnimalList extends DHtmlComponent {
         val hasTest = DataStore.hasTestData
 
         <.div(^.style := "margin: 1em;",
-            if DataStore.animals.isEmpty then Seq(animals.emptyCard) else Seq(
+            Seq(
                 switcher,
                 (if hasReal then 
                     <.div(
