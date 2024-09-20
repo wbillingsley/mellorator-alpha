@@ -13,7 +13,7 @@ object SettingsScreen extends DHtmlComponent {
 
 }
 
-
+/** A widget for resetting the first time notice */
 case class ResetFirstTimeNotice() extends DHtmlComponent {
 
     val enabled = stateVariable(false)
@@ -38,6 +38,35 @@ case class ResetFirstTimeNotice() extends DHtmlComponent {
 
 }
 
+
+/** A widget for resetting the first time notice */
+case class ResetEventLog() extends DHtmlComponent {
+
+    val enabled = stateVariable(false)
+
+    def clearLogs() = 
+        Analytics.resetLogs()
+        enabled.value = false
+
+    override def render = {
+        import html.{<, ^}
+        <.div(
+            <.p(
+                """|The app keeps a local event log in your browser for analytics. (This is not sent to any server anywhere.) This can be cleared.
+                   |After clearing, I recommend refreshing the page, in order to record a new start-of-session event.
+                   |""".stripMargin
+
+            ),
+
+            <.input(^.attr("type") := "checkbox", ^.prop.checked := enabled.value, ^.onChange --> { enabled.value = !enabled.value}),
+            <.label("Tick to unlock"),
+            <.button(^.cls := (button, noticeButton), ^.prop.disabled := !enabled.value, "Reset event log", ^.onClick --> clearLogs())
+        )
+    }
+
+}
+
+/** A widget for resetting all locally saved data ready for the next user */
 case class ResetData() extends DHtmlComponent {
 
     val enabled = stateVariable(false)
@@ -81,12 +110,13 @@ def settingsPage =
         <.h2("First use"),
         ResetFirstTimeNotice(),
 
+        <.h2("Logs"),
+        ResetEventLog(),
+
         <.h2("Data"),
-        ResetData()
+        ResetData(),
+
         
         )
-
-        
-
 
     )
