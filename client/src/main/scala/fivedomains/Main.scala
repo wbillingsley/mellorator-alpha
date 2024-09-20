@@ -29,6 +29,8 @@ given styleSuite:StyleSuite = StyleSuite()
 
   dom.console.info("Site code loaded. Starting Mellorater.")
 
+  if DataStore.animalMap.isEmpty then addPickles()
+
   styleSuite.install()
 
   root.render(Router)

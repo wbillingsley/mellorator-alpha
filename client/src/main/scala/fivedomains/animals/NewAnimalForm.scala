@@ -99,13 +99,13 @@ class AnimalForm() extends DHtmlComponent {
 }
 
 
-def emptyAnimalsNotice = if DataStore.animals.nonEmpty then <.div() else <.div(^.cls := (notice),
+def emptyAnimalsNotice = if DataStore.hasRealData then <.div() else <.div(^.cls := (notice),
     markdown.div(
         """|### Let's add your first animal
            |
-           |The animal welfare assessment works for most species, so we just need to give your animal a name.
-           |
-           |You can also pick a background so that if you have several animals you are monitoring, it's visually easier to distinguish their cards.
+           |Mostly, the app just needs to know your animal's name and species.
+           |However, you can also pick a card background to help you tell them apart at a glance
+           |until we've added a photo feature.
            |""".stripMargin
     )
 )
