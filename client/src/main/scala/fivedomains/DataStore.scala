@@ -97,6 +97,14 @@ object DataStore {
 
     def animals = animalMap.values.toSeq.sortBy(_.id)
 
+    def testAnimals = animalMap.values.filter(_.testData == true).toSeq.sortBy(_.id)
+
+    def realAminals = animalMap.values.filter(_.testData == false).toSeq.sortBy(_.id)
+
+    def hasRealData = animalMap.values.exists(_.testData == false)
+
+    def hasTestData = animalMap.values.exists(_.testData == true)
+
     /** Delete all stored data */
     def clearAll() = 
         _assessments.clear()

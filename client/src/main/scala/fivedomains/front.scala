@@ -32,7 +32,7 @@ object AnimalList extends DHtmlComponent {
                 Seq(
                     <.button(^.cls := (button, "active"), ^.attr("disabled") := "disabled", "Alphabetical"),
                     <.button(^.cls := (button, "enabled"), "Survey due", ^.onClick --> listMode.receive(OrderBy.LeastRecentlyUpdated)),
-                    <.a(^.href := Router.path(AppRoute.Settings), <.span(^.cls := "material-symbols-outlined", "settings", ^.style := "float: right; right: 20px;"))
+                    <.a(^.href := Router.path(AppRoute.Settings), <.span(^.cls := "material-symbols-outlined", "settings"   , ^.style := "float: right; right: 20px;"))
                 )
             case OrderBy.LeastRecentlyUpdated => 
                 Seq(
@@ -44,18 +44,37 @@ object AnimalList extends DHtmlComponent {
         
     )
 
-    def render = <.div(
-        if DataStore.animals.isEmpty then Seq(animals.emptyCard) else Seq(
-            switcher,
-            <.div(
-                for a <- sortedAnimals yield animals.summaryCard(a)
-            ),
-        ),
+    def render = 
+        val hasReal = DataStore.hasRealData
+        val hasTest = DataStore.hasTestData
 
-        <.p(^.style := "margin-top: 1em; text-align: center;",
-            <.a(^.cls := (button, primary), ^.href := Router.path(AppRoute.AddAnimal), "Add an animal")
+        <.div(^.style := "margin: 1em;",
+            if DataStore.animals.isEmpty then Seq(animals.emptyCard) else Seq(
+                switcher,
+                (if hasReal then 
+                    <.div(
+                        for a <- sortedAnimals.filter(!_.testData) yield animals.summaryCard(a)
+                    )
+                else 
+                    if hasTest then 
+                        <.p("It looks like you haven't added any animals yet. Some demo data is shown below.")
+                    else 
+                        <.p("It looks ike you haven't added any animals yet. Add your first animal, or some demo animals can be added from the settings screen.")
+                ),
+                (if hasTest then <.div(
+                    <.h4("Demo animals:"),                
+                    <.div(
+                        for a <- sortedAnimals.filter(_.testData) yield animals.summaryCard(a)
+                    )
+                ) else 
+                    <.span()
+                ),
+            ),
+
+            <.p(^.style := "margin-top: 1em; text-align: center;",
+                <.a(^.cls := (button, primary), ^.href := Router.path(AppRoute.AddAnimal), "Add an animal")
+            )
         )
-    )
 
 }
 

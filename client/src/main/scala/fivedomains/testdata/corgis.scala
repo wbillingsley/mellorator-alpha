@@ -7,7 +7,7 @@ import scalajs.js
 
 
 def addPickles() = 
-    val pickles = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Pickles", Species.Horse, sex=Sex.Male, display=DisplayStyle.Plaid))
+    val pickles = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Pickles", Species.Horse, sex=Sex.Male, display=DisplayStyle.Plaid, testData = true))
 
     DataStore.addAssessment(animal = pickles.id, situation = Situation.DayToDay, time = js.Date.UTC(2023, 1, 12, 18, 22, 0, 0), Seq(
             (AnswerValue.Numeric(100), Confidence.Medium, None),
@@ -147,7 +147,7 @@ def addPickles() =
         )
     )
 
-    val rufus = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Rufus", Species.Dog, display=DisplayStyle.Circles))
+    val rufus = DataStore.addAnimal(Animal(id = DataStore.nextAnimalId, "Rufus", Species.Dog, display=DisplayStyle.Circles, testData = true))
 
     DataStore.addAssessment(animal = rufus.id, situation = Situation.DayToDay, time = js.Date.UTC(2023, 1, 12, 18, 22, 0, 0), Seq(
             (AnswerValue.Numeric(100), Confidence.Medium, None),
