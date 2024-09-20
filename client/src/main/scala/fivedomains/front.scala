@@ -81,14 +81,16 @@ object AnimalList extends DHtmlComponent {
 case class SensitiveTopicNotice() extends DHtmlComponent {
     import html.{<, ^}
 
+    val save = stateVariable(true)
+
     def render = <.div(^.cls := (notice),
         <.h3("Sensitive topics"),
         <.p("This app will help you to monitor your animals' welfare using the \"Five Domains\" model of nutrition, environment, health, behaviour and the mental domain."),
         <.p("At times, this may involve showing how an animal's welfare has declined as well as how it has improved. Some people may find it distressing to see an animal in decline."),
         <.div(^.style := "text-align: right;",
-            <.input(^.attr("id") := "dont-show-senstop-again", ^.attr("type") := "checkbox", ^.prop("checked") := "checked"), 
+            <.input(^.attr("id") := "dont-show-senstop-again", ^.attr.`type` := "checkbox", ^.prop.checked := save.value, ^.onChange --> { save.value = !save.value }), 
             <.label(^.attr("for") := "dont-show-senstop-again", "Don't show this again "),
-            <.button(^.cls := (button, noticeButton), "Accept", ^.onClick --> DataStore.acceptedSensitiveTopics.receive(true))
+            <.button(^.cls := (button, noticeButton), "Accept", ^.onClick --> { DataStore.acceptSensitiveTopics(save.value) })
         )
     )
 

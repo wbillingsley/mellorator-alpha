@@ -14,6 +14,30 @@ object SettingsScreen extends DHtmlComponent {
 }
 
 
+case class ResetFirstTimeNotice() extends DHtmlComponent {
+
+    val enabled = stateVariable(false)
+
+    def clearFlag() = 
+        DataStore.clearAcceptSensitiveTopics() 
+
+    override def render = {
+        import html.{<, ^}
+        <.div(
+            <.p(
+                """|The first use notice shows a sensitive topics warning and other disclaimers. This resets the flag about whether it should appear
+                   |""".stripMargin
+
+            ),
+
+            <.input(^.attr("type") := "checkbox", ^.prop.checked := enabled.value, ^.onChange --> { enabled.value = !enabled.value}),
+            <.label("Tick to unlock"),
+            <.button(^.cls := (button, noticeButton), ^.prop.disabled := !enabled.value, "Reset first use notice", ^.onClick --> clearFlag())
+        )
+    }
+
+}
+
 case class ResetData() extends DHtmlComponent {
 
     val enabled = stateVariable(false)
@@ -53,8 +77,11 @@ def settingsPage =
 
         <.div(^.style := "margin: 1em;",
 
-        <.h2("Data"),
 
+        <.h2("First use"),
+        ResetFirstTimeNotice(),
+
+        <.h2("Data"),
         ResetData()
         
         )

@@ -38,13 +38,16 @@ object DataStore {
 
     val acceptedSensitiveTopics = PushVariable(
         Option(localStorage.getItem("acceptedSensitiveTopics")).map(read[Boolean](_)).getOrElse(false)
-    ) { value => 
-        localStorage.setItem("acceptedSensitiveTopics", write(value))
-        if animals.isEmpty then 
-            Router.routeTo(AppRoute.AddAnimal) 
-        else
-            Router.routeTo(AppRoute.Front)
-    }
+    ) { value => Router.routeTo(AppRoute.Front) }
+
+    /** Triggered by the accept button on the first use notice */
+    def acceptSensitiveTopics(save:Boolean) = 
+        if save then localStorage.setItem("acceptedSensitiveTopics", write(true))
+        acceptedSensitiveTopics.value = true
+
+    def clearAcceptSensitiveTopics() = 
+        localStorage.setItem("acceptedSensitiveTopics", write(false))
+        acceptedSensitiveTopics.value = false
 
 
 

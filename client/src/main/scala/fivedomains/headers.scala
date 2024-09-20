@@ -204,7 +204,8 @@ val notice = Styling(
 val noticeButton = Styling(
    s"color: white; background: $noticeFg;"
 ).modifiedBy(
-    ":hover" -> "filter: brightness(85%);"
+    ":hover" -> "filter: brightness(85%);",
+        ":disabled,:hover:disabled" -> "filter: opacity(35%);"
 ).register()
 
 val dangerButton = Styling(
