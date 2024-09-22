@@ -154,7 +154,7 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
 
             <.p(
                 
-                "Time matchine: ",
+                "Time machine: ",
                 <.button(^.cls := "button material-symbols-outlined", "arrow_left", ^.prop.disabled := number.value <= 1, ^.onClick --> {number.value = number.value - 1}),
                 <.input(
                     ^.attr("type") := "range", ^.attr("min") := 1, ^.attr("max") := max,
