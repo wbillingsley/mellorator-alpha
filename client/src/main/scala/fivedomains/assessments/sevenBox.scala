@@ -14,6 +14,9 @@ val alignLeftStyle = Styling("text-align: left;").register()
 val alignRightStyle = Styling("text-align: right;").register()
 val alignCentreStyle = Styling("text-align: center;").register()
 
+val stickyTop = Styling("position: sticky; top: 0;").register()
+val bgWhite = Styling("background: white;").register()
+
 /**
   * The "seven box" diagram contains the six manually surveyed domains (as rectangles), with the 
   * mental domain superimposed as a circle in the middle.

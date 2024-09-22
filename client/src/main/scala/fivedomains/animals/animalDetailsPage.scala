@@ -72,7 +72,7 @@ def pastRedFlags(assessments:Seq[Assessment], mode:AnswerFilter):DHtmlModifier =
 
                 <.div(^.cls := nakedParaMargins,
 
-                    <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
+                    // <.h3(new scalajs.js.Date(assess.time).toLocaleDateString),
 
                     <.table(
 
@@ -137,21 +137,32 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
     val max = surveys.length
     val number = stateVariable(max)
 
-    def subset = surveys.reverse.drop(max - 
-    number.value)
+    def subset = surveys.reverse.drop(max - number.value)
 
     override def render = <.div(
 
-        <.div(^.cls := alignCentreStyle,    
+        <.div(^.cls := (alignCentreStyle, stickyTop, bgWhite),    
 
             scoringRose(subset),
 
-            <.p("Time machine: ",
+            subset.headOption match {
+                    case Some(assess) => 
+                        val d = new scalajs.js.Date(assess.time)
+                        <.h4(d.toLocaleDateString(), " ", d.toLocaleTimeString())
+                    case None => <.span()
+            },
+
+            <.p(
+                
+                "Time matchine: ",
+                <.button(^.cls := "button material-symbols-outlined", "arrow_left", ^.prop.disabled := number.value <= 1, ^.onClick --> {number.value = number.value - 1}),
                 <.input(
                     ^.attr("type") := "range", ^.attr("min") := 1, ^.attr("max") := max,
                     ^.prop("value") := number.value, ^.on.input ==> { e => for v <- e.inputValue do number.value = v.toInt }
                 ),
+                <.button(^.cls := "button material-symbols-outlined", "arrow_right", ^.prop.disabled := number.value >= max, ^.onClick --> {number.value = number.value + 1}),
             ),
+
 
             <.p(
                 "Show ",
@@ -166,10 +177,12 @@ case class SurveySelectWidget(animal:Animal, surveys:Seq[Assessment]) extends DH
                             if mode.value == s then ^.prop.selected := "selected" else None
                         )
                 )
-            )
+            ),
+
+
         ),
 
-        pastRedFlags(subset, mode.value)
+        pastRedFlags(subset.headOption.toSeq, mode.value)
     )
 
 }
