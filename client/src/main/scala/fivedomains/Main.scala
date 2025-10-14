@@ -10,7 +10,7 @@ import org.scalajs.dom
 import scalajs.js
 import scala.scalajs.js.annotation._
 
-import installers.installMarked
+import Installers.installMarked
 
 val root = mount("#app", <.p("Loading..."))
 
