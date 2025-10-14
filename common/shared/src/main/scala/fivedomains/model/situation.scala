@@ -13,7 +13,7 @@ enum Situation derives ReadWriter:
     case Veterinary
 
     def descr = this match {
-        case DayToDay => "day-to-day living"
+        case DayToDay => "at home"
         case Exercising => "exercising"
         case Transport => "being transported"
         case Training => "training"

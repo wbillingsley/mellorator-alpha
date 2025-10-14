@@ -207,7 +207,7 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
 
                     for s <- allowableSituations(animal.species) yield 
                         <.option(
-                            ^.prop.value := s.ordinal, s.toString,
+                            ^.prop.value := s.ordinal, s.descr,
                             if s.ordinal == situation.value.ordinal then ^.prop.selected := "selected" else None
                         )
                 )
@@ -281,9 +281,9 @@ case class AssessmentForm(animal:Animal) extends DHtmlComponent {
                                 footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "edit_note"), FooterSelection.Notes),
                                // footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "photo_camera"), FooterSelection.Photo),
 
-                                if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                                    <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
-                                ) else Seq()                 
+                                // if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
+                                //     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                                // ) else Seq()                 
                             )
 
                             
@@ -348,7 +348,7 @@ case class PagedAssessmentForm(animal:Animal) extends DHtmlComponent {
 
                     for s <- allowableSituations(animal.species) yield 
                         <.option(
-                            ^.prop.value := s.ordinal, s.toString,
+                            ^.prop.value := s.ordinal, s.descr,
                             if s.ordinal == assessment.value.situation.ordinal then ^.prop.selected := "selected" else None
                         )
                 )
@@ -426,9 +426,9 @@ case class PagedAssessmentForm(animal:Animal) extends DHtmlComponent {
                                     <.div(^.cls := questionFooterStyle,
                                         <.span(),
 
-                                        if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                                            <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
-                                        ) else Seq()                 
+                                        // if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
+                                        //     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                                        // ) else Seq()                 
                                     )
                                     
                                 )
@@ -480,13 +480,15 @@ case class PagedAssessmentForm(animal:Animal) extends DHtmlComponent {
                                     // Footer controls
                                     <.div(^.cls := questionFooterStyle,                                         
                                         // confidenceButton(assessment.value.answers(q.num).confidence, footerSelectors(q.num)),
+                                        <.span(),
                                         footerButton(footerSelectors(q.num), "?", FooterSelection.Explanation),
                                         footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "edit_note"), FooterSelection.Notes),
+                                        <.span()
                                     // footerButton(footerSelectors(q.num), <.span(^.cls := "material-symbols-outlined", "photo_camera"), FooterSelection.Photo),
 
-                                        if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
-                                            <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
-                                        ) else Seq()                 
+                                        // if q.num < maxQNum then <.div(^.style := "text-align: right; margin: 1em;",
+                                        //     <.button(^.cls := (button), "Next ↓", ^.onClick --> scrollQIntoView(q.num + 1))
+                                        // ) else Seq()                 
                                     )
                                     
                                 )

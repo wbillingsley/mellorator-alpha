@@ -98,10 +98,10 @@ def emptyAnimalsNotice = if DataStore.hasRealData then <.div() else <.div(^.cls 
            |can ask you about your animal as you monitor its wellbeing. 
            |
            |The other questions (e.g. sex and breed) are optional, but may be useful for 
-           |users who own multiple animals.
+           |users who own multiple animals. Future versions of the app will let you add a photo too.
            |
-           |Future versions of the app will let you add a photo too.
-           |
+           |In this version of the app, the data you enter is only stored on your phone. (It's not
+           |yet sent to any server.)
            |""".stripMargin
     )
 )
