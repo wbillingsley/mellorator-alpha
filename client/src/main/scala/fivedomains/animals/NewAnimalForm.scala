@@ -80,6 +80,25 @@ class AnimalForm() extends DHtmlComponent {
                 )
             ),
 
+            <.br(),
+
+            <.p(s"How often do you think ${if animal.value.name.isEmpty then "this animal" else animal.value.name} needs their welfare monitored?"),
+
+            <.div(^.cls := formStyling,
+                <.label("Frequency"),
+                <.select(^.style := s"margin-left: 0.25em; max-width: 300px; font-size: $largeFont;",
+                    ^.on.change ==> { (e) => 
+                        val n = e.target.asInstanceOf[scalajs.js.Dynamic].value.asInstanceOf[String]
+                        animal.value = animal.value.copy(assessmentFrequency = AssessmentFrequency.values(n.toInt)) 
+                    },
+                    for s <- AssessmentFrequency.values yield 
+                        <.option(
+                            ^.prop.value := s.ordinal, s.toString,
+                            if s == animal.value.sex then ^.prop.selected := "selected" else None
+                        )
+                )
+            ),
+
 
             <.div(^.style := "text-align: right;",
                 <.button(^.cls := (button), "📷"),

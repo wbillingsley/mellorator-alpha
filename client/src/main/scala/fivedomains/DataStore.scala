@@ -20,7 +20,9 @@ import java.util.UUID
 import com.wbillingsley.veautiful.logging.Logger
 
 
-
+// given RW[AssessmentFrequency] = ReadWriter.merge(
+//     macroRW[AssessmentFrequency.Daily], macroRW[AssessmentFrequency.Weekly], macroRW[AssessmentFrequency.Monthly],
+// )
 given RW[Animal] = macroRW
 given RW[Confidence] = macroRW
 given RW[Answer] = macroRW

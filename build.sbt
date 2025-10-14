@@ -5,7 +5,7 @@ val deployFull = taskKey[Unit]("Copies the fullLinkJS script to deployscripts/")
 
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-ThisBuild / scalaVersion := "3.5.0"
+ThisBuild / scalaVersion := "3.5.2"
 
 lazy val root = project.in(file("."))
   .aggregate(commonJS, commonJVM, awServer, awClient)
@@ -18,7 +18,7 @@ lazy val common = crossProject(JVMPlatform, JSPlatform).in(file("common"))
   .settings(
 
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "upickle" % "3.1.0",
+      "com.lihaoyi" %%% "upickle" % "4.3.1",
       "org.scala-js" %% "scalajs-stubs" % "1.1.0" % "provided"
     )
 

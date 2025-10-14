@@ -33,6 +33,17 @@ enum Sex derives ReadWriter:
     case FemaleNeutered
     case Unspecified
 
+   
+   
+
+
+enum AssessmentFrequency derives ReadWriter:
+    case Unspecified
+    case Daily
+    case Weekly
+    case Monthly
+    case Yearly
+    // case Other(s:String)
 
 extension (s:Sex) {
     def prettyString = s match
@@ -49,6 +60,7 @@ case class Animal(
     breed:String = "",
     sex:Sex = Sex.Unspecified, 
     desexed:Option[Long] = None,
+    assessmentFrequency:AssessmentFrequency = AssessmentFrequency.Unspecified,
     display:DisplayStyle = DisplayStyle.random,
     testData:Boolean = false
 ) {
